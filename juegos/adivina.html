@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adivina al jugador | Blue Lock</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header>
+  <strong>🕵️ ¿QUIÉN ES?</strong>
+  <a href="../juegos.html">← Game Center</a>
+</header>
+
+<main>
+  <h1>DESCUBRE AL EGOÍSTA</h1>
+  <p>Identifica al jugador usando el menor número de pistas.</p>
+
+  <div class="card">
+    <div class="score">Ronda: <b id="ronda">1/5</b></div>
+    <div class="score">Puntos: <b id="puntos">0</b></div>
+
+    <h2 id="titulo">¿Quién se esconde?</h2>
+
+    <div style="
+      font-size:80px;
+      text-align:center;
+      color:#33b1ff;
+      padding:25px;
+      text-shadow:0 0 30px #1b6fff;
+    ">?</div>
+
+    <div id="pistas"></div>
+
+    <button id="pista">🔎 Revelar pista</button>
+
+    <p>
+      <input id="respuesta"
+             placeholder="Nombre del jugador"
+             autocomplete="off">
+      <button id="comprobar">Responder</button>
+    </p>
+
+    <p id="mensaje" class="status"></p>
+
+    <button id="siguiente" disabled>
+      Siguiente jugador →
+    </button>
+  </div>
+</main>
+
+<script src="comun.js"></script>
+<script>
+const jugadores = [
+  { n:"ALEX", p:["Dorsal par","Número 10","Su cartel dice CHEBCHUB"] },
+  { n:"CARMELO", p:["Jugador de campo","Dorsal 7","Su cartel lleva su nombre"] },
+  { n:"SERGIO", p:["Dorsal de dos cifras","Número 99","Su nombre empieza por S"] },
+  { n:"ANGELO", p:["Dorsal par","Número 4","Su nombre empieza por A"] },
+  { n:"ALVARO", p:["Dorsal impar","Número 23","Su nombre empieza por A"] },
+  { n:"LEÓN", p:["Dorsal par","Número 6","Su cartel dice Miguel"] },
+  { n:"ISAGI", p:["Dorsal impar","Número 11","Su cartel dice Hugo"] },
+  { n:"D. DEL RIO", p:["Dorsal de dos cifras","Número 21","Su nombre incluye DEL RIO"] },
+  { n:"LUIS", p:["Dorsal impar","Número 9","Su nombre empieza por L"] },
+  { n:"JOWI", p:["Lleva guantes","Número 1","Es el portero"] }
+];
+
+let partida = [...jugadores]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 5);
+
+let ronda = 0;
+let pistasVistas = 0;
+let puntos = 0;
+let terminado = false;
+
+const mensaje = document.getElementById("mensaje");
+const botonPista = document.getElementById("pista");
+const botonComprobar = document.getElementById("comprobar");
+const botonSiguiente = document.getElementById("siguiente");
+
+function normalizar(texto) {
+  return texto.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\./g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toUpperCase();
+}
+
+function mostrar() {
+  pistasVistas = 0;
+  terminado = false;
+
+  document.getElementById("ronda").textContent =
+    (ronda + 1) + "/5";
+
+  document.getElementById("respuesta").value = "";
+  document.getElementById("pistas").innerHTML = "";
+  mensaje.textContent = "";
+
+  botonPista.disabled = false;
+  botonComprobar.disabled = false;
+  botonSiguiente.disabled = true;
+}
+
+botonPista.onclick = () => {
+  if (terminado || pistasVistas >= 3) return;
+
+  const p = document.createElement("p");
+  p.textContent =
+    "🔎 Pista " + (pistasVistas + 1) + ": " +
+    partida[ronda].p[pistasVistas];
+
+  document.getElementById("pistas").appendChild(p);
+  pistasVistas++;
+
+  if (pistasVistas >= 3) botonPista.disabled = true;
+};
+
+botonComprobar.onclick = () => {
+  if (terminado) return;
+
+  const respuesta = normalizar(
+    document.getElementById("respuesta").value
+  );
+  const correcto = normalizar(partida[ronda].n);
+
+  if (!respuesta) {
+    mensaje.textContent = "Escribe un nombre primero.";
+    return;
+  }
+
+  terminado = true;
+
+  if (respuesta === correcto) {
+    const ganados = 300 - pistasVistas * 75;
+    puntos += ganados;
+    mensaje.textContent =
+      "✅ ¡Correcto! +" + ganados + " puntos.";
+  } else {
+    mensaje.textContent =
+      "❌ Era " + partida[ronda].n + ".";
+  }
+
+  document.getElementById("puntos").textContent = puntos;
+
+  botonPista.disabled = true;
+  botonComprobar.disabled = true;
+  botonSiguiente.disabled = false;
+};
+
+botonSiguiente.onclick = () => {
+  ronda++;
+
+  if (ronda >= 5) {
+    document.getElementById("titulo").textContent =
+      "🏆 ¡PARTIDA TERMINADA!";
+
+    mensaje.textContent = "Puntos totales: " + puntos;
+    botonSiguiente.disabled = true;
+    guardarResultado("Adivina", puntos);
+  } else {
+    mostrar();
+  }
+};
+
+mostrar();
+</script>
+
+</body>
+</html>

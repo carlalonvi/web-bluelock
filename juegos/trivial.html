@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ego Quiz | Blue Lock FS</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header>
+  <strong>🧠 EGO QUIZ</strong>
+  <a href="../juegos.html">← Game Center</a>
+</header>
+
+<main>
+  <h1>¿CONOCES A BLUE LOCK?</h1>
+  <p>Diez preguntas. Quince segundos por pregunta.</p>
+
+  <div class="card">
+    <div class="score">Pregunta: <b id="numero">1/10</b></div>
+    <div class="score">Tiempo: <b id="tiempo">15</b>s</div>
+    <div class="score">Puntos: <b id="puntos">0</b></div>
+
+    <h2 id="pregunta"></h2>
+    <div id="opciones"></div>
+    <p id="mensaje" class="status"></p>
+
+    <button id="siguiente" disabled>Siguiente →</button>
+    <button onclick="location.reload()">Reiniciar</button>
+  </div>
+</main>
+
+<script src="comun.js"></script>
+<script>
+const banco = [
+  {
+    p: "¿Quién es el portero de Blue Lock?",
+    o: ["Jowi", "Álvaro", "Carmelo", "Sergio"],
+    c: 0
+  },
+  {
+    p: "¿Quién lleva el dorsal 99?",
+    o: ["Alex", "Sergio", "Luis", "Angelo"],
+    c: 1
+  },
+  {
+    p: "¿Quién es la presidenta?",
+    o: ["Clarita", "Jowi", "Carmelo", "León"],
+    c: 0
+  },
+  {
+    p: "¿Qué dorsal lleva Carmelo?",
+    o: ["9", "4", "7", "23"],
+    c: 2
+  },
+  {
+    p: "¿Qué dorsal lleva Isagi?",
+    o: ["6", "11", "21", "10"],
+    c: 1
+  },
+  {
+    p: "¿Quién lleva el dorsal 23?",
+    o: ["Álvaro", "Luis", "Alex", "León"],
+    c: 0
+  },
+  {
+    p: "¿Quién lleva el número 4?",
+    o: ["Sergio", "Angelo", "Jowi", "Carmelo"],
+    c: 1
+  },
+  {
+    p: "¿Cuál es el nombre federativo mencionado en la web?",
+    o: [
+      "Blue Lock Eleven",
+      "Noctra Torrejón B",
+      "Blue Lock Madrid",
+      "Torrejón United"
+    ],
+    c: 1
+  },
+  {
+    p: "¿Cuántos jugadores integran la plantilla?",
+    o: ["8", "9", "10", "12"],
+    c: 2
+  },
+  {
+    p: "¿Cuál es la primera equipación prevista?",
+    o: [
+      "Blanca",
+      "Roja",
+      "Azul",
+      "Amarilla"
+    ],
+    c: 2
+  },
+  {
+    p: "¿Quién lleva el dorsal 21?",
+    o: ["D. del Río", "Luis", "Isagi", "Álvaro"],
+    c: 0
+  },
+  {
+    p: "¿Cuál es el dorsal de Alex?",
+    o: ["10", "6", "7", "99"],
+    c: 0
+  }
+];
+
+let preguntas = [...banco]
+  .sort(() => Math.random() - 0.5)
+  .slice(0, 10);
+
+let actual = 0;
+let puntos = 0;
+let segundos = 15;
+let respondido = false;
+let reloj = null;
+
+const mensaje = document.getElementById("mensaje");
+const siguiente = document.getElementById("siguiente");
+
+function mostrarPregunta() {
+  if (actual >= preguntas.length) {
+    finalizar();
+    return;
+  }
+
+  respondido = false;
+  segundos = 15;
+  siguiente.disabled = true;
+  mensaje.textContent = "";
+
+  const q = preguntas[actual];
+
+  document.getElementById("numero").textContent =
+    (actual + 1) + "/10";
+
+  document.getElementById("pregunta").textContent = q.p;
+  document.getElementById("tiempo").textContent = segundos;
+
+  const contenedor = document.getElementById("opciones");
+  contenedor.innerHTML = "";
+
+  q.o.forEach((texto, i) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.textContent = texto;
+
+    btn.onclick = () => responder(i);
+    contenedor.appendChild(btn);
+  });
+
+  clearInterval(reloj);
+
+  reloj = setInterval(() => {
+    if (respondido) return;
+
+    segundos--;
+    document.getElementById("tiempo").textContent = segundos;
+
+    if (segundos <= 0) {
+      responder(-1);
+    }
+  }, 1000);
+}
+
+function responder(indice) {
+  if (respondido) return;
+
+  respondido = true;
+  clearInterval(reloj);
+
+  const correcta = preguntas[actual].c;
+
+  if (indice === correcta) {
+    const ganados = 100 + segundos * 10;
+    puntos += ganados;
+    mensaje.textContent =
+      "✅ ¡Correcto! +" + ganados + " puntos.";
+  } else {
+    mensaje.textContent =
+      "❌ Respuesta correcta: " +
+      preguntas[actual].o[correcta];
+  }
+
+  document.getElementById("puntos").textContent = puntos;
+
+  document.querySelectorAll(".choice").forEach((btn, i) => {
+    btn.disabled = true;
+
+    if (i === correcta) {
+      btn.style.background = "#126342";
+    } else if (i === indice) {
+      btn.style.background = "#902b42";
+    }
+  });
+
+  siguiente.disabled = false;
+}
+
+siguiente.onclick = () => {
+  actual++;
+  mostrarPregunta();
+};
+
+function finalizar() {
+  clearInterval(reloj);
+  document.getElementById("pregunta").textContent =
+    "🏆 ¡TRIVIAL TERMINADO!";
+
+  document.getElementById("opciones").innerHTML = "";
+  mensaje.textContent = "Puntuación final: " + puntos;
+  siguiente.disabled = true;
+
+  guardarResultado("Trivial", puntos);
+}
+
+mostrarPregunta();
+</script>
+
+</body>
+</html>

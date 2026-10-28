@@ -1,0 +1,1118 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue Lock Mini Football 2.0</title>
+<link rel="stylesheet" href="estilo.css">
+
+<style>
+  .game-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .game-score {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: white;
+  }
+
+  .blue { color: #38aaff; }
+  .red { color: #ff6475; }
+
+  #campo {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    border: 3px solid #4198ff;
+    border-radius: 16px;
+    touch-action: none;
+  }
+
+  .control-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .control-box {
+    background: #08182d;
+    border: 1px solid #26559d;
+    border-radius: 16px;
+    padding: 15px;
+  }
+
+  .control-box h3 {
+    margin-top: 0;
+  }
+
+  .direction-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-template-rows: repeat(3, 54px);
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .direction-pad button {
+    margin: 0;
+    padding: 0;
+    font-size: 1.4rem;
+    touch-action: none;
+    user-select: none;
+  }
+
+  .up { grid-column: 2; grid-row: 1; }
+  .left { grid-column: 1; grid-row: 2; }
+  .down { grid-column: 2; grid-row: 2; }
+  .right { grid-column: 3; grid-row: 2; }
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .action-buttons button {
+    min-height: 65px;
+    min-width: 110px;
+    touch-action: manipulation;
+  }
+
+  .shoot {
+    background: #1b6fff;
+  }
+
+  .pass {
+    background: #087c91;
+  }
+
+  .switch {
+    background: #5036a6;
+  }
+
+  #mensaje {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  @media(max-width:650px) {
+    .control-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .direction-pad {
+      grid-template-columns: repeat(3, 54px);
+      grid-template-rows: repeat(3, 48px);
+    }
+
+    .action-buttons button {
+      min-width: 85px;
+      font-size: .85rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <strong>⚽ BLUE LOCK MINI FOOTBALL 2.0</strong>
+  <a href="../juegos.html">← Game Center</a>
+</header>
+
+<main>
+
+  <h1>BLUE LOCK VS EL MUNDO</h1>
+  <p>
+    Controla a uno de los tres jugadores de campo.
+    Tus compañeros y los ocho futbolistas restantes
+    juegan automáticamente.
+  </p>
+
+  <div class="card">
+
+    <div class="game-top">
+      <div class="game-score">
+        <span class="blue">BLUE LOCK</span>
+        <span id="golesAzules">0</span>
+        -
+        <span id="golesRojos">0</span>
+        <span class="red">RIVALES</span>
+      </div>
+
+      <div class="score">
+        ⏱️ <b id="tiempo">120</b>s
+      </div>
+
+      <div class="score">
+        ⭐ <b id="puntos">0</b> pts
+      </div>
+    </div>
+
+    <canvas id="campo" width="900" height="520"></canvas>
+
+    <p id="mensaje" class="status">
+      ¡Que empiece el partido!
+    </p>
+
+    <div class="control-panel">
+
+      <div class="control-box">
+        <h3>🎮 Movimiento</h3>
+
+        <div class="direction-pad">
+          <button class="up" data-move="up">▲</button>
+          <button class="left" data-move="left">◀</button>
+          <button class="down" data-move="down">▼</button>
+          <button class="right" data-move="right">▶</button>
+        </div>
+
+        <p class="muted">
+          Ordenador: WASD o flechas.
+        </p>
+      </div>
+
+      <div class="control-box">
+        <h3>⚽ Acciones</h3>
+
+        <div class="action-buttons">
+          <button class="shoot" id="btnShoot">
+            ⚽ DISPARAR
+          </button>
+
+          <button class="pass" id="btnPass">
+            ↗ PASAR
+          </button>
+
+          <button class="switch" id="btnSwitch">
+            🔄 CAMBIAR
+          </button>
+        </div>
+
+        <p class="muted">
+          ESPACIO = disparar · X = pasar ·
+          C = cambiar jugador.
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button id="reiniciar">🔄 Nuevo partido</button>
+    </div>
+
+  </div>
+
+</main>
+
+<script src="comun.js"></script>
+
+<script>
+const canvas = document.getElementById("campo");
+const ctx = canvas.getContext("2d");
+
+const W = canvas.width;
+const H = canvas.height;
+
+const FIELD = {
+  left: 35,
+  right: 865,
+  top: 35,
+  bottom: 485,
+  midY: 260,
+  goalTop: 195,
+  goalBottom: 325
+};
+
+const keys = {};
+
+let blue = [];
+let red = [];
+
+let ball;
+let selected = 0;
+
+let scoreBlue = 0;
+let scoreRed = 0;
+let points = 0;
+let seconds = 120;
+
+let running = false;
+let lastFrame = 0;
+let animationId = null;
+let clockId = null;
+
+let eventMessage = "";
+let kickoffCooldown = 0;
+
+const ui = {
+  blue: document.getElementById("golesAzules"),
+  red: document.getElementById("golesRojos"),
+  time: document.getElementById("tiempo"),
+  points: document.getElementById("puntos"),
+  message: document.getElementById("mensaje")
+};
+
+/* CREACIÓN DE JUGADORES */
+
+function createPlayer(x,y,number,team,goalkeeper=false) {
+  return {
+    x,y,
+    homeX:x,
+    homeY:y,
+    number,
+    team,
+    goalkeeper,
+    radius:goalkeeper ? 19 : 18,
+    speed:goalkeeper ? 160 : 195,
+    aiCooldown:0,
+    stealCooldown:0
+  };
+}
+
+function createTeams() {
+  blue = [
+    createPlayer(280,260,10,"blue"),
+    createPlayer(235,130,7,"blue"),
+    createPlayer(235,390,11,"blue"),
+    createPlayer(82,260,1,"blue",true)
+  ];
+
+  red = [
+    createPlayer(620,260,9,"red"),
+    createPlayer(675,130,7,"red"),
+    createPlayer(675,390,5,"red"),
+    createPlayer(818,260,1,"red",true)
+  ];
+}
+
+function getAllPlayers() {
+  return [...blue,...red];
+}
+
+function activePlayers(team) {
+  return team.slice(0,3);
+}
+
+function distance(a,b) {
+  return Math.hypot(a.x-b.x,a.y-b.y);
+}
+
+function clamp(value,min,max) {
+  return Math.max(min,Math.min(max,value));
+}
+
+function moveToward(player,x,y,speed,dt) {
+  const dx = x-player.x;
+  const dy = y-player.y;
+  const d = Math.hypot(dx,dy);
+
+  if (d < 1) return;
+
+  const step = Math.min(speed*dt,d);
+
+  player.x += dx/d*step;
+  player.y += dy/d*step;
+}
+
+function limitPlayer(p) {
+  p.x = clamp(p.x,FIELD.left+18,FIELD.right-18);
+  p.y = clamp(p.y,FIELD.top+18,FIELD.bottom-18);
+}
+
+/* BALÓN */
+
+function resetBall(team="blue") {
+  ball = {
+    x:450,
+    y:260,
+    vx:0,
+    vy:0,
+    owner:null,
+    pickupDelay:0,
+    lastTeam:team
+  };
+}
+
+function attachBall(player) {
+  ball.owner = player;
+  ball.vx = 0;
+  ball.vy = 0;
+  ball.lastTeam = player.team;
+  ball.pickupDelay = .18;
+}
+
+function releaseBall(player,vx,vy) {
+  ball.owner = null;
+  ball.x = player.x + (vx>0 ? 21 : -21);
+  ball.y = player.y;
+  ball.vx = vx;
+  ball.vy = vy;
+  ball.pickupDelay = .25;
+  ball.lastTeam = player.team;
+}
+
+function syncBall() {
+  if (!ball.owner) return;
+
+  const owner = ball.owner;
+  const attackDir = owner.team==="blue" ? 1 : -1;
+
+  ball.x = owner.x + attackDir*21;
+  ball.y = owner.y + 5;
+}
+
+/* BUSCAR COMPAÑEROS Y RIVALES */
+
+function nearestPlayer(list,target,exclude=null) {
+  let best=null;
+  let bestDist=Infinity;
+
+  for (const p of list) {
+    if (p===exclude) continue;
+
+    const d=distance(p,target);
+
+    if (d<bestDist) {
+      best=p;
+      bestDist=d;
+    }
+  }
+
+  return best;
+}
+
+function nearestOpponent(player) {
+  const enemies=player.team==="blue" ? red : blue;
+  return nearestPlayer(activePlayers(enemies),player);
+}
+
+function findPassTarget(player) {
+  const team=player.team==="blue" ? blue : red;
+  const mates=activePlayers(team).filter(p=>p!==player);
+
+  const direction=player.team==="blue" ? 1 : -1;
+
+  mates.sort((a,b)=>{
+    const scoreA=
+      (a.x-player.x)*direction*0.6+
+      distance(a,nearestOpponent(a))*0.4;
+
+    const scoreB=
+      (b.x-player.x)*direction*0.6+
+      distance(b,nearestOpponent(b))*0.4;
+
+    return scoreB-scoreA;
+  });
+
+  return mates[0];
+}
+
+/* DISPAROS Y PASES */
+
+function shoot(player) {
+  if (!running || ball.owner!==player) return;
+
+  const enemyGoalX=
+    player.team==="blue" ? FIELD.right+30 : FIELD.left-30;
+
+  const targetY=
+    FIELD.midY+(Math.random()-.5)*115;
+
+  const dx=enemyGoalX-player.x;
+  const dy=targetY-player.y;
+  const d=Math.hypot(dx,dy);
+
+  const speed=650;
+
+  releaseBall(
+    player,
+    dx/d*speed,
+    dy/d*speed
+  );
+
+  message(
+    player.team==="blue"
+      ? "⚡ ¡DISPARO DE BLUE LOCK!"
+      : "🚨 ¡CHUTA EL RIVAL!"
+  );
+}
+
+function passBall(player) {
+  if (!running || ball.owner!==player) return;
+
+  const target=findPassTarget(player);
+  if (!target) return;
+
+  const dx=target.x-player.x;
+  const dy=target.y-player.y;
+  const d=Math.hypot(dx,dy);
+
+  if (d<1) return;
+
+  const speed=490;
+
+  releaseBall(
+    player,
+    dx/d*speed,
+    dy/d*speed
+  );
+
+  if (player.team==="blue") {
+    message("↗ ¡BUEN PASE!");
+  }
+}
+
+/* CONTROLES DEL JUGADOR */
+
+function controlPlayer(dt) {
+  const p=blue[selected];
+
+  let dx=0;
+  let dy=0;
+
+  if(keys.arrowleft || keys.a || keys.left) dx--;
+  if(keys.arrowright || keys.d || keys.right) dx++;
+  if(keys.arrowup || keys.w || keys.up) dy--;
+  if(keys.arrowdown || keys.s || keys.down) dy++;
+
+  const length=Math.hypot(dx,dy);
+
+  if(length>0) {
+    p.x+=dx/length*p.speed*dt;
+    p.y+=dy/length*p.speed*dt;
+  }
+
+  limitPlayer(p);
+}
+
+function switchPlayer() {
+  if(!running) return;
+
+  // Si un compañero lleva el balón, lo seleccionamos.
+  const carrier=blue.findIndex(
+    (p,i)=>i<3 && ball.owner===p
+  );
+
+  if(carrier>=0 && carrier!==selected) {
+    selected=carrier;
+  } else {
+    selected=(selected+1)%3;
+  }
+
+  message("🔄 Controlas al dorsal "+blue[selected].number);
+}
+
+/* IA DE LOS JUGADORES */
+
+function updateAI(team,dt) {
+  const players=activePlayers(team);
+  const enemies=team===blue ? red : blue;
+  const attackDir=team===blue ? 1 : -1;
+  const holder=ball.owner;
+
+  const defending=
+    holder && holder.team!==team[0].team;
+
+  const target=holder || ball;
+
+  const closest=nearestPlayer(players,target);
+
+  for(const p of players) {
+    if(p===blue[selected]) continue;
+
+    p.aiCooldown=Math.max(0,p.aiCooldown-dt);
+
+    if(ball.owner===p) {
+      const goalX=attackDir===1 ? 820 : 80;
+      const goalY=260;
+
+      moveToward(p,goalX,goalY,p.speed*.78,dt);
+      limitPlayer(p);
+
+      const goalDistance=Math.abs(goalX-p.x);
+      const defender=nearestPlayer(activePlayers(enemies),p);
+      const pressure=defender ? distance(defender,p) : 999;
+
+      if(p.aiCooldown<=0) {
+        if(goalDistance<230) {
+          shoot(p);
+          p.aiCooldown=1.3;
+        } else if(pressure<90 && Math.random()<.65) {
+          passBall(p);
+          p.aiCooldown=1.2;
+        } else {
+          p.aiCooldown=.35;
+        }
+      }
+
+      continue;
+    }
+
+    if(p===closest && (!holder || defending)) {
+      // El más cercano persigue el balón.
+      moveToward(p,target.x,target.y,p.speed*.94,dt);
+    } else if(defending) {
+      // Defender en bloque.
+      const defendX=team===blue
+        ? clamp(target.x-90,150,530)
+        : clamp(target.x+90,370,750);
+
+      const defendY=p.homeY*.65+target.y*.35;
+
+      moveToward(p,defendX,defendY,p.speed*.72,dt);
+    } else {
+      // Desmarques y acompañamiento.
+      const carrier=holder && holder.team===p.team
+        ? holder
+        : target;
+
+      const offsetY=p.homeY<260 ? -115 :
+        p.homeY>260 ? 115 : 0;
+
+      const supportX=clamp(
+        carrier.x+attackDir*(p.number===7 ? 95 : 65),
+        100,800
+      );
+
+      const supportY=clamp(carrier.y+offsetY,75,445);
+
+      moveToward(p,supportX,supportY,p.speed*.75,dt);
+    }
+
+    limitPlayer(p);
+  }
+}
+
+/* PORTEROS AUTOMÁTICOS */
+
+function updateGoalkeeper(gk,dt) {
+  const defendingBall=
+    ball.owner ? ball.owner.team!==gk.team : true;
+
+  const targetY=defendingBall
+    ? clamp(ball.y,205,315)
+    : 260;
+
+  moveToward(gk,gk.homeX,targetY,gk.speed,dt);
+
+  gk.x=gk.homeX;
+  gk.y=clamp(gk.y,205,315);
+
+  if(ball.owner===gk) {
+    gk.aiCooldown-=dt;
+
+    if(gk.aiCooldown<=0) {
+      const mates=gk.team==="blue" ? blue : red;
+      const target=mates[1+Math.floor(Math.random()*2)];
+
+      const dx=target.x-gk.x;
+      const dy=target.y-gk.y;
+      const d=Math.hypot(dx,dy);
+
+      releaseBall(
+        gk,
+        dx/d*440,
+        dy/d*440
+      );
+
+      gk.aiCooldown=1.3;
+    }
+  }
+}
+
+/* ROBOS Y POSESIÓN */
+
+function updatePossession(dt) {
+  ball.pickupDelay=Math.max(0,ball.pickupDelay-dt);
+
+  getAllPlayers().forEach(p=>{
+    p.stealCooldown=Math.max(0,p.stealCooldown-dt);
+  });
+
+  if(ball.owner) {
+    const owner=ball.owner;
+    syncBall();
+
+    if(owner.goalkeeper) return;
+
+    const enemyTeam=owner.team==="blue" ? red : blue;
+
+    for(const opponent of activePlayers(enemyTeam)) {
+      if(
+        distance(owner,opponent)<29 &&
+        opponent.stealCooldown<=0 &&
+        ball.pickupDelay<=0
+      ) {
+        attachBall(opponent);
+
+        opponent.stealCooldown=1.0;
+        owner.stealCooldown=1.0;
+
+        if(opponent.team==="red") {
+          message("🚨 ¡EL RIVAL HA ROBADO EL BALÓN!");
+        }
+
+        break;
+      }
+    }
+    return;
+  }
+
+  if(ball.pickupDelay>0) return;
+
+  const candidates=getAllPlayers()
+    .filter(p=>distance(p,ball)<p.radius+14)
+    .sort((a,b)=>distance(a,ball)-distance(b,ball));
+
+  if(candidates.length) {
+    const p=candidates[0];
+    attachBall(p);
+
+    if(p.goalkeeper) {
+      p.aiCooldown=.8;
+      message("🧤 ¡ATRAPA EL PORTERO!");
+    }
+  }
+}
+
+/* FÍSICA DEL BALÓN */
+
+function updateBall(dt) {
+  if(ball.owner) {
+    syncBall();
+    return;
+  }
+
+  const oldX=ball.x;
+
+  ball.x+=ball.vx*dt;
+  ball.y+=ball.vy*dt;
+
+  const friction=Math.pow(.985,dt*60);
+  ball.vx*=friction;
+  ball.vy*=friction;
+
+  if(ball.y<FIELD.top+9) {
+    ball.y=FIELD.top+9;
+    ball.vy=Math.abs(ball.vy)*.7;
+  }
+
+  if(ball.y>FIELD.bottom-9) {
+    ball.y=FIELD.bottom-9;
+    ball.vy=-Math.abs(ball.vy)*.7;
+  }
+
+  // Goles al cruzar la línea de portería.
+  if(
+    oldX<=FIELD.right &&
+    ball.x>FIELD.right &&
+    ball.y>FIELD.goalTop &&
+    ball.y<FIELD.goalBottom
+  ) {
+    goal("blue");
+    return;
+  }
+
+  if(
+    oldX>=FIELD.left &&
+    ball.x<FIELD.left &&
+    ball.y>FIELD.goalTop &&
+    ball.y<FIELD.goalBottom
+  ) {
+    goal("red");
+    return;
+  }
+
+  if(ball.x<FIELD.left+8) {
+    ball.x=FIELD.left+8;
+    ball.vx=Math.abs(ball.vx)*.6;
+  }
+
+  if(ball.x>FIELD.right-8) {
+    ball.x=FIELD.right-8;
+    ball.vx=-Math.abs(ball.vx)*.6;
+  }
+
+  // Intercepción automática de porteros.
+  for(const gk of [blue[3],red[3]]) {
+    if(
+      distance(ball,gk)<gk.radius+15 &&
+      ball.pickupDelay<=0
+    ) {
+      attachBall(gk);
+      gk.aiCooldown=.8;
+      message("🧤 ¡PARADÓN DEL PORTERO!");
+      break;
+    }
+  }
+}
+
+/* GOLES Y SAQUES */
+
+function goal(team) {
+  if(kickoffCooldown>0) return;
+
+  kickoffCooldown=1.2;
+
+  if(team==="blue") {
+    scoreBlue++;
+    points+=300;
+    message("⚽🔥 ¡GOOOOOOL DE BLUE LOCK!");
+  } else {
+    scoreRed++;
+    message("💀 ¡GOL DEL EQUIPO RIVAL!");
+  }
+
+  updateUI();
+
+  createTeams();
+  resetBall(team==="blue" ? "red" : "blue");
+
+  // Saque del equipo que ha encajado.
+  const kickoff=team==="blue" ? red[0] : blue[0];
+
+  kickoff.x=team==="blue" ? 485 : 415;
+  kickoff.y=260;
+
+  attachBall(kickoff);
+}
+
+function message(text) {
+  eventMessage=text;
+  ui.message.textContent=text;
+}
+
+function updateUI() {
+  ui.blue.textContent=scoreBlue;
+  ui.red.textContent=scoreRed;
+  ui.points.textContent=points;
+  ui.time.textContent=seconds;
+}
+
+/* DIBUJAR EL CAMPO */
+
+function drawField() {
+  ctx.clearRect(0,0,W,H);
+
+  ctx.fillStyle="#126c48";
+  ctx.fillRect(0,0,W,H);
+
+  for(let i=0;i<10;i++) {
+    ctx.fillStyle=i%2===0
+      ? "#ffffff07"
+      : "#00000008";
+
+    ctx.fillRect(i*90,0,90,H);
+  }
+
+  ctx.strokeStyle="#d9fff1";
+  ctx.lineWidth=3;
+
+  ctx.strokeRect(
+    FIELD.left,
+    FIELD.top,
+    FIELD.right-FIELD.left,
+    FIELD.bottom-FIELD.top
+  );
+
+  ctx.beginPath();
+  ctx.moveTo(450,FIELD.top);
+  ctx.lineTo(450,FIELD.bottom);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(450,260,78,0,Math.PI*2);
+  ctx.stroke();
+
+  // Áreas
+  ctx.strokeRect(35,150,105,220);
+  ctx.strokeRect(760,150,105,220);
+
+  // Porterías
+  ctx.fillStyle="#09192b";
+  ctx.fillRect(5,195,30,130);
+  ctx.fillRect(865,195,30,130);
+
+  ctx.strokeStyle="white";
+  ctx.lineWidth=5;
+  ctx.strokeRect(5,195,30,130);
+  ctx.strokeRect(865,195,30,130);
+
+  // Redes
+  ctx.strokeStyle="#ffffff44";
+  ctx.lineWidth=1;
+
+  for(let y=205;y<325;y+=15) {
+    ctx.beginPath();
+    ctx.moveTo(5,y);
+    ctx.lineTo(35,y);
+    ctx.moveTo(865,y);
+    ctx.lineTo(895,y);
+    ctx.stroke();
+  }
+}
+
+/* DIBUJAR JUGADORES */
+
+function drawPlayer(p,index) {
+  const controlled=p===blue[selected];
+
+  if(controlled) {
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.radius+8,0,Math.PI*2);
+    ctx.strokeStyle="#8ff1ff";
+    ctx.lineWidth=4;
+    ctx.stroke();
+  }
+
+  ctx.beginPath();
+  ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+
+  if(p.goalkeeper) {
+    ctx.fillStyle=p.team==="blue"
+      ? "#ffd21b"
+      : "#c965ff";
+  } else {
+    ctx.fillStyle=p.team==="blue"
+      ? "#1674ff"
+      : "#f04455";
+  }
+
+  ctx.fill();
+
+  ctx.strokeStyle="white";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  ctx.fillStyle="white";
+  ctx.font="bold 15px Arial";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillText(p.number,p.x,p.y);
+
+  // Identificador de posesión.
+  if(ball.owner===p) {
+    ctx.fillStyle="#fff56a";
+    ctx.beginPath();
+    ctx.moveTo(p.x,p.y-35);
+    ctx.lineTo(p.x-7,p.y-44);
+    ctx.lineTo(p.x+7,p.y-44);
+    ctx.fill();
+  }
+
+  if(p.goalkeeper) {
+    ctx.font="bold 11px Arial";
+    ctx.fillStyle="#ffffff";
+    ctx.fillText(
+      p.team==="blue" ? "JOWI" : "RIVAL GK",
+      p.x,
+      p.y-29
+    );
+  }
+}
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,10,0,Math.PI*2);
+  ctx.fillStyle="white";
+  ctx.fill();
+  ctx.strokeStyle="#19243b";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  ctx.fillStyle="#172238";
+  ctx.beginPath();
+  ctx.arc(ball.x,ball.y,4,0,Math.PI*2);
+  ctx.fill();
+}
+
+function draw() {
+  drawField();
+
+  blue.forEach(drawPlayer);
+  red.forEach(drawPlayer);
+
+  drawBall();
+
+  ctx.textAlign="center";
+  ctx.textBaseline="alphabetic";
+  ctx.font="bold 18px Arial";
+  ctx.fillStyle="#ffffff";
+  ctx.fillText("BLUE LOCK FS",230,22);
+  ctx.fillText("RIVALES",680,22);
+}
+
+/* BUCLE DEL JUEGO */
+
+function loop(timestamp) {
+  if(!running) return;
+
+  const dt=lastFrame
+    ? Math.min((timestamp-lastFrame)/1000,.04)
+    : 0;
+
+  lastFrame=timestamp;
+
+  kickoffCooldown=Math.max(0,kickoffCooldown-dt);
+
+  controlPlayer(dt);
+
+  updateAI(blue,dt);
+  updateAI(red,dt);
+
+  updateGoalkeeper(blue[3],dt);
+  updateGoalkeeper(red[3],dt);
+
+  updateBall(dt);
+  updatePossession(dt);
+
+  draw();
+
+  animationId=requestAnimationFrame(loop);
+}
+
+/* FINAL DE PARTIDO */
+
+function finishGame() {
+  if(!running) return;
+
+  running=false;
+
+  clearInterval(clockId);
+  cancelAnimationFrame(animationId);
+
+  if(scoreBlue>scoreRed) {
+    points+=500;
+    message("🏆 ¡VICTORIA DE BLUE LOCK!");
+  } else if(scoreBlue<scoreRed) {
+    message("💀 Derrota. Toca entrenar.");
+  } else {
+    message("🤝 Empate. Hay que repetirlo.");
+  }
+
+  updateUI();
+
+  if(typeof guardarResultado==="function") {
+    guardarResultado("Mini fútbol",points);
+  }
+}
+
+/* INICIAR PARTIDO */
+
+function startGame() {
+  clearInterval(clockId);
+  cancelAnimationFrame(animationId);
+
+  Object.keys(keys).forEach(k=>keys[k]=false);
+
+  scoreBlue=0;
+  scoreRed=0;
+  points=0;
+  seconds=120;
+
+  selected=0;
+  running=true;
+  lastFrame=0;
+  kickoffCooldown=0;
+
+  createTeams();
+  resetBall("blue");
+
+  // Primer balón para Blue Lock.
+  attachBall(blue[0]);
+
+  message("⚡ ¡QUE EMPIECE EL PARTIDO!");
+  updateUI();
+  draw();
+
+  clockId=setInterval(()=>{
+    if(!running) return;
+
+    seconds--;
+    updateUI();
+
+    if(seconds<=0) finishGame();
+  },1000);
+
+  animationId=requestAnimationFrame(loop);
+}
+
+/* TECLADO */
+
+window.addEventListener("keydown",e=>{
+  const k=e.key.toLowerCase();
+
+  if(
+    ["arrowup","arrowdown","arrowleft",
+     "arrowright"," ","x","c"].includes(k)
+  ) {
+    e.preventDefault();
+  }
+
+  keys[k]=true;
+
+  if(e.repeat) return;
+
+  if(k===" ") shoot(blue[selected]);
+  if(k==="x") passBall(blue[selected]);
+  if(k==="c") switchPlayer();
+});
+
+window.addEventListener("keyup",e=>{
+  keys[e.key.toLowerCase()]=false;
+});
+
+window.addEventListener("blur",()=>{
+  Object.keys(keys).forEach(k=>keys[k]=false);
+});
+
+/* CONTROLES TÁCTILES */
+
+document.querySelectorAll("[data-move]").forEach(btn=>{
+  const direction=btn.dataset.move;
+
+  btn.addEventListener("pointerdown",e=>{
+    e.preventDefault();
+    keys[direction]=true;
+    btn.setPointerCapture(e.pointerId);
+  });
+
+  ["pointerup","pointercancel","lostpointercapture"]
+    .forEach(eventType=>{
+      btn.addEventListener(eventType,()=>{
+        keys[direction]=false;
+      });
+    });
+});
+
+document.getElementById("btnShoot").onclick=()=>{
+  shoot(blue[selected]);
+};
+
+document.getElementById("btnPass").onclick=()=>{
+  passBall(blue[selected]);
+};
+
+document.getElementById("btnSwitch").onclick=()=>{
+  switchPlayer();
+};
+
+document.getElementById("reiniciar").onclick=startGame;
+
+/* ARRANCAR */
+
+startGame();
+
+</script>
+
+</body>
+</html>

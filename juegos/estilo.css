@@ -1,0 +1,144 @@
+
+:root {
+  --bg: #050b16;
+  --panel: #101e38;
+  --blue: #1b6fff;
+  --cyan: #33b1ff;
+  --text: #f2f7ff;
+  --muted: #a8b8d6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, #102e68, transparent 55%),
+    var(--bg);
+  min-height: 100vh;
+}
+
+header {
+  background: #071326;
+  border-bottom: 1px solid #264f99;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+header strong { color: var(--cyan); }
+
+a { color: var(--cyan); text-decoration: none; }
+
+main {
+  max-width: 1080px;
+  margin: auto;
+  padding: 35px 18px 70px;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  margin-bottom: 12px;
+}
+
+h2 { color: var(--cyan); }
+
+p { line-height: 1.6; }
+
+.muted { color: var(--muted); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #101e38e8;
+  border: 1px solid #285399;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.card:hover { border-color: var(--cyan); }
+
+.btn, button {
+  cursor: pointer;
+  border: 1px solid #3677e9;
+  border-radius: 12px;
+  background: #174fc4;
+  color: white;
+  padding: 12px 17px;
+  font: inherit;
+  font-weight: bold;
+  margin: 4px;
+}
+
+button:hover, .btn:hover {
+  background: #2376f5;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+input {
+  background: #081426;
+  color: white;
+  border: 1px solid #3974cd;
+  padding: 12px;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+.status {
+  color: var(--cyan);
+  font-weight: bold;
+  min-height: 28px;
+}
+
+.score {
+  display: inline-block;
+  padding: 12px 18px;
+  background: #173a76;
+  border-radius: 12px;
+  margin: 5px;
+}
+
+canvas {
+  display: block;
+  max-width: 100%;
+  background: #126342;
+  border: 4px solid white;
+  border-radius: 12px;
+  margin: 20px auto;
+  touch-action: none;
+}
+
+.choice {
+  display: block;
+  width: 100%;
+  margin: 9px 0;
+  text-align: left;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #285399;
+}
+
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}

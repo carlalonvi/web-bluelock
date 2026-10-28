@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<title>Penalty Challenge 2.0 | Blue Lock FS</title>
+<link rel="stylesheet" href="estilo.css">
+<style>
+  .penalty-wrap{max-width:1020px;margin:auto}
+  .penalty-stage{position:relative;border:1px solid #3363af;border-radius:20px;overflow:hidden;background:#061c35;box-shadow:0 14px 44px #0008;touch-action:none}
+  #penaltyCanvas{display:block;width:100%;height:auto;margin:0;border:0;border-radius:0;cursor:crosshair;touch-action:none;user-select:none}
+  .penalty-hud{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+  .penalty-hud .score{margin:0;flex:1;min-width:120px;text-align:center}
+  .penalty-help{border-left:4px solid #33b1ff;background:#102445;border-radius:8px;padding:12px 16px;color:#d2e5ff;margin:14px 0}
+  .penalty-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+  .power-track{height:11px;border-radius:999px;overflow:hidden;background:#102c50;border:1px solid #3164af;margin:9px 0 4px}
+  #powerFill{height:100%;width:0;background:linear-gradient(90deg,#33b1ff,#f2d45b,#ff5858);transition:width .08s}
+  .power-label{font-weight:800;color:#8fdcff}
+  #feedback{min-height:28px;font-size:1.07rem}
+  .penalty-btn{margin:8px 0}
+  @media(max-width:600px){.penalty-hud .score{min-width:calc(50% - 6px);font-size:.89rem;padding:9px}.penalty-help{font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+  <strong>⚡ BLUE LOCK · PENALTY CHALLENGE</strong>
+  <a href="../juegos.html">← Volver al Game Center</a>
+</header>
+<main class="penalty-wrap">
+  <h1>DERROTA A JOWI 🧤</h1>
+  <p class="muted">10 disparos. Una portería. Un portero con demasiada confianza.</p>
+  <div class="penalty-hud">
+    <div class="score">Tiro <b id="shots">0 / 10</b></div>
+    <div class="score">Goles <b id="goals">0</b></div>
+    <div class="score">Puntos <b id="points">0</b></div>
+    <div class="score">Racha <b id="streak">0</b> 🔥</div>
+  </div>
+  <div class="penalty-help">📱 <b>Móvil/tablet:</b> toca el balón, arrastra hacia la portería y suelta. 🖱️ <b>Ordenador:</b> haz lo mismo manteniendo el clic. Cuanto más largo el gesto, más potente será el disparo. Desplaza el dedo a izquierda/derecha para apuntar.</div>
+  <div class="penalty-stage">
+    <canvas id="penaltyCanvas" width="900" height="560" aria-label="Campo de penaltis interactivo: arrastra desde el balón para disparar"></canvas>
+  </div>
+  <div class="power-track"><div id="powerFill"></div></div>
+  <div class="penalty-foot"><span class="power-label">POTENCIA: <span id="powerText">0</span>%</span><span class="muted" id="hint">Arrastra el balón para disparar</span></div>
+  <p id="feedback" class="status" role="status">Jowi espera tu primer lanzamiento.</p>
+  <button class="penalty-btn" id="restart">↻ Nueva tanda</button>
+</main>
+<script src="comun.js"></script>
+<script>
+(() => {
+  "use strict";
+  const canvas = document.querySelector("#penaltyCanvas");
+  const ctx = canvas.getContext("2d");
+  const el = id => document.getElementById(id);
+  const W = 900, H = 560;
+  const goal = {left:140,right:760,top:86,bottom:300};
+  const origin = {x:450,y:486};
+  const clamp = (n,min,max) => Math.max(min,Math.min(max,n));
+  const lerp = (a,b,t) => a+(b-a)*t;
+  const easeOut = t => 1-Math.pow(1-t,3);
+  const easeInOut = t => t*t*(3-2*t);
+
+  let shots=0, goals=0, points=0, streak=0;
+  let state="ready", pointerId=null, gestureStart=null;
+  let aim={x:450,y:208,power:0}, shot=null;
+  let keeper={x:450,y:233,angle:0};
+  let resetAt=0, saved=false, lastFrame=0;
+
+  function setText(){
+    el("shots").textContent=`${shots} / 10`;
+    el("goals").textContent=goals;
+    el("points").textContent=points;
+    el("streak").textContent=streak;
+  }
+  function powerUI(value){
+    const p=Math.round(value*100);
+    el("powerFill").style.width=p+"%";
+    el("powerText").textContent=p;
+  }
+  function feedback(text){el("feedback").textContent=text;}
+  function pointerPosition(e){
+    const rect=canvas.getBoundingClientRect();
+    return {x:(e.clientX-rect.left)*W/rect.width,
+            y:(e.clientY-rect.top)*H/rect.height};
+  }
+  function calculateAim(pos){
+    const dx=pos.x-gestureStart.x;
+    const dy=pos.y-gestureStart.y;
+    const length=Math.hypot(dx,dy);
+    return {
+      x:clamp(origin.x+dx*1.35,72,828),
+      y:clamp(240+dy*.47,46,355),
+      power:clamp(length/260,0,1),
+      length
+    };
+  }
+  function begin(e){
+    if(state!=="ready")return;
+    e.preventDefault();
+    pointerId=e.pointerId;
+    gestureStart=pointerPosition(e);
+    state="aiming";
+    canvas.setPointerCapture(pointerId);
+    aim={x:450,y:208,power:0};
+    powerUI(0);
+    el("hint").textContent="Arrastra para elegir dirección y potencia";
+  }
+  function move(e){
+    if(state!=="aiming" || e.pointerId!==pointerId)return;
+    e.preventDefault();
+    aim=calculateAim(pointerPosition(e));
+    powerUI(aim.power);
+  }
+  function end(e){
+    if(state!=="aiming" || e.pointerId!==pointerId)return;
+    e.preventDefault();
+    if(canvas.hasPointerCapture(pointerId))canvas.releasePointerCapture(pointerId);
+    pointerId=null;
+    if(aim.length<28){
+      state="ready";
+      powerUI(0);
+      feedback("Arrastra un poco más para lanzar.");
+      return;
+    }
+    shoot();
+  }
+  canvas.addEventListener("pointerdown",begin);
+  canvas.addEventListener("pointermove",move);
+  canvas.addEventListener("pointerup",end);
+  canvas.addEventListener("pointercancel",()=>{
+    if(state==="aiming")state="ready";
+    pointerId=null;powerUI(0);
+  });
+
+  function shoot(){
+    state="flight";
+    shots++;
+    // Los lanzamientos poco potentes se quedan cortos; los excesivos pierden precisión.
+    let tx=aim.x, ty=aim.y;
+    const power=aim.power;
+    if(power>.91){
+      tx+=(Math.random()-.5)*125*(power-.9)*10;
+      ty+=(Math.random()-.5)*45;
+    }
+    const short=power<.23;
+    const inside=tx>goal.left+16&&tx<goal.right-16&&ty>goal.top+13&&ty<goal.bottom-12;
+    const targetX=clamp(tx,-50,950);
+    const targetY=clamp(ty,-30,460);
+
+    // Jowi intenta anticipar la pelota: a veces lee el disparo y otras falla.
+    const predictionError=(Math.random()-.5)*250;
+    const targetKeeperX=clamp(targetX+predictionError,185,715);
+    const targetKeeperY=clamp(targetY+(Math.random()-.5)*75,135,274);
+    const savedShot=!short&&inside&&
+      Math.abs(targetKeeperX-targetX)<79&&
+      Math.abs(targetKeeperY-targetY)<67;
+    const goalShot=!short&&inside&&!savedShot;
+
+    shot={started:performance.now(),duration:clamp(900-power*350,440,900),
+      targetX,targetY,targetKeeperX,targetKeeperY,
+      goalShot,savedShot,short,inside,power};
+    feedback("⚽ ¡DISPARO! Jowi se está lanzando...");
+    el("hint").textContent="Jowi intenta detener el balón";
+    setText();
+  }
+  function resolveShot(now){
+    const success=shot.goalShot;
+    if(success){
+      goals++;streak++;
+      const awarded=Math.round(100+shot.power*70+Math.min(streak,5)*20);
+      points+=awarded;
+      feedback(`⚽ ¡GOOOOL! +${awarded} puntos · Racha de ${streak}`);
+    } else {
+      streak=0;
+      feedback(shot.short?"😅 Demasiado flojo. El balón no llegó.":
+        !shot.inside?"🚀 ¡FUERA! Se te fue el lanzamiento.":
+        "🧤 ¡PARADÓN DE JOWI! Te ha leído la mente.");
+    }
+    setText();
+    state="result";
+    resetAt=now+1350;
+  }
+  function finish(){
+    state="finished";
+    el("hint").textContent="Tanda terminada · pulsa Nueva tanda para repetir";
+    feedback(`🏆 Fin de la tanda: ${goals}/10 goles y ${points} puntos.`);
+    powerUI(0);
+    if(!saved){
+      saved=true;
+      if(typeof guardarResultado==="function")guardarResultado("Penaltis",points);
+    }
+  }
+  function restart(){
+    shots=0;goals=0;points=0;streak=0;saved=false;
+    state="ready";shot=null;aim={x:450,y:208,power:0};
+    keeper={x:450,y:233,angle:0};
+    powerUI(0);setText();
+    el("hint").textContent="Arrastra el balón para disparar";
+    feedback("Jowi espera tu primer lanzamiento.");
+  }
+  el("restart").addEventListener("click",restart);
+
+  function drawField(){
+    const bg=ctx.createLinearGradient(0,0,0,H);
+    bg.addColorStop(0,"#061126");bg.addColorStop(.54,"#0a3659");bg.addColorStop(1,"#117b65");
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    // Gradas de fondo
+    for(let i=0;i<64;i++){
+      const x=(i*151+43)%W, y=22+(i*37)%100;
+      ctx.fillStyle=i%3===0?"#2d81ff44":"#b8d9ff25";
+      ctx.fillRect(x,y,9,4);
+    }
+    // Césped en perspectiva
+    ctx.beginPath();ctx.moveTo(0,300);ctx.lineTo(W,300);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();
+    ctx.fillStyle="#146948";ctx.fill();
+    for(let i=0;i<9;i++){
+      ctx.fillStyle=i%2?"#ffffff09":"#00000012";
+      ctx.fillRect(0,300+i*31,W,31);
+    }
+    // Líneas del punto de penalti
+    ctx.strokeStyle="#d6f6e4aa";ctx.lineWidth=3;
+    ctx.beginPath();ctx.ellipse(450,486,165,43,0,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle="#e9fffc";
+    ctx.beginPath();ctx.arc(450,504,4,0,Math.PI*2);ctx.fill();
+  }
+  function drawGoal(){
+    ctx.fillStyle="#08172c9e";ctx.fillRect(goal.left,goal.top,620,214);
+    ctx.strokeStyle="#e8f5ff";ctx.lineWidth=11;
+    ctx.strokeRect(goal.left,goal.top,620,214);
+    ctx.strokeStyle="#b4dcff45";ctx.lineWidth=1;
+    for(let x=goal.left+24;x<goal.right;x+=24){
+      ctx.beginPath();ctx.moveTo(x,goal.top);ctx.lineTo(x,goal.bottom);ctx.stroke();
+    }
+    for(let y=goal.top+24;y<goal.bottom;y+=24){
+      ctx.beginPath();ctx.moveTo(goal.left,y);ctx.lineTo(goal.right,y);ctx.stroke();
+    }
+    ctx.fillStyle="#ffffff";ctx.font="bold 19px Arial";ctx.textAlign="center";
+    ctx.fillText("BLUE LOCK FS",450,53);
+  }
+  function drawKeeper(x,y,angle){
+    ctx.save();ctx.translate(x,y);ctx.rotate(angle);
+    ctx.shadowColor="#ffd94d88";ctx.shadowBlur=18;
+    // Brazos extendidos y guantes
+    ctx.strokeStyle="#e8ad31";ctx.lineWidth=13;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(-18,-8);ctx.lineTo(-58,-24);ctx.moveTo(18,-8);ctx.lineTo(58,-24);ctx.stroke();
+    ctx.fillStyle="#f4cb62";
+    for(const gx of [-61,61]){ctx.beginPath();ctx.arc(gx,-25,13,0,Math.PI*2);ctx.fill();}
+    // Piernas
+    ctx.strokeStyle="#151d31";ctx.lineWidth=15;
+    ctx.beginPath();ctx.moveTo(-12,28);ctx.lineTo(-23,64);ctx.moveTo(12,28);ctx.lineTo(23,64);ctx.stroke();
+    // Cuerpo
+    ctx.fillStyle="#f3c51e";ctx.fillRect(-24,-31,48,70);
+    ctx.fillStyle="#101a2d";ctx.font="bold 17px Arial";ctx.textAlign="center";
+    ctx.fillText("1",0,12);
+    // Cabeza
+    ctx.fillStyle="#e5b68d";ctx.beginPath();ctx.arc(0,-50,19,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#1a1520";ctx.beginPath();ctx.arc(0,-56,19,Math.PI,Math.PI*2);ctx.fill();
+    ctx.restore();
+    ctx.shadowBlur=0;
+    ctx.font="bold 17px Arial";ctx.textAlign="center";ctx.fillStyle="#fff";
+    ctx.fillText("JOWI",x,y-87);
+  }
+  function drawBall(x,y,r){
+    ctx.save();ctx.shadowColor="#0009";ctx.shadowBlur=13;
+    ctx.fillStyle="#f8fbff";ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;ctx.strokeStyle="#20283d";ctx.lineWidth=Math.max(1,r*.075);ctx.stroke();
+    ctx.fillStyle="#121d30";ctx.beginPath();
+    for(let i=0;i<5;i++){
+      const a=-Math.PI/2+i*Math.PI*2/5;
+      const px=x+Math.cos(a)*r*.41, py=y+Math.sin(a)*r*.41;
+      if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+    }
+    ctx.closePath();ctx.fill();ctx.restore();
+  }
+  function drawAim(){
+    const tx=aim.x,ty=aim.y;
+    ctx.save();ctx.setLineDash([10,9]);ctx.strokeStyle="#79d8ff";ctx.lineWidth=4;
+    ctx.beginPath();ctx.moveTo(origin.x,origin.y);ctx.lineTo(tx,ty);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle="#80eaff";ctx.lineWidth=4;
+    ctx.beginPath();ctx.arc(tx,ty,24,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(tx-34,ty);ctx.lineTo(tx+34,ty);
+    ctx.moveTo(tx,ty-34);ctx.lineTo(tx,ty+34);ctx.stroke();
+    ctx.restore();
+    drawBall(origin.x,origin.y,26);
+  }
+  function draw(now){
+    drawField();drawGoal();
+    let kx=450,ky=233,angle=0;
+    if(state==="flight"||state==="result"){
+      const t=clamp((now-shot.started)/shot.duration,0,1);
+      const dive=easeInOut(clamp((t-.13)/.78,0,1));
+      kx=lerp(450,shot.targetKeeperX,dive);
+      ky=lerp(233,shot.targetKeeperY,dive);
+      angle=(shot.targetKeeperX<420?-1:shot.targetKeeperX>480?1:0)*.65*dive;
+      drawKeeper(kx,ky,angle);
+      if(state==="flight"){
+        const fly=easeOut(t);
+        const bx=lerp(origin.x,shot.targetX,fly);
+        const by=lerp(origin.y,shot.targetY,fly)-Math.sin(Math.PI*t)*45;
+        drawBall(bx,by,Math.max(11,27-14*t));
+        if(t>=1)resolveShot(now);
+      }else{
+        drawBall(shot.targetX,shot.targetY,12);
+      }
+    }else{
+      drawKeeper(450,233,0);
+      if(state==="aiming")drawAim();
+      else drawBall(origin.x,origin.y,26);
+    }
+    if(state==="result"&&now>=resetAt){
+      if(shots>=10)finish();
+      else{
+        state="ready";shot=null;
+        powerUI(0);
+        el("hint").textContent="Arrastra el balón para el siguiente tiro";
+      }
+    }
+    lastFrame=now;
+    requestAnimationFrame(draw);
+  }
+  setText();powerUI(0);requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

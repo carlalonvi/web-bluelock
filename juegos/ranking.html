@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ranking | Blue Lock FS</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header>
+  <strong>🏆 BLUE LOCK RANKING</strong>
+  <a href="../juegos.html">← Game Center</a>
+</header>
+
+<main>
+  <h1>EL RANKING DEL EGO</h1>
+  <p>
+    Aquí mandan los puntos.
+    Las excusas no aparecen en la clasificación.
+  </p>
+
+  <div class="card">
+
+    <label for="filtro">Seleccionar juego:</label>
+
+    <select id="filtro" style="
+      padding:12px;
+      background:#081426;
+      color:white;
+      border:1px solid #3974cd;
+      border-radius:10px;
+      margin:12px;
+    ">
+      <option value="Todos">Todos los juegos</option>
+      <option value="Penaltis">Penaltis</option>
+      <option value="Trivial">Trivial</option>
+      <option value="Adivina">Adivina al jugador</option>
+      <option value="Mini fútbol">Mini fútbol</option>
+    </select>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Posición</th>
+            <th>Jugador</th>
+            <th>Juego</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody id="tabla"></tbody>
+      </table>
+    </div>
+
+    <p id="aviso" class="muted"></p>
+
+    <button id="borrar">
+      Borrar mis resultados locales
+    </button>
+
+  </div>
+</main>
+
+<script src="comun.js"></script>
+<script>
+const tabla = document.getElementById("tabla");
+const filtro = document.getElementById("filtro");
+
+function dibujar() {
+  tabla.innerHTML = "";
+
+  let datos = obtenerResultados();
+
+  if (filtro.value !== "Todos") {
+    datos = datos.filter(d => d.juego === filtro.value);
+  }
+
+  // Mejor resultado por jugador y juego
+  const mejores = new Map();
+
+  datos.forEach(d => {
+    const clave = d.nombre.toLowerCase() + "|" + d.juego;
+
+    if (!mejores.has(clave) ||
+        d.puntos > mejores.get(clave).puntos) {
+      mejores.set(clave,d);
+    }
+  });
+
+  datos = [...mejores.values()]
+    .sort((a,b) => b.puntos-a.puntos)
+    .slice(0,30);
+
+  document.getElementById("aviso").textContent =
+    datos.length
+      ? "Mostrando los mejores resultados guardados en este navegador."
+      : "Todavía no hay resultados guardados.";
+
+  datos.forEach((d,i) => {
+    const tr = document.createElement("tr");
+
+    [i+1, d.nombre, d.juego, d.puntos].forEach(valor => {
+      const td = document.createElement("td");
+      td.textContent = valor;
+      tr.appendChild(td);
+    });
+
+    tabla.appendChild(tr);
+  });
+}
+
+filtro.onchange = dibujar;
+
+document.getElementById("borrar").onclick = () => {
+  if (confirm("¿Borrar los resultados de este navegador?")) {
+    localStorage.removeItem(KEY);
+    dibujar();
+  }
+};
+
+dibujar();
+</script>
+
+</body>
+</html>
