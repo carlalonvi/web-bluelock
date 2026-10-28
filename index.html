@@ -1,13 +1,18 @@
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
+
 <title>Blue Lock FS | Web oficial</title>
 
 <style>
+
+/* COLORES GENERALES */
+
 :root {
   --bg: #050b16;
   --bg2: #0a1830;
@@ -24,24 +29,53 @@
   --radius: 22px;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
   font-family: Inter, system-ui, Arial, sans-serif;
   color: var(--text);
+
   background:
-    radial-gradient(circle at 15% 10%, rgba(51,177,255,.17), transparent 25%),
-    radial-gradient(circle at 85% 15%, rgba(27,111,255,.19), transparent 20%),
-    linear-gradient(180deg, #07101d, #050b16);
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(51,177,255,.17),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(27,111,255,.19),
+      transparent 20%
+    ),
+    linear-gradient(
+      180deg,
+      #07101d,
+      #050b16
+    );
+
   min-height: 100vh;
 }
 
-button { font: inherit; cursor: pointer; }
-img { max-width: 100%; display: block; }
-a { text-decoration: none; color: inherit; }
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
 
 .wrap {
   max-width: 1200px;
@@ -49,22 +83,27 @@ a { text-decoration: none; color: inherit; }
   padding: 0 20px;
 }
 
-/* NAVEGACIÓN */
+/* CABECERA */
 
 header {
   position: sticky;
   top: 0;
   z-index: 50;
+
   backdrop-filter: blur(14px);
+
   background: rgba(5,11,22,.9);
+
   border-bottom: 1px solid rgba(72,117,211,.2);
 }
 
 .nav {
   min-height: 78px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -79,8 +118,15 @@ header {
 .brand-badge {
   width: 48px;
   height: 48px;
+
   border-radius: 14px;
-  background: linear-gradient(135deg, #164bb2, #33b1ff);
+
+  background: linear-gradient(
+    135deg,
+    #164bb2,
+    #33b1ff
+  );
+
   padding: 6px;
 }
 
@@ -97,43 +143,73 @@ header {
 
 .brand span {
   display: block;
+
   font-size: .8rem;
   color: var(--blue3);
+
   letter-spacing: .14em;
   text-transform: uppercase;
 }
 
+/* MENÚ */
+
 nav {
   display: flex;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-nav button {
+nav button,
+nav .nav-link {
   background: transparent;
   border: 1px solid transparent;
+
   color: var(--muted);
+
   padding: 11px 14px;
   border-radius: 12px;
+
+  font-size: 1rem;
+  font-weight: 400;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: .2s;
 }
 
 nav button:hover,
-nav button[aria-current="page"] {
+nav button[aria-current="page"],
+nav .nav-link:hover {
   color: white;
+
   background: rgba(27,111,255,.15);
+
   border-color: rgba(57,150,255,.35);
 }
 
-/* SECCIONES */
+/* PÁGINAS */
 
-main { padding: 26px 0 80px; }
-.page { display: none; }
-.page.active { display: block; }
+main {
+  padding: 26px 0 80px;
+}
 
-.section-head { margin: 44px 0 20px; }
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.section-head {
+  margin: 44px 0 20px;
+}
 
 .section-head h2 {
-  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-size: clamp(2rem,4vw,3.1rem);
   margin: 10px 0;
   letter-spacing: -.04em;
 }
@@ -146,14 +222,20 @@ main { padding: 26px 0 80px; }
 
 .eyebrow {
   display: inline-block;
+
   padding: 7px 12px;
   border-radius: 999px;
+
   background: rgba(51,177,255,.12);
+
   color: var(--blue3);
+
   font-size: .78rem;
   font-weight: 800;
+
   letter-spacing: .14em;
   text-transform: uppercase;
+
   border: 1px solid rgba(80,188,255,.22);
 }
 
@@ -162,22 +244,34 @@ main { padding: 26px 0 80px; }
 .hero {
   display: grid;
   grid-template-columns: 1.2fr .8fr;
+
   gap: 28px;
   padding: 30px;
+
   border: 1px solid rgba(72,117,211,.25);
   border-radius: 30px;
-  background: linear-gradient(140deg, #10223d, #060d1a);
+
+  background: linear-gradient(
+    140deg,
+    #10223d,
+    #060d1a
+  );
+
   box-shadow: var(--shadow);
 }
 
 .hero h2 {
-  font-size: clamp(2.7rem, 7vw, 5.2rem);
+  font-size: clamp(2.7rem,7vw,5.2rem);
+
   line-height: 1;
   letter-spacing: -.05em;
+
   margin: 20px 0;
 }
 
-.hero h2 strong { color: var(--blue2); }
+.hero h2 strong {
+  color: var(--blue2);
+}
 
 .hero p {
   font-size: 1.08rem;
@@ -192,13 +286,28 @@ main { padding: 26px 0 80px; }
   margin-top: 22px;
 }
 
+/* BOTONES */
+
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   border: 0;
+
   padding: 14px 18px;
   border-radius: 14px;
+
   font-weight: 900;
+
   color: white;
-  background: linear-gradient(135deg, var(--blue), var(--blue2));
+
+  background: linear-gradient(
+    135deg,
+    var(--blue),
+    var(--blue2)
+  );
+
   transition: .2s;
 }
 
@@ -209,29 +318,46 @@ main { padding: 26px 0 80px; }
 
 .btn.secondary {
   background: rgba(255,255,255,.05);
+
   border: 1px solid rgba(123,177,255,.25);
 }
 
+.btn.secondary:hover {
+  background: rgba(27,111,255,.22);
+  border-color: var(--blue2);
+}
+
+/* LOGO */
+
 .logo-card {
   background: rgba(13,27,49,.85);
+
   border: 1px solid var(--line);
   border-radius: 22px;
+
   padding: 22px;
   height: 100%;
+
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 }
 
 .logo-card img {
   width: min(320px,100%);
-  filter: drop-shadow(0 0 25px rgba(27,111,255,.25));
+
+  filter: drop-shadow(
+    0 0 25px rgba(27,111,255,.25)
+  );
 }
 
 .logo-card small {
   text-align: center;
+
   margin-top: 15px;
+
   color: var(--muted);
 }
 
@@ -240,7 +366,6 @@ main { padding: 26px 0 80px; }
 .top-grid,
 .cards-grid,
 .stats-grid,
-.games-grid,
 .roster-grid {
   display: grid;
   gap: 18px;
@@ -249,34 +374,35 @@ main { padding: 26px 0 80px; }
 
 .top-grid,
 .cards-grid {
-  grid-template-columns: repeat(3, minmax(0,1fr));
+  grid-template-columns: repeat(3,minmax(0,1fr));
 }
 
-.stats-grid { grid-template-columns: 1.1fr .9fr; }
-.games-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.stats-grid {
+  grid-template-columns: 1.1fr .9fr;
+}
 
 .mini-card,
 .card,
-.game,
 .section-shell,
 .ranking-table {
   background: rgba(13,27,49,.9);
+
   border: 1px solid rgba(72,117,211,.25);
   border-radius: var(--radius);
+
   padding: 22px;
+
   box-shadow: var(--shadow);
 }
 
 .mini-card h3,
-.card h3,
-.game h3 {
+.card h3 {
   margin: 12px 0;
   font-size: 1.2rem;
 }
 
 .mini-card p,
 .card p,
-.game p,
 .section-shell p {
   color: var(--muted);
   line-height: 1.65;
@@ -284,28 +410,38 @@ main { padding: 26px 0 80px; }
 
 .chip {
   display: inline-block;
+
   padding: 6px 10px;
+
   border-radius: 999px;
+
   background: rgba(51,177,255,.1);
+
   border: 1px solid rgba(123,177,255,.2);
+
   color: var(--blue3);
+
   font-size: .76rem;
   font-weight: 800;
+
   letter-spacing: .05em;
   text-transform: uppercase;
 }
 
 .warning-chip {
   background: rgba(247,200,76,.12);
+
   color: var(--gold);
+
   border-color: rgba(247,200,76,.25);
 }
 
-/* LISTADO DEL INICIO */
+/* JUGADORES EN INICIO */
 
 .home-roster {
   display: flex;
   flex-direction: column;
+
   gap: 7px;
   margin-top: 18px;
 }
@@ -313,11 +449,16 @@ main { padding: 26px 0 80px; }
 .home-roster-row {
   display: flex;
   align-items: center;
+
   gap: 12px;
   padding: 9px 11px;
+
   border-radius: 10px;
+
   background: rgba(27,111,255,.08);
+
   border: 1px solid rgba(51,177,255,.15);
+
   transition: .2s;
 }
 
@@ -328,19 +469,61 @@ main { padding: 26px 0 80px; }
 
 .home-number {
   color: var(--blue2);
+
   min-width: 42px;
+
   font-size: 1.1rem;
   font-weight: 900;
 }
 
-.home-roster-row strong { font-size: .9rem; }
+.home-roster-row strong {
+  font-size: .9rem;
+}
 
 .roster-more {
   width: 100%;
   margin-top: 18px;
 }
 
-/* PLANTILLA ESTILO BLUE LOCK */
+/* TARJETA ESPECIAL DE MINIJUEGOS */
+
+.games-home-card {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(27,111,255,.28),
+      transparent 60%
+    ),
+    #0d1b31;
+
+  border: 1px solid rgba(51,177,255,.45);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.games-home-card h3 {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.games-home-card .games-icon {
+  font-size: 3rem;
+  margin: 12px 0;
+}
+
+.games-home-card .btn {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.games-home-card:hover {
+  border-color: var(--blue2);
+
+  box-shadow: 0 0 30px rgba(27,111,255,.20);
+}
+
+/* PLANTILLA */
 
 .roster-grid {
   grid-template-columns: repeat(3,minmax(0,1fr));
@@ -350,41 +533,57 @@ main { padding: 26px 0 80px; }
 .roster-card {
   padding: 0;
   overflow: hidden;
+
   background: #081426;
+
   border: 1px solid #1b4b92;
   border-radius: 18px;
+
   box-shadow: var(--shadow);
+
   transition: transform .25s, box-shadow .25s;
 }
 
 .roster-card:hover {
   transform: translateY(-7px);
+
   border-color: var(--blue2);
+
   box-shadow: 0 0 28px rgba(27,111,255,.4);
 }
 
 .roster-photo {
   width: 100%;
   aspect-ratio: 2 / 3;
+
   object-fit: cover;
   object-position: top;
-  display: block;
 }
 
 .roster-placeholder {
   width: 100%;
   aspect-ratio: 2 / 3;
-  background: radial-gradient(circle, #164ca0, #081426 70%);
+
+  background: radial-gradient(
+    circle,
+    #164ca0,
+    #081426 70%
+  );
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
   align-items: center;
+  justify-content: center;
+
   gap: 12px;
 }
 
 .roster-placeholder span {
   font-size: clamp(4rem,8vw,7rem);
+
   color: var(--blue2);
+
   font-weight: 900;
 }
 
@@ -393,11 +592,15 @@ main { padding: 26px 0 80px; }
   letter-spacing: 3px;
 }
 
-.roster-info { padding: 20px; }
+.roster-info {
+  padding: 20px;
+}
 
 .roster-info h3 {
   color: white;
+
   font-size: 1.5rem;
+
   margin: 0 0 12px;
 }
 
@@ -407,22 +610,30 @@ main { padding: 26px 0 80px; }
 
 .roster-info p {
   color: var(--muted);
+
   font-size: .95rem;
   line-height: 1.7;
+
   margin: 12px 0 0;
 }
 
 .president-card {
   border-color: var(--blue2);
+
   box-shadow: 0 0 24px rgba(27,111,255,.2);
 }
 
 .president-card .roster-info {
-  background: linear-gradient(135deg,#102b59,#081426);
+  background: linear-gradient(
+    135deg,
+    #102b59,
+    #081426
+  );
 }
 
 .goalkeeper-card {
   border-color: #cba42b;
+
   box-shadow: 0 0 20px rgba(247,200,76,.12);
 }
 
@@ -435,10 +646,13 @@ main { padding: 26px 0 80px; }
 
 .ranking-header {
   padding: 20px 22px;
+
   border-bottom: 1px solid var(--line);
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
   gap: 12px;
 }
 
@@ -447,36 +661,57 @@ table {
   width: 100%;
 }
 
-th, td {
+th,
+td {
   text-align: left;
+
   padding: 14px 18px;
+
   border-bottom: 1px solid rgba(72,117,211,.15);
 }
 
 th {
   color: #92bee8;
+
   font-size: .82rem;
   letter-spacing: .08em;
+
   text-transform: uppercase;
 }
 
 .pos {
   width: 34px;
   height: 34px;
+
   border-radius: 50%;
+
   display: grid;
   place-items: center;
+
   background: rgba(27,111,255,.16);
+
   color: var(--blue3);
   font-weight: 900;
 }
 
-.gold { color: #ffd875; background: rgba(247,200,76,.16); }
-.silver { color: #d8e4f8; background: rgba(196,210,231,.13); }
-.bronze { color: #eeb693; background: rgba(195,129,91,.15); }
+.gold {
+  color: #ffd875;
+  background: rgba(247,200,76,.16);
+}
+
+.silver {
+  color: #d8e4f8;
+  background: rgba(196,210,231,.13);
+}
+
+.bronze {
+  color: #eeb693;
+  background: rgba(195,129,91,.15);
+}
 
 .ranking-note {
   padding: 16px 22px;
+
   color: var(--muted);
   font-size: .9rem;
 }
@@ -484,113 +719,91 @@ th {
 .stat-pill {
   display: flex;
   justify-content: space-between;
+
   gap: 12px;
   padding: 14px;
+
   margin-top: 12px;
+
   border-radius: 14px;
+
   background: rgba(255,255,255,.03);
+
   border: 1px solid rgba(255,255,255,.05);
 }
 
-.stat-pill strong { color: var(--blue3); }
-
-/* MINIJUEGOS */
-
-.penalty-goal {
-  height: 210px;
-  max-width: 460px;
-  margin: 18px auto 10px;
-  padding: 15px;
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 8px;
-  border: 7px solid white;
-  border-bottom: 0;
-  border-radius: 12px 12px 0 0;
-  background: repeating-linear-gradient(
-    0deg,#0f6f50,#0f6f50 22px,
-    #0c6649 22px,#0c6649 44px
-  );
+.stat-pill strong {
+  color: var(--blue3);
 }
 
-.penalty-goal button {
-  background: rgba(255,255,255,.1);
-  border: 1px dashed rgba(255,255,255,.6);
-  border-radius: 10px;
-  color: white;
-  font-size: 2rem;
-}
-
-.penalty-goal button:hover {
-  background: rgba(255,255,255,.25);
-}
-
-.scoreboard {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 14px 0;
-}
-
-.scorebox {
-  padding: 10px 14px;
-  background: rgba(255,255,255,.04);
-  border-radius: 12px;
-}
-
-.choices button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 13px;
-  margin: 8px 0;
-  border: 1px solid rgba(120,178,255,.25);
-  border-radius: 10px;
-  background: rgba(255,255,255,.04);
-  color: white;
-}
-
-.choices button:hover {
-  border-color: var(--blue2);
-}
-
-.status {
-  min-height: 25px;
-  font-weight: 800;
-  margin: 14px 0;
-}
+/* PIE */
 
 .footer {
   border-top: 1px solid var(--line);
+
   padding: 30px;
+
   text-align: center;
+
   color: var(--muted);
 }
 
 /* RESPONSIVE */
 
-@media(max-width:980px) {
-  .hero,.stats-grid,.games-grid {
+@media (max-width: 980px) {
+
+  .hero,
+  .stats-grid {
     grid-template-columns: 1fr;
   }
-  .top-grid,.cards-grid,.roster-grid {
+
+  .top-grid,
+  .cards-grid,
+  .roster-grid {
     grid-template-columns: repeat(2,minmax(0,1fr));
   }
+
 }
 
-@media(max-width:680px) {
-  .nav { justify-content: center; padding: 12px 0; }
-  nav { justify-content: center; }
-  nav button { padding: 9px; font-size: .85rem; }
-  .hero { padding: 22px; }
-  .hero h2 { font-size: 2.6rem; }
-  .top-grid,.cards-grid,.roster-grid {
+@media (max-width: 680px) {
+
+  .nav {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  nav {
+    justify-content: center;
+  }
+
+  nav button,
+  nav .nav-link {
+    padding: 9px;
+    font-size: .85rem;
+  }
+
+  .hero {
+    padding: 22px;
+  }
+
+  .hero h2 {
+    font-size: 2.6rem;
+  }
+
+  .top-grid,
+  .cards-grid,
+  .roster-grid {
     grid-template-columns: 1fr;
   }
-  .roster-photo { aspect-ratio: 3 / 4; }
+
+  .roster-photo {
+    aspect-ratio: 3 / 4;
+  }
+
 }
 
 </style>
+
 </head>
 
 <body>
@@ -598,160 +811,324 @@ th {
 <!-- CABECERA -->
 
 <header>
+
   <div class="wrap nav">
+
     <div class="brand">
+
       <div class="brand-badge">
-        <img src="assets/logo-bluelock.png" alt="Escudo Blue Lock FS">
+        <img
+          src="assets/logo-bluelock.png"
+          alt="Escudo Blue Lock FS"
+        >
       </div>
+
       <div>
         <span>Fútbol sala</span>
         <h1>BLUE LOCK FS</h1>
       </div>
+
     </div>
 
     <nav aria-label="Secciones">
-      <button data-page="inicio" aria-current="page">Inicio</button>
-      <button data-page="plantilla">Plantilla</button>
-      <button data-page="ranking">Ranking</button>
-      <button data-page="juegos">Minijuegos</button>
-      <button data-page="vestuario">Vestuario</button>
+
+      <button data-page="inicio" aria-current="page">
+        Inicio
+      </button>
+
+      <button data-page="plantilla">
+        Plantilla
+      </button>
+
+      <button data-page="ranking">
+        Ranking
+      </button>
+
+      <!-- ENLACE AL NUEVO GAME CENTER -->
+
+      <a href="juegos.html" class="nav-link">
+        Minijuegos
+      </a>
+
+      <button data-page="vestuario">
+        Vestuario
+      </button>
+
     </nav>
+
   </div>
+
 </header>
 
 <main class="wrap">
 
-<!-- ======================== -->
+<!-- ======================= -->
 <!-- INICIO -->
-<!-- ======================== -->
+<!-- ======================= -->
 
 <section id="inicio" class="page active">
 
   <div class="hero">
-    <div>
-      <div class="eyebrow">Temporada 2026/27</div>
 
-      <h2>La web oficial de <strong>Blue Lock FS</strong>.</h2>
+    <div>
+
+      <div class="eyebrow">
+        Temporada 2026/27
+      </div>
+
+      <h2>
+        La web oficial de
+        <strong>Blue Lock FS</strong>.
+      </h2>
 
       <p>
-        Bienvenidos al club donde se discuten más los cambios
-        que las tácticas. Una web para nuestra gente,
-        nuestras pachangas y nuestras leyendas.
+        Bienvenidos al club donde se discuten más
+        los cambios que las tácticas.
+        Una web para nuestra gente, nuestras pachangas
+        y nuestras leyendas.
+
         Obligados a llamarnos "Noctra Torrejón B"
         debido a distintos altercados.
       </p>
 
       <div class="hero-actions">
-        <button class="btn" data-go="ranking">Ver ranking</button>
-        <button class="btn secondary" data-go="juegos">
-          Entrar a minijuegos
+
+        <button class="btn" data-go="ranking">
+          Ver ranking
         </button>
+
+        <!-- BOTÓN NUEVO -->
+
+        <a href="juegos.html" class="btn secondary">
+          🎮 Entrar a minijuegos
+        </a>
+
       </div>
+
     </div>
 
     <div class="logo-card">
-      <img src="assets/logo-bluelock.png"
-           alt="Escudo del equipo Blue Lock FS">
+
+      <img
+        src="assets/logo-bluelock.png"
+        alt="Escudo del equipo Blue Lock FS"
+      >
+
       <small>
-        Para ser parte del equipo indispensable ser militar.
+        Para ser parte del equipo indispensable
+        ser militar.
       </small>
+
     </div>
+
   </div>
+
+  <!-- INFORMACIÓN PRINCIPAL -->
 
   <div class="top-grid">
 
     <article class="mini-card">
-      <span class="chip">Estado del equipo</span>
-      <h3>Mucho ego, poco cardio</h3>
-      <p>Proyecto serio por fuera, grupo de amigos por dentro.</p>
+
+      <span class="chip">
+        Estado del equipo
+      </span>
+
+      <h3>
+        Mucho ego, poco cardio
+      </h3>
+
+      <p>
+        Proyecto serio por fuera,
+        grupo de amigos por dentro.
+      </p>
+
     </article>
 
     <article class="mini-card">
-      <span class="chip warning-chip">Incidencia logística</span>
-      <h3>Las equipaciones aún no han llegado</h3>
+
+      <span class="chip warning-chip">
+        Incidencia logística
+      </span>
+
+      <h3>
+        Las equipaciones aún no han llegado
+      </h3>
+
       <p>
         Por retraso del presi buscando proveedor,
-        la equipación oficial no se estrenará hasta
-        al menos la jornada 3.
-        De momento toca competir con camisetas prestadas,
-        pero con dignidad dudosa.
+        la equipación oficial no se estrenará
+        hasta al menos la jornada 3.
+
+        De momento toca competir con camisetas
+        prestadas, pero con dignidad dudosa.
       </p>
+
     </article>
 
     <article class="mini-card">
-      <span class="chip">Próximo partido</span>
-      <h3>Vermeer vs Bluelock 📍Paraíso a las 15:00</h3>
+
+      <span class="chip">
+        Próximo partido
+      </span>
+
+      <h3>
+        Vermeer vs Bluelock
+        📍Paraíso a las 15:00
+      </h3>
+
       <p>
-        Temblad, vamos con todo, con ganas
-        y sed de reivindicar la 1º Jornada.
+        Temblad, vamos con todo,
+        con ganas y sed de reivindicar
+        la 1º Jornada.
       </p>
+
     </article>
 
   </div>
 
+  <!-- RESUMEN -->
+
   <div class="section-head">
+
     <h2>Resumen rápido</h2>
-    <p>Todo lo que necesitas saber sobre Blue Lock FS.</p>
+
+    <p>
+      Todo lo que necesitas saber sobre Blue Lock FS.
+    </p>
+
   </div>
 
   <div class="cards-grid">
 
+    <!-- CUADRO DE PLANTILLA -->
+
     <article class="card">
-      <span class="chip">Plantilla</span>
-      <h3>Fichas de jugadores</h3>
-      <p>Los 10 integrantes de Blue Lock FS.</p>
 
-      <div class="home-roster" id="home-roster"></div>
+      <span class="chip">
+        Plantilla
+      </span>
 
-      <button class="btn secondary roster-more" data-go="plantilla">
+      <h3>
+        Fichas de jugadores
+      </h3>
+
+      <p>
+        Los 10 integrantes de Blue Lock FS.
+        Mucho ego, poco cardio y un solo escudo.
+      </p>
+
+      <div
+        class="home-roster"
+        id="home-roster">
+      </div>
+
+      <button
+        class="btn secondary roster-more"
+        data-go="plantilla">
         Ver plantilla completa →
       </button>
+
     </article>
 
+    <!-- CUADRO DE RANKING -->
+
     <article class="card">
-      <span class="chip">Ranking</span>
-      <h3>Clasificación interna</h3>
+
+      <span class="chip">
+        Ranking
+      </span>
+
+      <h3>
+        Clasificación interna
+      </h3>
+
       <p>
-        Goleadores, asistentes, MVP, portero
-        y los peores highlights...
+        Goleadores, asistentes,
+        MVP, portero y los peores highlights...
         próximamente disponible.
       </p>
-      <button class="btn secondary" data-go="ranking">
+
+      <button
+        class="btn secondary"
+        data-go="ranking">
         Ver clasificación
       </button>
+
     </article>
 
-    <article class="card">
-      <span class="chip">Minijuegos</span>
-      <h3>Competición entre amigos</h3>
+    <!-- NUEVO CUADRO DE MINIJUEGOS -->
+
+    <article class="card games-home-card">
+
+      <span class="chip">
+        🎮 BLUE LOCK GAME CENTER
+      </span>
+
+      <div class="games-icon">
+        ⚡
+      </div>
+
+      <h3>
+        Despierta tu ego
+      </h3>
+
       <p>
-        Juegos personalizados del equipo,
-        próximamente disponibles.
-        Ya puedes probar el quiz y los penaltis.
+        ¿Quién es el verdadero número uno
+        de Blue Lock?
       </p>
-      <button class="btn secondary" data-go="juegos">
-        Jugar
-      </button>
+
+      <p>
+        Compite contra tus compañeros
+        en nuestros videojuegos personalizados.
+        Consigue puntos, supera récords
+        y demuestra quién manda fuera del campo.
+      </p>
+
+      <div style="margin-top:16px">
+
+        <span class="chip">🥅 Penaltis</span>
+        <span class="chip">🧠 Trivial</span>
+        <span class="chip">⚽ Mini Football</span>
+
+      </div>
+
+      <a
+        href="juegos.html"
+        class="btn">
+        🎮 ENTRAR AL GAME CENTER →
+      </a>
+
     </article>
 
   </div>
 
 </section>
 
-<!-- ======================== -->
+<!-- ======================= -->
 <!-- PLANTILLA -->
-<!-- ======================== -->
+<!-- ======================= -->
 
 <section id="plantilla" class="page">
 
   <div class="section-head">
-    <span class="eyebrow">BLUE LOCK FS · 2026/27</span>
-    <h2>Los egoístas del equipo</h2>
+
+    <span class="eyebrow">
+      BLUE LOCK FS · 2026/27
+    </span>
+
+    <h2>
+      Los egoístas del equipo
+    </h2>
+
     <p>
-      Diez jugadores, un escudo y demasiada confianza.
-      Aquí están los elegidos para conquistar la liga...
-      o al menos llegar puntuales al partido.
+      Diez jugadores, un escudo
+      y demasiada confianza.
+
+      Aquí están los elegidos para conquistar
+      la liga... o al menos llegar puntuales
+      al partido.
     </p>
+
   </div>
 
   <div class="roster-grid">
@@ -759,199 +1136,305 @@ th {
     <!-- ALEX -->
 
     <article class="roster-card">
-      <img class="roster-photo"
-           src="assets/chebchub.png"
-           alt="Alex - Chebchub">
+
+      <img
+        class="roster-photo"
+        src="assets/chebchub.png"
+        alt="Alex - Chebchub"
+      >
 
       <div class="roster-info">
+
         <h3>#10 · ALEX</h3>
+
         <span class="chip">CHEBCHUB</span>
         <span class="chip">Delantero</span>
+
         <p>
-          El capi del palo se considera el protagonista de todos los partidos.
-          Si marca, es talento. Si falla, es culpa del pase.
-          Su ego tiene más minutos que sus piernas. 
-          Aunque encontrar proveedor para las camisetas
-          haya sido su primera gran prueba.
+          Se considera el protagonista de todos
+          los partidos.
+
+          Si marca, es talento.
+          Si falla, es culpa del pase.
+
+          Su ego tiene más minutos
+          que sus piernas.
         </p>
+
       </div>
+
     </article>
 
     <!-- CARMELO -->
 
     <article class="roster-card">
-      <img class="roster-photo"
-           src="assets/carmelo.png"
-           alt="Carmelo - Dorsal 7">
+
+      <img
+        class="roster-photo"
+        src="assets/carmelo.png"
+        alt="Carmelo - Dorsal 7"
+      >
 
       <div class="roster-info">
+
         <h3>#7 · CARMELO</h3>
+
         <span class="chip">Delantero</span>
         <span class="chip">Egoísta profesional</span>
+
         <p>
-          El arquitecto del equipo.
-          Diseña jugadas que ni sus compañeros comprenden.
-          Según él, no pierde balones:
-          crea nuevas situaciones tácticas para el rival.
+          Tiene un pacto con el balón:
+          si lo recibe, no lo devuelve.
+
+          Ve la portería desde cualquier sitio,
+          aunque a veces sea la de otro pabellón.
         </p>
+
       </div>
+
     </article>
 
     <!-- SERGIO -->
 
     <article class="roster-card">
+
       <div class="roster-placeholder">
+
         <span>99</span>
         <small>BLUE LOCK FS</small>
+
       </div>
 
       <div class="roster-info">
+
         <h3>#99 · SERGIO</h3>
+
         <span class="chip">Jugador</span>
+
         <p>
-          Lleva el 99 porque los números normales
-          se le quedaban pequeños.
+          Lleva el 99 porque los números
+          normales se le quedaban pequeños.
+
           En su cabeza juega la Champions;
-          en la realidad, al pequeño dicaprio le pesan las piernas.
+          en la realidad, los lunes tiene agujetas.
         </p>
+
       </div>
+
     </article>
 
     <!-- ANGELO -->
 
     <article class="roster-card">
+
       <div class="roster-placeholder">
+
         <span>4</span>
         <small>BLUE LOCK FS</small>
+
       </div>
 
       <div class="roster-info">
+
         <h3>#4 · ANGELO</h3>
+
         <span class="chip">Jugador</span>
+
         <p>
           El nombre suena celestial,
           pero en el campo no promete milagros.
+
           Cada intervención suya puede acabar
           en jugadón o en meme del grupo.
         </p>
+
       </div>
+
     </article>
 
     <!-- ALVARO -->
 
     <article class="roster-card">
+
       <div class="roster-placeholder">
+
         <span>23</span>
         <small>BLUE LOCK FS</small>
+
       </div>
 
       <div class="roster-info">
+
         <h3>#23 · ALVARO</h3>
+
         <span class="chip">Jugador</span>
+
         <p>
           El 23 de Blue Lock.
+
           No sabemos si viene a revolucionar
-          el fútbol sala o a revolucionar el grupo
-          de WhatsApp. De momento promete ambas cosas.
+          el fútbol sala o a revolucionar
+          el grupo de WhatsApp.
+
+          De momento promete ambas cosas.
         </p>
+
       </div>
+
     </article>
 
-    <!-- LEÓN / MIGUEL -->
+    <!-- LEÓN -->
 
     <article class="roster-card">
-      <img class="roster-photo"
-           src="assets/miguel.png"
-           alt="León - Miguel - Dorsal 6">
+
+      <img
+        class="roster-photo"
+        src="assets/miguel.png"
+        alt="León - Miguel - Dorsal 6"
+      >
 
       <div class="roster-info">
+
         <h3>#6 · LEÓN</h3>
+
         <span class="chip">MIGUEL</span>
         <span class="chip">Centrocampista</span>
+
         <p>
-          Su ego entra al pabellón cinco minutos antes que él.
-          No necesita suerte, solo un balón
-          y alguien dispuesto a aguantar la celebración.
+          El arquitecto del equipo.
+
+          Diseña jugadas que ni sus compañeros
+          comprenden.
+
+          Según él, no pierde balones:
+          crea nuevas situaciones tácticas
+          para el rival.
         </p>
+
       </div>
+
     </article>
 
-    <!-- ISAGI / HUGO -->
+    <!-- ISAGI -->
 
     <article class="roster-card">
-      <img class="roster-photo"
-           src="assets/hugo.png"
-           alt="Isagi - Hugo - Dorsal 11">
+
+      <img
+        class="roster-photo"
+        src="assets/hugo.png"
+        alt="Isagi - Hugo - Dorsal 11"
+      >
 
       <div class="roster-info">
+
         <h3>#11 · ISAGI</h3>
+
         <span class="chip">HUGO</span>
         <span class="chip">Delantero</span>
+
         <p>
-          Tiene un pacto con el balón:
-          si lo recibe, no lo devuelve.
-          Ve la portería desde cualquier sitio,
-          aunque a veces sea la de otro pabellón.
+          Su ego entra al pabellón cinco minutos
+          antes que él.
+
+          No necesita suerte,
+          solo un balón y alguien dispuesto
+          a aguantar la celebración.
         </p>
+
       </div>
+
     </article>
 
     <!-- D. DEL RIO -->
 
     <article class="roster-card">
+
       <div class="roster-placeholder">
+
         <span>21</span>
         <small>BLUE LOCK FS</small>
+
       </div>
 
       <div class="roster-info">
+
         <h3>#21 · D. DEL RIO</h3>
+
         <span class="chip">Jugador</span>
+
         <p>
           Misterio absoluto.
+
           Nadie sabe qué jugada va a hacer,
-          probablemente ni él. Nadie sabe cuando debutará, si necesitaís movida siempre saltará.
+          probablemente ni él.
+
+          Pero eso también complica
+          el trabajo de los defensas.
         </p>
+
       </div>
+
     </article>
 
     <!-- LUIS -->
 
     <article class="roster-card">
+
       <div class="roster-placeholder">
+
         <span>9</span>
         <small>BLUE LOCK FS</small>
+
       </div>
 
       <div class="roster-info">
+
         <h3>#9 · LUIS</h3>
+
         <span class="chip">Jugador</span>
+
         <p>
           El dorsal 9 viene con expectativas.
-          Él es nuestro Lamine Yamal, nuestro protegido. Con tan solo 16 años os revienta a todos.
+
+          Él viene con botas.
+
+          Ahora solo falta comprobar
+          si ambas cosas son compatibles.
         </p>
+
       </div>
+
     </article>
 
     <!-- JOWI -->
 
     <article class="roster-card goalkeeper-card">
-      <img class="roster-photo"
-           src="assets/jowi.png"
-           alt="Jowi - Portero - Dorsal 1">
+
+      <img
+        class="roster-photo"
+        src="assets/jowi.png"
+        alt="Jowi - Portero"
+      >
 
       <div class="roster-info">
+
         <h3>#1 · JOWI</h3>
+
         <span class="chip">🧤 Portero</span>
         <span class="chip">El muro</span>
+
         <p>
           La última línea de defensa.
+
           Tiene la difícil misión de parar
           los disparos del rival y sobrevivir
           a los errores de sus compañeros.
+
           Merece un plus de peligrosidad.
         </p>
+
       </div>
+
     </article>
 
   </div>
@@ -959,53 +1442,81 @@ th {
   <!-- DIRECTIVA -->
 
   <div class="section-head">
-    <span class="eyebrow">LA DIRECTIVA</span>
-    <h2>La persona que manda de verdad</h2>
+
+    <span class="eyebrow">
+      LA DIRECTIVA
+    </span>
+
+    <h2>
+      La persona que manda de verdad
+    </h2>
+
     <p>
-      Mientras los jugadores discuten quién es el mejor,
-      alguien tiene que hacer que el equipo exista legalmente.
+      Mientras los jugadores discuten quién
+      es el mejor, alguien tiene que hacer
+      que el equipo exista legalmente.
     </p>
+
   </div>
 
   <div class="roster-grid">
 
     <article class="roster-card president-card">
-      <img class="roster-photo"
-           src="assets/clarita.png"
-           alt="Clarita - Presidenta de Blue Lock FS">
+
+      <img
+        class="roster-photo"
+        src="assets/clarita.png"
+        alt="Clarita - Presidenta"
+      >
 
       <div class="roster-info">
+
         <h3>👑 CLARITA</h3>
+
         <span class="chip">Presidenta</span>
         <span class="chip">Documentación</span>
         <span class="chip">Redes sociales</span>
 
         <p>
           La jefa del proyecto.
+
           Controla los papeles, las redes
           y el destino de diez egos desatados.
-          Tiene poder absoluto sobre el club.
+
+          Tiene poder absoluto sobre el club,
+          aunque encontrar proveedor para las
+          camisetas haya sido su primera gran prueba.
         </p>
+
       </div>
+
     </article>
 
   </div>
 
 </section>
 
-<!-- ======================== -->
+<!-- ======================= -->
 <!-- RANKING -->
-<!-- ======================== -->
+<!-- ======================= -->
 
 <section id="ranking" class="page">
 
   <div class="section-head">
-    <span class="eyebrow">COMPETICIÓN INTERNA</span>
-    <h2>Ranking del equipo</h2>
+
+    <span class="eyebrow">
+      COMPETICIÓN INTERNA
+    </span>
+
+    <h2>
+      Ranking del equipo
+    </h2>
+
     <p>
       Aquí aparecerán las estadísticas reales
       de los jugadores durante la temporada.
     </p>
+
   </div>
 
   <div class="stats-grid">
@@ -1013,14 +1524,27 @@ th {
     <div class="ranking-table">
 
       <div class="ranking-header">
+
         <div>
-          <span class="chip">Demostración</span>
-          <h3>Clasificación de jugadores</h3>
+
+          <span class="chip">
+            Demostración
+          </span>
+
+          <h3>
+            Clasificación de jugadores
+          </h3>
+
         </div>
-        <span class="chip">Pendiente de datos reales</span>
+
+        <span class="chip">
+          Pendiente de datos reales
+        </span>
+
       </div>
 
       <table>
+
         <thead>
           <tr>
             <th>Puesto</th>
@@ -1032,39 +1556,68 @@ th {
         </thead>
 
         <tbody>
+
           <tr>
             <td><div class="pos gold">1</div></td>
-            <td>ALEX</td><td>6</td><td>4</td><td>10</td>
+            <td>ALEX</td>
+            <td>6</td>
+            <td>4</td>
+            <td>10</td>
           </tr>
+
           <tr>
             <td><div class="pos silver">2</div></td>
-            <td>CARMELO</td><td>5</td><td>2</td><td>7</td>
+            <td>CARMELO</td>
+            <td>5</td>
+            <td>2</td>
+            <td>7</td>
           </tr>
+
           <tr>
             <td><div class="pos bronze">3</div></td>
-            <td>ISAGI</td><td>3</td><td>3</td><td>6</td>
+            <td>ISAGI</td>
+            <td>3</td>
+            <td>3</td>
+            <td>6</td>
           </tr>
+
           <tr>
             <td><div class="pos">4</div></td>
-            <td>LEÓN</td><td>1</td><td>4</td><td>5</td>
+            <td>LEÓN</td>
+            <td>1</td>
+            <td>4</td>
+            <td>5</td>
           </tr>
+
           <tr>
             <td><div class="pos">5</div></td>
-            <td>LUIS</td><td>2</td><td>1</td><td>3</td>
+            <td>LUIS</td>
+            <td>2</td>
+            <td>1</td>
+            <td>3</td>
           </tr>
+
         </tbody>
+
       </table>
 
       <div class="ranking-note">
-        ⚠️ Datos completamente ficticios para probar el diseño.
-        Próximamente incorporaremos las estadísticas reales.
+        ⚠️ Datos ficticios para probar el diseño.
+        Próximamente incorporaremos
+        las estadísticas reales.
       </div>
 
     </div>
 
     <div class="section-shell">
-      <span class="chip">Premios especiales</span>
-      <h3>Los premios que nadie pidió</h3>
+
+      <span class="chip">
+        Premios especiales
+      </span>
+
+      <h3>
+        Los premios que nadie pidió
+      </h3>
 
       <div class="stat-pill">
         <span>🥇 MVP de la jornada</span>
@@ -1092,164 +1645,93 @@ th {
       </div>
 
       <p>
-        Próximamente añadiremos estadísticas reales,
-        votaciones y rankings de los minijuegos.
+        Próximamente añadiremos estadísticas
+        reales, votaciones y rankings
+        de los minijuegos.
       </p>
+
     </div>
 
   </div>
 
 </section>
 
-<!-- ======================== -->
-<!-- MINIJUEGOS -->
-<!-- ======================== -->
-
-<section id="juegos" class="page">
-
-  <div class="section-head">
-    <span class="eyebrow">ZONA DE EGOÍSTAS</span>
-    <h2>Minijuegos Blue Lock</h2>
-    <p>
-      Compite contra tus compañeros.
-      Aquí no gana el mejor, gana el que tiene
-      más tiempo libre para practicar.
-    </p>
-  </div>
-
-  <div class="games-grid">
-
-    <!-- QUIZ -->
-
-    <article class="game">
-      <span class="chip">JUEGO 1</span>
-      <h3>🧠 Quiz Blue Lock FS</h3>
-
-      <p id="quiz-question"></p>
-      <div id="quiz-options" class="choices"></div>
-      <p id="quiz-status" class="status" role="status"></p>
-
-      <button class="btn secondary" id="quiz-next">
-        Siguiente pregunta →
-      </button>
-    </article>
-
-    <!-- PENALTIS -->
-
-    <article class="game">
-      <span class="chip">JUEGO 2</span>
-      <h3>🥅 Tanda de penaltis</h3>
-
-      <p>
-        Cinco tiros, tres direcciones.
-        Si falla Jowi, es gol.
-        Si te lo para, toca aguantarle.
-      </p>
-
-      <div class="scoreboard">
-        <div class="scorebox">
-          Tiros: <strong id="shots">0 / 5</strong>
-        </div>
-        <div class="scorebox">
-          Goles: <strong id="goals">0</strong>
-        </div>
-        <div class="scorebox">
-          Récord local: <strong id="record">0</strong>
-        </div>
-      </div>
-
-      <div class="penalty-goal">
-        <button data-shot="0" aria-label="Tirar izquierda">↖</button>
-        <button data-shot="1" aria-label="Tirar centro">↑</button>
-        <button data-shot="2" aria-label="Tirar derecha">↗</button>
-      </div>
-
-      <p class="status" id="penalty-status">
-        ¿Por dónde disparas?
-      </p>
-
-      <button class="btn secondary" id="reset-penalty">
-        Nueva tanda
-      </button>
-    </article>
-
-  </div>
-
-  <div class="cards-grid">
-
-    <article class="card">
-      <span class="chip">Próximamente</span>
-      <h3>🎤 ¿Quién dijo esto?</h3>
-      <p>
-        Adivina qué jugador soltó cada frase
-        histórica del vestuario.
-      </p>
-    </article>
-
-    <article class="card">
-      <span class="chip">Próximamente</span>
-      <h3>🕵️ Adivina al jugador</h3>
-      <p>
-        Fotos de pequeños, pistas absurdas
-        y siluetas de nuestros cracks.
-      </p>
-    </article>
-
-    <article class="card">
-      <span class="chip">Próximamente</span>
-      <h3>🤔 ¿Quién es más probable que...?</h3>
-      <p>
-        El juego donde las amistades se ponen
-        a prueba y nadie sale bien parado.
-      </p>
-    </article>
-
-  </div>
-
-</section>
-
-<!-- ======================== -->
+<!-- ======================= -->
 <!-- VESTUARIO -->
-<!-- ======================== -->
+<!-- ======================= -->
 
 <section id="vestuario" class="page">
 
   <div class="section-head">
-    <span class="eyebrow">ARCHIVO CONFIDENCIAL</span>
-    <h2>El vestuario</h2>
+
+    <span class="eyebrow">
+      ARCHIVO CONFIDENCIAL
+    </span>
+
+    <h2>
+      El vestuario
+    </h2>
+
     <p>
       Donde nacen las leyendas,
       las excusas y los memes.
     </p>
+
   </div>
 
   <div class="cards-grid">
 
     <article class="card">
-      <span class="chip">Galería</span>
-      <h3>📸 Fotos del equipo</h3>
+
+      <span class="chip">
+        Galería
+      </span>
+
+      <h3>
+        📸 Fotos del equipo
+      </h3>
+
       <p>
-        Partidos, celebraciones y fotos que
-        probablemente no deberían publicarse.
+        Partidos, celebraciones y fotos
+        que probablemente no deberían publicarse.
       </p>
+
     </article>
 
     <article class="card">
-      <span class="chip">Frases históricas</span>
-      <h3>🎤 Archivo del banquillo</h3>
+
+      <span class="chip">
+        Frases históricas
+      </span>
+
+      <h3>
+        🎤 Archivo del banquillo
+      </h3>
+
       <p>
         Las mejores frases del equipo.
+
         Algunas merecen una sanción disciplinaria.
       </p>
+
     </article>
 
     <article class="card">
-      <span class="chip">Memes</span>
-      <h3>😂 Zona sensible</h3>
+
+      <span class="chip">
+        Memes
+      </span>
+
+      <h3>
+        😂 Zona sensible
+      </h3>
+
       <p>
         Fallos a puerta vacía,
-        excusas y material para chantaje amistoso.
+        excusas y material
+        para chantaje amistoso.
       </p>
+
     </article>
 
   </div>
@@ -1258,20 +1740,25 @@ th {
 
 </main>
 
+<!-- PIE DE PÁGINA -->
+
 <footer class="footer">
+
   Blue Lock FS · Temporada 2026/27 ·
   Más ego que fondo físico
+
 </footer>
 
-<!-- ======================== -->
+<!-- ======================= -->
 <!-- JAVASCRIPT -->
-<!-- ======================== -->
+<!-- ======================= -->
 
 <script>
 
-/* JUGADORES */
+/* LISTA DE JUGADORES */
 
 const players = [
+
   { number: 10, name: "ALEX" },
   { number: 7, name: "CARMELO" },
   { number: 99, name: "SERGIO" },
@@ -1282,218 +1769,120 @@ const players = [
   { number: 21, name: "D. DEL RIO" },
   { number: 9, name: "LUIS" },
   { number: 1, name: "JOWI 🧤" }
+
 ];
 
-const homeRoster = document.getElementById("home-roster");
+/* GENERAR LISTADO DE INICIO */
+
+const homeRoster = document.getElementById(
+  "home-roster"
+);
 
 players.forEach(player => {
+
   const row = document.createElement("div");
+
   row.className = "home-roster-row";
 
   const number = document.createElement("span");
+
   number.className = "home-number";
+
   number.textContent = "#" + player.number;
 
   const name = document.createElement("strong");
+
   name.textContent = player.name;
 
   row.append(number, name);
+
   homeRoster.appendChild(row);
+
 });
 
-/* NAVEGACIÓN */
+/* NAVEGACIÓN ENTRE PÁGINAS DEL INDEX */
 
-const pages = [...document.querySelectorAll(".page")];
-const tabs = [...document.querySelectorAll("[data-page]")];
+const pages = [
+  ...document.querySelectorAll(".page")
+];
+
+const tabs = [
+  ...document.querySelectorAll("[data-page]")
+];
 
 function navigate(page) {
+
   pages.forEach(p => {
-    p.classList.toggle("active", p.id === page);
+
+    p.classList.toggle(
+      "active",
+      p.id === page
+    );
+
   });
 
   tabs.forEach(b => {
+
     if (b.dataset.page === page) {
-      b.setAttribute("aria-current", "page");
+
+      b.setAttribute(
+        "aria-current",
+        "page"
+      );
+
     } else {
-      b.removeAttribute("aria-current");
+
+      b.removeAttribute(
+        "aria-current"
+      );
+
     }
+
   });
 
-  window.scrollTo({top: 0, behavior: "smooth"});
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
 }
+
+/* BOTONES DEL MENÚ */
 
 tabs.forEach(b => {
+
   b.addEventListener("click", () => {
+
     navigate(b.dataset.page);
+
   });
+
 });
 
-document.querySelectorAll("[data-go]").forEach(b => {
+/* BOTONES INTERIORES */
+
+document.querySelectorAll(
+  "[data-go]"
+).forEach(b => {
+
   b.addEventListener("click", () => {
+
     navigate(b.dataset.go);
-  });
-});
 
-/* QUIZ */
-
-const questions = [
-  {
-    q: "¿Cuántos jugadores hay en pista por equipo en fútbol sala, contando al portero?",
-    a: ["4", "5", "6"],
-    c: 1
-  },
-  {
-    q: "¿Qué ocurre cuando un equipo hace la sexta falta en una parte?",
-    a: [
-      "Tiro libre sin barrera",
-      "Saque de esquina",
-      "Expulsión del entrenador"
-    ],
-    c: 0
-  },
-  {
-    q: "¿Cuánto dura cada parte en un partido oficial de fútbol sala?",
-    a: ["15 minutos", "20 minutos", "25 minutos"],
-    c: 1
-  },
-  {
-    q: "¿Quién es la presidenta de Blue Lock FS?",
-    a: ["Jowi", "Clarita", "Carmelo"],
-    c: 1
-  },
-  {
-    q: "¿Quién lleva el dorsal 99?",
-    a: ["Sergio", "Álvaro", "Angelo"],
-    c: 0
-  },
-  {
-    q: "¿Quién es el portero de Blue Lock FS?",
-    a: ["Alex", "Luis", "Jowi"],
-    c: 2
-  }
-];
-
-let qi = 0;
-let answered = false;
-let quizScore = 0;
-
-function drawQ() {
-  answered = false;
-
-  const q = questions[qi % questions.length];
-
-  document.getElementById("quiz-question").textContent = q.q;
-
-  const options = document.getElementById("quiz-options");
-  options.innerHTML = "";
-
-  q.a.forEach((answer, i) => {
-    const b = document.createElement("button");
-    b.textContent = answer;
-
-    b.addEventListener("click", () => {
-      if (answered) return;
-
-      answered = true;
-
-      if (i === q.c) {
-        quizScore++;
-        document.getElementById("quiz-status").textContent =
-          "✅ ¡Correcto! Aciertos: " + quizScore;
-      } else {
-        document.getElementById("quiz-status").textContent =
-          "❌ Incorrecto. Aciertos: " + quizScore;
-      }
-    });
-
-    options.appendChild(b);
   });
 
-  document.getElementById("quiz-status").textContent =
-    "Pregunta " + ((qi % questions.length) + 1) +
-    " de " + questions.length;
-}
-
-document.getElementById("quiz-next").addEventListener("click", () => {
-  qi++;
-
-  if (qi % questions.length === 0) {
-    quizScore = 0;
-  }
-
-  drawQ();
 });
 
-drawQ();
+/*
+  LOS MINIJUEGOS YA NO ESTÁN EN ESTE ARCHIVO.
 
-/* PENALTIS */
+  Ahora se abren mediante:
 
-let shots = 0;
-let goals = 0;
-let record = 0;
+  juegos.html
 
-try {
-  record = Number(
-    localStorage.getItem("bluelockPenaltyRecord") || 0
-  );
-} catch(e) {}
-
-function updatePenalty() {
-  document.getElementById("shots").textContent = shots + " / 5";
-  document.getElementById("goals").textContent = goals;
-  document.getElementById("record").textContent = record;
-}
-
-updatePenalty();
-
-document.querySelectorAll("[data-shot]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    if (shots >= 5) return;
-
-    const chosen = Number(btn.dataset.shot);
-    const keeper = Math.floor(Math.random() * 3);
-
-    shots++;
-
-    if (chosen !== keeper) {
-      goals++;
-      document.getElementById("penalty-status").textContent =
-        "⚽ ¡GOOOOL! Jowi se lanzó a " +
-        ["la izquierda", "el centro", "la derecha"][keeper] + ".";
-    } else {
-      document.getElementById("penalty-status").textContent =
-        "🧤 ¡PARADÓN DE JOWI! Te ha leído como un libro abierto.";
-    }
-
-    if (shots === 5) {
-      if (goals > record) {
-        record = goals;
-
-        try {
-          localStorage.setItem(
-            "bluelockPenaltyRecord",
-            String(record)
-          );
-        } catch(e) {}
-      }
-
-      document.getElementById("penalty-status").textContent +=
-        " Tanda terminada: " + goals + " de 5.";
-    }
-
-    updatePenalty();
-  });
-});
-
-document.getElementById("reset-penalty").addEventListener("click", () => {
-  shots = 0;
-  goals = 0;
-
-  updatePenalty();
-
-  document.getElementById("penalty-status").textContent =
-    "Nueva tanda. A ver si esta vez tienes más puntería.";
-});
+  Por tanto, no necesitamos conservar aquí
+  el JavaScript de penaltis ni del trivial.
+*/
 
 </script>
 
