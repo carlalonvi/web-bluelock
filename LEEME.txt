@@ -1,0 +1,9 @@
+WEB DE FÚTBOL SALA - PRIMERA VERSIÓN
+
+1. Abre index.html con Chrome, Edge o Safari para probar la web en tu ordenador.
+2. Para publicarla gratis, entra en https://app.netlify.com/drop , inicia sesión con una cuenta gratuita y arrastra la carpeta web_futbol_sala.
+3. También puedes publicarla con GitHub Pages subiendo index.html a un repositorio público y habilitando Pages en Settings > Pages.
+4. Para cambiar nombres, fotos, textos o preguntas, edita index.html con un editor de texto como Visual Studio Code.
+5. El récord del juego de penaltis se guarda solamente en ese navegador/dispositivo. No es un ranking compartido.
+
+Esta versión usa nombres ficticios de ejemplo, no representa datos reales del equipo.
