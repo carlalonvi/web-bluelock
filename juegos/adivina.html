@@ -4,169 +4,1311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Adivina al jugador | Blue Lock</title>
+<title>Kelme Dart Rush | Blue Lock FS</title>
 <link rel="stylesheet" href="estilo.css">
+
+<style>
+:root {
+  --accent:#38bdff;
+  --dark:#071326;
+  --panel:#0b2040;
+}
+
+.dart-page {
+  max-width:950px;
+  margin:auto;
+}
+
+.dart-heading {
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.dart-heading h1 {
+  font-size:clamp(2.3rem,6vw,4rem);
+  color:white;
+  margin:10px 0;
+  letter-spacing:-2px;
+}
+
+.dart-heading h1 span {
+  color:var(--accent);
+}
+
+.dart-heading p {
+  color:#a8c1e3;
+}
+
+.game-shell {
+  max-width:600px;
+  margin:auto;
+  padding:16px;
+  background:linear-gradient(160deg,#102c54,#071326);
+  border:1px solid #2858a0;
+  border-radius:24px;
+  box-shadow:0 20px 60px #0008;
+}
+
+.dart-stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:12px;
+}
+
+.dart-stat {
+  background:#081a35;
+  border:1px solid #244c88;
+  padding:10px 5px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.dart-stat small {
+  display:block;
+  color:#9db9dc;
+  font-size:11px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+
+.dart-stat strong {
+  color:white;
+  font-size:23px;
+}
+
+.dart-stat:first-child strong {
+  color:#4bc5ff;
+}
+
+.dart-arena {
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  border-radius:17px;
+  border:2px solid #25569d;
+  background:#06162c;
+  touch-action:manipulation;
+}
+
+#dartCanvas {
+  display:block;
+  width:100%;
+  height:auto;
+  border:0;
+  margin:0;
+  border-radius:0;
+  background:transparent;
+  touch-action:manipulation;
+  cursor:crosshair;
+}
+
+.game-overlay {
+  position:absolute;
+  inset:0;
+  z-index:5;
+  background:rgba(4,12,26,.85);
+  backdrop-filter:blur(7px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:22px;
+}
+
+.overlay-content {
+  max-width:350px;
+}
+
+.overlay-icon {
+  font-size:54px;
+  margin-bottom:15px;
+}
+
+.overlay-content h2 {
+  color:white;
+  font-size:clamp(25px,5vw,34px);
+  line-height:1.15;
+  margin:10px 0;
+}
+
+.overlay-content p {
+  color:#b7d0ec;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.dart-button {
+  border:0;
+  color:white;
+  background:linear-gradient(120deg,#155fff,#2db9ff);
+  padding:15px 24px;
+  font-size:16px;
+  font-weight:900;
+  border-radius:14px;
+  min-height:53px;
+}
+
+.dart-button:hover {
+  filter:brightness(1.15);
+}
+
+.dart-button:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.dart-controls {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  padding-top:15px;
+}
+
+#shootButton {
+  width:100%;
+  max-width:420px;
+  min-height:58px;
+  font-size:18px;
+}
+
+.dart-message {
+  text-align:center;
+  color:#9edfff;
+  font-size:14px;
+  min-height:25px;
+  font-weight:700;
+}
+
+.dart-hint {
+  text-align:center;
+  font-size:12px;
+  color:#8caacf;
+  margin-top:10px;
+}
+
+.hidden {
+  display:none!important;
+}
+
+.level-indicators {
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
+  margin:12px 0;
+}
+
+.level-indicators div {
+  height:7px;
+  background:#1a3458;
+  border-radius:10px;
+}
+
+.level-indicators .done {
+  background:#28d6a0;
+}
+
+.level-indicators .current {
+  background:#38bdff;
+  box-shadow:0 0 9px #38bdff99;
+}
+
+.game-footer {
+  margin-top:15px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.game-footer button {
+  background:#112a4d;
+  border:1px solid #2b5592;
+}
+
+@media(max-width:600px) {
+  main {
+    padding:18px 10px 45px;
+  }
+
+  .game-shell {
+    padding:9px;
+    border-radius:17px;
+  }
+
+  .dart-stat strong {
+    font-size:19px;
+  }
+
+  .dart-heading h1 {
+    letter-spacing:-1px;
+  }
+
+  .overlay-content p {
+    font-size:13px;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <strong>🕵️ ¿QUIÉN ES?</strong>
+  <strong>⚡ BLUE LOCK · KELME DART RUSH</strong>
   <a href="../juegos.html">← Game Center</a>
 </header>
 
-<main>
-  <h1>DESCUBRE AL EGOÍSTA</h1>
-  <p>Identifica al jugador usando el menor número de pistas.</p>
+<main class="dart-page">
 
-  <div class="card">
-    <div class="score">Ronda: <b id="ronda">1/5</b></div>
-    <div class="score">Puntos: <b id="puntos">0</b></div>
-
-    <h2 id="titulo">¿Quién se esconde?</h2>
-
-    <div style="
-      font-size:80px;
-      text-align:center;
-      color:#33b1ff;
-      padding:25px;
-      text-shadow:0 0 30px #1b6fff;
-    ">?</div>
-
-    <div id="pistas"></div>
-
-    <button id="pista">🔎 Revelar pista</button>
-
+  <div class="dart-heading">
+    <p>BLUE LOCK FS · ARCADE CHALLENGE</p>
+    <h1>KELME <span>DART RUSH</span></h1>
     <p>
-      <input id="respuesta"
-             placeholder="Nombre del jugador"
-             autocomplete="off">
-      <button id="comprobar">Responder</button>
+      10 niveles. Un balón giratorio.
+      No falles el lanzamiento.
     </p>
-
-    <p id="mensaje" class="status"></p>
-
-    <button id="siguiente" disabled>
-      Siguiente jugador →
-    </button>
   </div>
+
+  <div class="game-shell">
+
+    <div class="dart-stats">
+      <div class="dart-stat">
+        <small>Nivel</small>
+        <strong id="levelText">1/10</strong>
+      </div>
+
+      <div class="dart-stat">
+        <small>Restantes</small>
+        <strong id="remainingText">5</strong>
+      </div>
+
+      <div class="dart-stat">
+        <small>Puntos</small>
+        <strong id="scoreText">0</strong>
+      </div>
+    </div>
+
+    <div class="level-indicators"
+         id="levelIndicators"></div>
+
+    <div class="dart-arena">
+
+      <canvas id="dartCanvas"
+              width="420"
+              height="570"
+              aria-label="Juego de lanzar dardos a un balón giratorio">
+      </canvas>
+
+      <div class="game-overlay" id="gameOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon" id="overlayIcon">🎯</div>
+          <h2 id="overlayTitle">
+            ¿PREPARADO?
+          </h2>
+          <p id="overlayDescription">
+            Toca la pantalla para lanzar dardos
+            al balón. Evita los obstáculos rojos
+            y los dardos que ya hayas clavado.
+          </p>
+          <button class="dart-button"
+                  id="overlayButton">
+            EMPEZAR
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dart-controls">
+      <button class="dart-button"
+              id="shootButton">
+        ⚡ LANZAR DARDO
+      </button>
+
+      <div class="dart-message" id="messageText">
+        Toca el campo, pulsa el botón o usa ESPACIO.
+      </div>
+    </div>
+
+    <div class="dart-hint">
+      💻 Ratón o ESPACIO · 📱 Un toque en pantalla
+    </div>
+
+    <div class="game-footer">
+      <button id="restartButton">
+        ↻ Reiniciar nivel
+      </button>
+      <button id="newGameButton">
+        Nueva partida
+      </button>
+    </div>
+
+  </div>
+
 </main>
 
 <script src="comun.js"></script>
+
 <script>
-const jugadores = [
-  { n:"ALEX", p:["Dorsal par","Número 10","Su cartel dice CHEBCHUB"] },
-  { n:"CARMELO", p:["Jugador de campo","Dorsal 7","Su cartel lleva su nombre"] },
-  { n:"SERGIO", p:["Dorsal de dos cifras","Número 99","Su nombre empieza por S"] },
-  { n:"ANGELO", p:["Dorsal par","Número 4","Su nombre empieza por A"] },
-  { n:"ALVARO", p:["Dorsal impar","Número 23","Su nombre empieza por A"] },
-  { n:"LEÓN", p:["Dorsal par","Número 6","Su cartel dice Miguel"] },
-  { n:"ISAGI", p:["Dorsal impar","Número 11","Su cartel dice Hugo"] },
-  { n:"D. DEL RIO", p:["Dorsal de dos cifras","Número 21","Su nombre incluye DEL RIO"] },
-  { n:"LUIS", p:["Dorsal impar","Número 9","Su nombre empieza por L"] },
-  { n:"JOWI", p:["Lleva guantes","Número 1","Es el portero"] }
+"use strict";
+
+/* =====================================
+   CONFIGURACIÓN DE LOS DIEZ NIVELES
+===================================== */
+
+const LEVELS = [
+  { darts:5,  obstacles:0, speed:0.75, reverse:0 },
+  { darts:6,  obstacles:1, speed:1.05, reverse:0 },
+  { darts:7,  obstacles:2, speed:1.35, reverse:0 },
+  { darts:8,  obstacles:2, speed:1.55, reverse:5.0 },
+  { darts:9,  obstacles:3, speed:1.85, reverse:0 },
+  { darts:10, obstacles:3, speed:2.05, reverse:4.1 },
+  { darts:11, obstacles:4, speed:2.35, reverse:0 },
+  { darts:12, obstacles:4, speed:2.65, reverse:3.1 },
+  { darts:13, obstacles:5, speed:2.95, reverse:3.4 },
+  { darts:15, obstacles:6, speed:3.25, reverse:2.4 }
 ];
 
-let partida = [...jugadores]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 5);
+const canvas = document.getElementById("dartCanvas");
+const ctx = canvas.getContext("2d");
 
-let ronda = 0;
-let pistasVistas = 0;
-let puntos = 0;
-let terminado = false;
+const W = canvas.width;
+const H = canvas.height;
 
-const mensaje = document.getElementById("mensaje");
-const botonPista = document.getElementById("pista");
-const botonComprobar = document.getElementById("comprobar");
-const botonSiguiente = document.getElementById("siguiente");
+const CX = 210;
+const CY = 220;
+const R = 92;
 
-function normalizar(texto) {
-  return texto.normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\./g, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toUpperCase();
-}
+const TAU = Math.PI * 2;
+const IMPACT_ANGLE = Math.PI / 2;
 
-function mostrar() {
-  pistasVistas = 0;
-  terminado = false;
+const PROJECTILE_START = 515;
+const PROJECTILE_TARGET = CY + R + 5;
+const PROJECTILE_SPEED = 850;
 
-  document.getElementById("ronda").textContent =
-    (ronda + 1) + "/5";
+const DART_LENGTH = 48;
+const COLLISION_ANGLE = 0.225;
 
-  document.getElementById("respuesta").value = "";
-  document.getElementById("pistas").innerHTML = "";
-  mensaje.textContent = "";
+const ballImage = new Image();
+ballImage.src = "../assets/balon-kelme.png";
 
-  botonPista.disabled = false;
-  botonComprobar.disabled = false;
-  botonSiguiente.disabled = true;
-}
+let ballLoaded = false;
 
-botonPista.onclick = () => {
-  if (terminado || pistasVistas >= 3) return;
-
-  const p = document.createElement("p");
-  p.textContent =
-    "🔎 Pista " + (pistasVistas + 1) + ": " +
-    partida[ronda].p[pistasVistas];
-
-  document.getElementById("pistas").appendChild(p);
-  pistasVistas++;
-
-  if (pistasVistas >= 3) botonPista.disabled = true;
+ballImage.onload = () => {
+  ballLoaded = true;
 };
 
-botonComprobar.onclick = () => {
-  if (terminado) return;
+ballImage.onerror = () => {
+  ballLoaded = false;
+};
 
-  const respuesta = normalizar(
-    document.getElementById("respuesta").value
+/* =====================================
+   VARIABLES DEL JUEGO
+===================================== */
+
+let level = 0;
+let score = 0;
+let throwsLeft = 0;
+
+let rotation = 0;
+let direction = 1;
+let rotationSpeed = 0;
+
+let hazards = [];
+let stuckDarts = [];
+
+let projectile = null;
+let particles = [];
+
+let state = "menu";
+
+let lastTime = 0;
+let levelTime = 0;
+let nextReverse = Infinity;
+let transitionTime = 0;
+let messageTime = 0;
+
+let animationId = null;
+let savedFinalScore = false;
+
+const ui = {
+  level: document.getElementById("levelText"),
+  remaining: document.getElementById("remainingText"),
+  score: document.getElementById("scoreText"),
+  indicators: document.getElementById("levelIndicators"),
+  message: document.getElementById("messageText"),
+  overlay: document.getElementById("gameOverlay"),
+  icon: document.getElementById("overlayIcon"),
+  title: document.getElementById("overlayTitle"),
+  description: document.getElementById("overlayDescription"),
+  overlayButton: document.getElementById("overlayButton"),
+  shootButton: document.getElementById("shootButton")
+};
+
+/* =====================================
+   FUNCIONES MATEMÁTICAS
+===================================== */
+
+function random(min,max) {
+  return min + Math.random() * (max-min);
+}
+
+function normalizeAngle(angle) {
+  return ((angle % TAU) + TAU) % TAU;
+}
+
+function angleDistance(a,b) {
+  return Math.abs(
+    Math.atan2(Math.sin(a-b),Math.cos(a-b))
   );
-  const correcto = normalizar(partida[ronda].n);
+}
 
-  if (!respuesta) {
-    mensaje.textContent = "Escribe un nombre primero.";
+function angularPosition(localAngle) {
+  return normalizeAngle(localAngle + rotation);
+}
+
+function positionOnCircle(angle,radius) {
+  return {
+    x:CX + Math.cos(angle)*radius,
+    y:CY + Math.sin(angle)*radius
+  };
+}
+
+/* =====================================
+   MARCADOR
+===================================== */
+
+function updateUI() {
+  ui.level.textContent = (level+1) + "/10";
+  ui.remaining.textContent = throwsLeft;
+  ui.score.textContent = score;
+
+  ui.indicators.innerHTML = "";
+
+  for(let i=0;i<10;i++) {
+    const item = document.createElement("div");
+
+    if(i<level) {
+      item.className = "done";
+    } else if(i===level) {
+      item.className = "current";
+    }
+
+    ui.indicators.appendChild(item);
+  }
+}
+
+function showMessage(text,duration=1.4) {
+  ui.message.textContent = text;
+  messageTime = duration;
+}
+
+/* =====================================
+   PANTALLAS
+===================================== */
+
+function showOverlay(icon,title,description,buttonText,action) {
+  ui.overlay.classList.remove("hidden");
+
+  ui.icon.textContent = icon;
+  ui.title.textContent = title;
+  ui.description.textContent = description;
+  ui.overlayButton.textContent = buttonText;
+
+  ui.overlayButton.onclick = action;
+}
+
+function hideOverlay() {
+  ui.overlay.classList.add("hidden");
+}
+
+function updateShootButton() {
+  ui.shootButton.disabled =
+    state !== "playing" || projectile !== null;
+}
+
+/* =====================================
+   CREAR OBSTÁCULOS
+===================================== */
+
+function createHazards(count) {
+  hazards = [];
+
+  if(count===0) return;
+
+  // Distribuir obstáculos por el perímetro.
+  // Evitar que queden excesivamente juntos.
+  const offset = random(0,TAU);
+
+  for(let i=0;i<count;i++) {
+    const angle =
+      offset + (TAU*i/count) +
+      random(-0.13,0.13);
+
+    hazards.push({
+      angle: normalizeAngle(angle)
+    });
+  }
+}
+
+/* =====================================
+   PREPARAR NIVEL
+===================================== */
+
+function setupLevel(index) {
+  level = index;
+
+  const config = LEVELS[level];
+
+  throwsLeft = config.darts;
+  rotationSpeed = config.speed;
+
+  rotation = 0;
+  direction = Math.random()<0.5 ? 1 : -1;
+
+  stuckDarts = [];
+  particles = [];
+  projectile = null;
+
+  createHazards(config.obstacles);
+
+  levelTime = 0;
+  nextReverse = config.reverse || Infinity;
+
+  transitionTime = 0;
+  state = "playing";
+
+  hideOverlay();
+  updateUI();
+  updateShootButton();
+
+  showMessage(
+    "NIVEL " + (level+1) +
+    " · Clava " + config.darts + " dardos."
+  );
+}
+
+function startGame() {
+  score = 0;
+  savedFinalScore = false;
+  setupLevel(0);
+}
+
+/* =====================================
+   LANZAR DARDO
+===================================== */
+
+function shoot() {
+  if(state!=="playing" || projectile) return;
+
+  projectile = {
+    y:PROJECTILE_START,
+    previousY:PROJECTILE_START
+  };
+
+  updateShootButton();
+}
+
+/* =====================================
+   COLISIONES
+===================================== */
+
+function detectCollision() {
+  // El dardo siempre llega desde abajo.
+  const impactAngle = IMPACT_ANGLE;
+
+  // Obstáculos rojos fijados al balón.
+  for(const obstacle of hazards) {
+    const worldAngle = angularPosition(obstacle.angle);
+
+    if(angleDistance(worldAngle,impactAngle)<COLLISION_ANGLE+0.045) {
+      return "obstacle";
+    }
+  }
+
+  // Dardos clavados anteriormente.
+  for(const dart of stuckDarts) {
+    const worldAngle = angularPosition(dart.angle);
+
+    if(angleDistance(worldAngle,impactAngle)<COLLISION_ANGLE) {
+      return "dart";
+    }
+  }
+
+  return null;
+}
+
+/* =====================================
+   IMPACTO DEL DARDO
+===================================== */
+
+function impact() {
+  const collision = detectCollision();
+
+  projectile = null;
+
+  if(collision) {
+    loseLevel(collision);
     return;
   }
 
-  terminado = true;
+  // Guardamos el ángulo respecto al balón.
+  // Así el dardo girará unido a él.
+  const localAngle = normalizeAngle(
+    IMPACT_ANGLE - rotation
+  );
 
-  if (respuesta === correcto) {
-    const ganados = 300 - pistasVistas * 75;
-    puntos += ganados;
-    mensaje.textContent =
-      "✅ ¡Correcto! +" + ganados + " puntos.";
+  stuckDarts.push({
+    angle:localAngle
+  });
+
+  throwsLeft--;
+  score += 100 + level*20;
+
+  createParticles(
+    CX,
+    CY+R,
+    "#5ee8ff",
+    12
+  );
+
+  updateUI();
+
+  if(throwsLeft===0) {
+    winLevel();
   } else {
-    mensaje.textContent =
-      "❌ Era " + partida[ronda].n + ".";
+    showMessage("🎯 ¡CLAVADO! " + throwsLeft + " restantes.",0.8);
+    updateShootButton();
+  }
+}
+
+/* =====================================
+   PERDER UN NIVEL
+===================================== */
+
+function loseLevel(reason) {
+  state = "lost";
+  transitionTime = 0;
+
+  createParticles(
+    CX,
+    CY+R,
+    "#ff4367",
+    24
+  );
+
+  updateShootButton();
+
+  const text = reason==="obstacle"
+    ? "Has golpeado un obstáculo rojo."
+    : "Has golpeado un dardo que ya estaba clavado.";
+
+  showOverlay(
+    "💥",
+    "¡HAS FALLADO!",
+    text + " Repite el nivel " +
+      (level+1) + " e inténtalo de nuevo.",
+    "↻ REINTENTAR",
+    () => setupLevel(level)
+  );
+}
+
+/* =====================================
+   SUPERAR NIVEL
+===================================== */
+
+function winLevel() {
+  state = "won";
+
+  score += 250*(level+1);
+
+  createParticles(
+    CX,
+    CY,
+    "#33b1ff",
+    40
+  );
+
+  updateUI();
+  updateShootButton();
+
+  if(level===9) {
+    completeGame();
+    return;
   }
 
-  document.getElementById("puntos").textContent = puntos;
+  showOverlay(
+    "🏆",
+    "¡NIVEL SUPERADO!",
+    "Has completado el nivel " +
+      (level+1) +
+      ". ¡Prepárate para un balón más peligroso!",
+    "SIGUIENTE NIVEL →",
+    () => setupLevel(level+1)
+  );
+}
 
-  botonPista.disabled = true;
-  botonComprobar.disabled = true;
-  botonSiguiente.disabled = false;
-};
+/* =====================================
+   COMPLETAR LOS DIEZ NIVELES
+===================================== */
 
-botonSiguiente.onclick = () => {
-  ronda++;
+function completeGame() {
+  state = "completed";
 
-  if (ronda >= 5) {
-    document.getElementById("titulo").textContent =
-      "🏆 ¡PARTIDA TERMINADA!";
+  showOverlay(
+    "👑",
+    "¡ERES EL REY DE LOS DARDOS!",
+    "Has superado los 10 niveles. " +
+      "Puntuación final: " + score +
+      " puntos. ¡Ego desbloqueado!",
+    "JUGAR OTRA VEZ",
+    startGame
+  );
 
-    mensaje.textContent = "Puntos totales: " + puntos;
-    botonSiguiente.disabled = true;
-    guardarResultado("Adivina", puntos);
-  } else {
-    mostrar();
+  if(!savedFinalScore) {
+    savedFinalScore = true;
+
+    if(typeof guardarResultado==="function") {
+      // Compatible con el ranking anterior.
+      guardarResultado("Dardos",score);
+    }
   }
-};
+}
 
-mostrar();
+/* =====================================
+   PARTÍCULAS VISUALES
+===================================== */
+
+function createParticles(x,y,color,count) {
+  for(let i=0;i<count;i++) {
+    const angle = random(0,TAU);
+    const speed = random(70,240);
+
+    particles.push({
+      x,y,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed,
+      life:random(0.35,0.9),
+      maxLife:0.9,
+      color,
+      size:random(2,5)
+    });
+  }
+}
+
+function updateParticles(dt) {
+  particles.forEach(p => {
+    p.x += p.vx*dt;
+    p.y += p.vy*dt;
+    p.vy += 130*dt;
+    p.life -= dt;
+  });
+
+  particles = particles.filter(p => p.life>0);
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.globalAlpha = Math.max(0,p.life/p.maxLife);
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,TAU);
+    ctx.fill();
+  });
+
+  ctx.globalAlpha = 1;
+}
+
+/* =====================================
+   DIBUJAR FONDO
+===================================== */
+
+function drawBackground() {
+  const gradient = ctx.createLinearGradient(0,0,0,H);
+
+  gradient.addColorStop(0,"#102e58");
+  gradient.addColorStop(0.55,"#08172d");
+  gradient.addColorStop(1,"#050d1e");
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0,0,W,H);
+
+  // Líneas futuristas.
+  ctx.strokeStyle = "#1c4c8640";
+  ctx.lineWidth = 1;
+
+  for(let x=0;x<W;x+=35) {
+    ctx.beginPath();
+    ctx.moveTo(x,0);
+    ctx.lineTo(x,H);
+    ctx.stroke();
+  }
+
+  for(let y=0;y<H;y+=35) {
+    ctx.beginPath();
+    ctx.moveTo(0,y);
+    ctx.lineTo(W,y);
+    ctx.stroke();
+  }
+
+  // Halo detrás del balón.
+  const glow = ctx.createRadialGradient(
+    CX,CY,25,
+    CX,CY,165
+  );
+
+  glow.addColorStop(0,"#176dff55");
+  glow.addColorStop(1,"#176dff00");
+
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(CX,CY,165,0,TAU);
+  ctx.fill();
+
+  // Encabezado.
+  ctx.font = "bold 15px Arial";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#70cfff";
+  ctx.fillText("BLUE LOCK FS",CX,33);
+
+  ctx.font = "11px Arial";
+  ctx.fillStyle = "#8daacf";
+  ctx.fillText("KELME DART RUSH",CX,52);
+
+  // Plataforma del lanzador.
+  ctx.fillStyle = "#102d54";
+  ctx.fillRect(90,540,240,5);
+}
+
+/* =====================================
+   BALÓN GIRATORIO
+===================================== */
+
+function drawBall() {
+  ctx.save();
+
+  ctx.translate(CX,CY);
+
+  // Sombra y halo.
+  ctx.shadowColor = "#248aff";
+  ctx.shadowBlur = 24;
+
+  ctx.beginPath();
+  ctx.arc(0,0,R,0,TAU);
+  ctx.fillStyle = "#dde5f0";
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+  // Girar la imagen junto con el balón.
+  ctx.rotate(rotation);
+
+  ctx.save();
+
+  ctx.beginPath();
+  ctx.arc(0,0,R-2,0,TAU);
+  ctx.clip();
+
+  if(ballLoaded) {
+    ctx.drawImage(
+      ballImage,
+      -R,-R,
+      R*2,R*2
+    );
+  } else {
+    // Balón de reserva si no se encuentra la foto.
+    ctx.fillStyle = "#eef3fb";
+    ctx.fillRect(-R,-R,R*2,R*2);
+
+    for(let i=0;i<6;i++) {
+      ctx.save();
+      ctx.rotate(i*TAU/6);
+
+      ctx.fillStyle =
+        ["#e52f45","#f4b719","#124fbc"][i%3];
+
+      ctx.beginPath();
+      ctx.ellipse(45,5,37,17,0,0,TAU);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    ctx.fillStyle="#1b2945";
+    ctx.font="bold 21px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("KELME",0,5);
+  }
+
+  ctx.restore();
+
+  // Borde del balón.
+  ctx.strokeStyle = "#f4f8ff";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(0,0,R,0,TAU);
+  ctx.stroke();
+
+  // Sombreado esférico.
+  const sphere = ctx.createRadialGradient(
+    -25,-30,12,
+    0,0,R
+  );
+
+  sphere.addColorStop(0,"#ffffff20");
+  sphere.addColorStop(0.65,"#00000000");
+  sphere.addColorStop(1,"#00000055");
+
+  ctx.fillStyle = sphere;
+  ctx.beginPath();
+  ctx.arc(0,0,R,0,TAU);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* =====================================
+   DIBUJAR DARDO CLAVADO
+===================================== */
+
+function drawDartAt(angle,color="#eaf5ff") {
+  const pos = positionOnCircle(angle,R+3);
+
+  ctx.save();
+
+  ctx.translate(pos.x,pos.y);
+  ctx.rotate(angle+Math.PI/2);
+
+  // Punta dentro del balón.
+  ctx.strokeStyle = "#d9f3ff";
+  ctx.lineWidth = 3;
+
+  ctx.beginPath();
+  ctx.moveTo(0,-7);
+  ctx.lineTo(0,34);
+  ctx.stroke();
+
+  // Punta.
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(0,-11);
+  ctx.lineTo(-4,0);
+  ctx.lineTo(4,0);
+  ctx.closePath();
+  ctx.fill();
+
+  // Plumas.
+  ctx.fillStyle = color;
+
+  ctx.beginPath();
+  ctx.moveTo(0,24);
+  ctx.lineTo(-11,43);
+  ctx.lineTo(0,38);
+  ctx.lineTo(11,43);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* =====================================
+   OBSTÁCULOS ROJOS
+===================================== */
+
+function drawHazard(angle) {
+  const pos = positionOnCircle(angle,R+10);
+
+  ctx.save();
+  ctx.translate(pos.x,pos.y);
+  ctx.rotate(angle+Math.PI/2);
+
+  ctx.shadowColor="#ff204e";
+  ctx.shadowBlur=16;
+
+  // Obstáculo tipo pincho.
+  ctx.fillStyle="#ff355b";
+
+  ctx.beginPath();
+  ctx.moveTo(0,-12);
+  ctx.lineTo(-15,14);
+  ctx.lineTo(0,31);
+  ctx.lineTo(15,14);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.shadowBlur=0;
+
+  ctx.strokeStyle="#ffd8e0";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  ctx.fillStyle="#fff";
+  ctx.font="bold 15px Arial";
+  ctx.textAlign="center";
+  ctx.fillText("×",0,16);
+
+  ctx.restore();
+}
+
+/* =====================================
+   DARDO QUE ESTÁ LISTO PARA DISPARAR
+===================================== */
+
+function drawWaitingDart() {
+  if(state!=="playing" || projectile) return;
+
+  ctx.save();
+
+  ctx.translate(CX,PROJECTILE_START);
+
+  ctx.strokeStyle="#eaf6ff";
+  ctx.lineWidth=4;
+
+  ctx.beginPath();
+  ctx.moveTo(0,-9);
+  ctx.lineTo(0,35);
+  ctx.stroke();
+
+  ctx.fillStyle="#eefaff";
+  ctx.beginPath();
+  ctx.moveTo(0,-13);
+  ctx.lineTo(-5,0);
+  ctx.lineTo(5,0);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle="#36baff";
+  ctx.beginPath();
+  ctx.moveTo(0,23);
+  ctx.lineTo(-13,42);
+  ctx.lineTo(0,36);
+  ctx.lineTo(13,42);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+
+  ctx.fillStyle="#9ccfff";
+  ctx.font="12px Arial";
+  ctx.textAlign="center";
+  ctx.fillText("TOCA PARA LANZAR",CX,465);
+}
+
+/* =====================================
+   DARDO EN MOVIMIENTO
+===================================== */
+
+function drawProjectile() {
+  if(!projectile) return;
+
+  ctx.save();
+
+  ctx.translate(CX,projectile.y);
+
+  ctx.strokeStyle="#ffffff";
+  ctx.lineWidth=4;
+
+  ctx.shadowColor="#3ac9ff";
+  ctx.shadowBlur=15;
+
+  ctx.beginPath();
+  ctx.moveTo(0,-10);
+  ctx.lineTo(0,38);
+  ctx.stroke();
+
+  ctx.fillStyle="#ffffff";
+  ctx.beginPath();
+  ctx.moveTo(0,-15);
+  ctx.lineTo(-5,0);
+  ctx.lineTo(5,0);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.shadowBlur=0;
+
+  ctx.fillStyle="#36baff";
+  ctx.beginPath();
+  ctx.moveTo(0,25);
+  ctx.lineTo(-12,42);
+  ctx.lineTo(0,37);
+  ctx.lineTo(12,42);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* =====================================
+   ACTUALIZAR EL JUEGO
+===================================== */
+
+function update(dt) {
+  updateParticles(dt);
+
+  if(messageTime>0) {
+    messageTime-=dt;
+  }
+
+  if(state!=="playing") return;
+
+  const config = LEVELS[level];
+
+  levelTime += dt;
+
+  // Cambio de dirección de giro.
+  if(config.reverse && levelTime>=nextReverse) {
+    direction *= -1;
+
+    // Siguiente inversión con cierta variación.
+    nextReverse =
+      levelTime + config.reverse*random(0.75,1.25);
+
+    showMessage("↺ ¡CAMBIO DE DIRECCIÓN!",0.9);
+  }
+
+  // Cambios suaves de velocidad en niveles altos.
+  let variableSpeed = rotationSpeed;
+
+  if(level>=5) {
+    variableSpeed *=
+      1 + Math.sin(levelTime*2.1)*0.13;
+  }
+
+  rotation = normalizeAngle(
+    rotation + variableSpeed*direction*dt
+  );
+
+  // Dardo en movimiento.
+  if(projectile) {
+    projectile.previousY = projectile.y;
+    projectile.y -= PROJECTILE_SPEED*dt;
+
+    if(projectile.y<=PROJECTILE_TARGET) {
+      impact();
+    }
+  }
+}
+
+/* =====================================
+   DIBUJAR TODA LA ESCENA
+===================================== */
+
+function render() {
+  drawBackground();
+
+  drawBall();
+
+  hazards.forEach(h => {
+    drawHazard(angularPosition(h.angle));
+  });
+
+  stuckDarts.forEach(d => {
+    drawDartAt(angularPosition(d.angle));
+  });
+
+  drawWaitingDart();
+  drawProjectile();
+  drawParticles();
+
+  // Velocidad visual.
+  ctx.font="bold 12px Arial";
+  ctx.fillStyle="#7ebfff";
+  ctx.textAlign="center";
+
+  if(state==="playing") {
+    ctx.fillText(
+      direction===1
+        ? "↻ GIRO HORARIO"
+        : "↺ GIRO ANTIHORARIO",
+      CX,385
+    );
+  }
+}
+
+/* =====================================
+   BUCLE PRINCIPAL
+===================================== */
+
+function gameLoop(time) {
+  const dt = lastTime
+    ? Math.min((time-lastTime)/1000,0.04)
+    : 0;
+
+  lastTime=time;
+
+  update(dt);
+  render();
+
+  animationId=requestAnimationFrame(gameLoop);
+}
+
+/* =====================================
+   CONTROLES
+===================================== */
+
+// Ratón y pantalla táctil.
+canvas.addEventListener("pointerdown",e => {
+  e.preventDefault();
+  shoot();
+});
+
+// Botón adicional.
+ui.shootButton.addEventListener("click",shoot);
+
+// Teclado.
+window.addEventListener("keydown",e => {
+  if(e.code==="Space") {
+    e.preventDefault();
+
+    if(!e.repeat) {
+      shoot();
+    }
+  }
+});
+
+// Reiniciar solo el nivel actual.
+document.getElementById("restartButton")
+  .addEventListener("click",() => {
+    if(state==="menu") return;
+    setupLevel(level);
+  });
+
+// Empezar desde el principio.
+document.getElementById("newGameButton")
+  .addEventListener("click",() => {
+    showOverlay(
+      "🎯",
+      "NUEVA PARTIDA",
+      "¿Preparado para completar los diez niveles?",
+      "EMPEZAR",
+      startGame
+    );
+
+    state="menu";
+    projectile=null;
+    updateShootButton();
+  });
+
+/* =====================================
+   INICIO
+===================================== */
+
+updateUI();
+updateShootButton();
+
+showOverlay(
+  "🎯",
+  "KELME DART RUSH",
+  "Clava todos los dardos en el balón giratorio. " +
+  "Evita los obstáculos rojos y los dardos anteriores. " +
+  "Cada nivel será más difícil.",
+  "⚡ EMPEZAR",
+  startGame
+);
+
+animationId=requestAnimationFrame(gameLoop);
+
 </script>
 
 </body>
