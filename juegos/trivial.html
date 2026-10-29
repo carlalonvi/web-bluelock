@@ -4,219 +4,1042 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ego Quiz | Blue Lock FS</title>
+<title>Football Rush | Blue Lock FS</title>
 <link rel="stylesheet" href="estilo.css">
+
+<style>
+  .rush-container {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .rush-title {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+
+  .rush-title h1 {
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    color: #fff;
+    margin: 12px 0;
+    line-height: 1;
+    text-shadow: 0 0 35px #176aff55;
+  }
+
+  .rush-title h1 span {
+    color: #33b1ff;
+  }
+
+  .rush-title p {
+    color: #a8b8d6;
+  }
+
+  .rush-box {
+    background: linear-gradient(145deg, #102b50, #091529);
+    border: 1px solid #2859a5;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 60px #0006;
+  }
+
+  .rush-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .rush-stat {
+    background: #081a34;
+    border: 1px solid #254b86;
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .rush-stat small {
+    display: block;
+    color: #a8b8d6;
+    font-size: .73rem;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+
+  .rush-stat strong {
+    font-size: 2rem;
+    color: white;
+  }
+
+  #timeDisplay {
+    color: #33b1ff;
+  }
+
+  .timer-track {
+    height: 12px;
+    background: #071326;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    border: 1px solid #234b89;
+  }
+
+  #timerBar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #1476ff, #53d7ff);
+    border-radius: inherit;
+    transition: background .2s;
+  }
+
+  .question-label {
+    color: #59caff;
+    font-size: .8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  #questionText {
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: #fff;
+    line-height: 1.4;
+    min-height: 90px;
+    margin: 16px 0 25px;
+  }
+
+  .answers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .answer-btn {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 78px;
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ecf4ff;
+    background: #102647;
+    border: 1px solid #2b5699;
+    border-radius: 14px;
+    transition: background .12s, border-color .12s;
+  }
+
+  .answer-btn:hover:not(:disabled) {
+    background: #174780;
+    border-color: #5cc7ff;
+  }
+
+  .answer-btn .letter {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 35px;
+    height: 35px;
+    background: #1b4a8c;
+    border-radius: 10px;
+    color: #8cdaff;
+    font-weight: 900;
+  }
+
+  .answer-btn.correct {
+    background: #086044 !important;
+    border-color: #32efaf !important;
+  }
+
+  .answer-btn.wrong {
+    background: #72253a !important;
+    border-color: #ff627f !important;
+  }
+
+  .answer-btn:disabled {
+    opacity: 1;
+    cursor: default;
+  }
+
+  .feedback {
+    min-height: 36px;
+    margin-top: 22px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #70d9ff;
+  }
+
+  .rush-intro {
+    text-align: center;
+    padding: 18px 0;
+  }
+
+  .rush-intro .trophy {
+    font-size: 5rem;
+    margin-bottom: 20px;
+  }
+
+  .rush-intro h2 {
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  .rush-intro p {
+    color: #b7c8e2;
+    line-height: 1.8;
+  }
+
+  .rush-start {
+    width: min(100%, 350px);
+    min-height: 64px;
+    font-size: 1.15rem;
+    margin-top: 18px;
+    background: linear-gradient(120deg, #146cff, #27b8ff);
+    border-radius: 14px;
+    border: 0;
+  }
+
+  .rush-start:hover {
+    background: #279aff;
+  }
+
+  .rush-result {
+    text-align: center;
+    padding: 15px 0;
+  }
+
+  .rush-result h2 {
+    font-size: 2.4rem;
+    color: #fff;
+  }
+
+  .final-number {
+    font-size: clamp(5rem, 15vw, 8rem);
+    font-weight: 900;
+    color: #36baff;
+    text-shadow: 0 0 45px #157aff66;
+    line-height: 1;
+  }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 24px 0;
+  }
+
+  .result-cell {
+    padding: 15px 8px;
+    border-radius: 12px;
+    background: #091c38;
+    border: 1px solid #285296;
+  }
+
+  .result-cell strong {
+    display: block;
+    font-size: 1.6rem;
+    color: white;
+  }
+
+  .result-cell small {
+    color: #a8b8d6;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .urgent #timeDisplay {
+    color: #ff5f7a;
+  }
+
+  .urgent #timerBar {
+    background: linear-gradient(90deg, #d92345, #ff7b3f);
+  }
+
+  @media (max-width: 600px) {
+    .rush-box {
+      padding: 16px;
+    }
+
+    .answers-grid {
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+
+    .answer-btn {
+      min-height: 56px;
+      padding: 10px 13px;
+    }
+
+    .rush-stat {
+      padding: 10px 4px;
+    }
+
+    .rush-stat strong {
+      font-size: 1.5rem;
+    }
+
+    #questionText {
+      min-height: 65px;
+      margin: 12px 0 18px;
+    }
+  }
+</style>
 </head>
+
 <body>
 
 <header>
-  <strong>🧠 EGO QUIZ</strong>
+  <strong>⚡ BLUE LOCK · FOOTBALL RUSH</strong>
   <a href="../juegos.html">← Game Center</a>
 </header>
 
-<main>
-  <h1>¿CONOCES A BLUE LOCK?</h1>
-  <p>Diez preguntas. Quince segundos por pregunta.</p>
+<main class="rush-container">
 
-  <div class="card">
-    <div class="score">Pregunta: <b id="numero">1/10</b></div>
-    <div class="score">Tiempo: <b id="tiempo">15</b>s</div>
-    <div class="score">Puntos: <b id="puntos">0</b></div>
-
-    <h2 id="pregunta"></h2>
-    <div id="opciones"></div>
-    <p id="mensaje" class="status"></p>
-
-    <button id="siguiente" disabled>Siguiente →</button>
-    <button onclick="location.reload()">Reiniciar</button>
+  <div class="rush-title">
+    <div class="question-label">BLUE LOCK FS · MODO COMPETITIVO</div>
+    <h1>FOOTBALL <span>RUSH</span></h1>
+    <p>
+      30 segundos. Preguntas infinitas.
+      ¿Cuánto sabes realmente de fútbol?
+    </p>
   </div>
+
+  <div class="rush-box" id="gameBox">
+
+    <!-- PANTALLA INICIAL -->
+
+    <section id="startScreen" class="rush-intro">
+      <div class="trophy">🏆</div>
+
+      <h2>¿PREPARADO PARA EL RETO?</h2>
+
+      <p>
+        Tienes exactamente <b>30 segundos</b>
+        para acertar tantas preguntas como puedas.
+        <br>
+        +1 por cada acierto.
+        <br>
+        Sin penalización por fallar.
+        <br>
+        Las preguntas aparecen al azar.
+      </p>
+
+      <button class="rush-start" id="startButton">
+        ⚡ EMPEZAR PARTIDA
+      </button>
+    </section>
+
+    <!-- PANTALLA DEL JUEGO -->
+
+    <section id="playScreen" class="hidden">
+
+      <div class="rush-stats">
+
+        <div class="rush-stat">
+          <small>Tiempo</small>
+          <strong id="timeDisplay">30.0</strong>
+        </div>
+
+        <div class="rush-stat">
+          <small>Aciertos</small>
+          <strong id="correctDisplay">0</strong>
+        </div>
+
+        <div class="rush-stat">
+          <small>Fallos</small>
+          <strong id="wrongDisplay">0</strong>
+        </div>
+
+      </div>
+
+      <div class="timer-track">
+        <div id="timerBar"></div>
+      </div>
+
+      <div class="question-label" id="questionNumber">
+        PREGUNTA 1
+      </div>
+
+      <h2 id="questionText"></h2>
+
+      <div class="answers-grid" id="answers"></div>
+
+      <div class="feedback" id="feedback"
+           aria-live="polite"></div>
+
+    </section>
+
+    <!-- RESULTADOS -->
+
+    <section id="resultScreen" class="rush-result hidden">
+
+      <div style="font-size:4rem">🏆</div>
+
+      <h2>¡TIEMPO AGOTADO!</h2>
+
+      <p class="muted">Tu puntuación final</p>
+
+      <div class="final-number" id="finalScore">0</div>
+
+      <p id="finalMessage" class="status"></p>
+
+      <div class="result-grid">
+
+        <div class="result-cell">
+          <strong id="finalCorrect">0</strong>
+          <small>Aciertos</small>
+        </div>
+
+        <div class="result-cell">
+          <strong id="finalWrong">0</strong>
+          <small>Fallos</small>
+        </div>
+
+        <div class="result-cell">
+          <strong id="finalAccuracy">0%</strong>
+          <small>Precisión</small>
+        </div>
+
+      </div>
+
+      <button class="rush-start" id="retryButton">
+        🔄 VOLVER A JUGAR
+      </button>
+
+      <p>
+        <a href="ranking.html">🏆 Ver ranking</a>
+      </p>
+
+    </section>
+
+  </div>
+
 </main>
 
 <script src="comun.js"></script>
+
 <script>
+
+/* =========================================
+   BANCO DE PREGUNTAS
+   Formato:
+   [pregunta, correcta, falsa1, falsa2, falsa3]
+========================================= */
+
 const banco = [
-  {
-    p: "¿Quién es el portero de Blue Lock?",
-    o: ["Jowi", "Álvaro", "Carmelo", "Sergio"],
-    c: 0
-  },
-  {
-    p: "¿Quién lleva el dorsal 99?",
-    o: ["Alex", "Sergio", "Luis", "Angelo"],
-    c: 1
-  },
-  {
-    p: "¿Quién es la presidenta?",
-    o: ["Clarita", "Jowi", "Carmelo", "León"],
-    c: 0
-  },
-  {
-    p: "¿Qué dorsal lleva Carmelo?",
-    o: ["9", "4", "7", "23"],
-    c: 2
-  },
-  {
-    p: "¿Qué dorsal lleva Isagi?",
-    o: ["6", "11", "21", "10"],
-    c: 1
-  },
-  {
-    p: "¿Quién lleva el dorsal 23?",
-    o: ["Álvaro", "Luis", "Alex", "León"],
-    c: 0
-  },
-  {
-    p: "¿Quién lleva el número 4?",
-    o: ["Sergio", "Angelo", "Jowi", "Carmelo"],
-    c: 1
-  },
-  {
-    p: "¿Cuál es el nombre federativo mencionado en la web?",
-    o: [
-      "Blue Lock Eleven",
-      "Noctra Torrejón B",
-      "Blue Lock Madrid",
-      "Torrejón United"
-    ],
-    c: 1
-  },
-  {
-    p: "¿Cuántos jugadores integran la plantilla?",
-    o: ["8", "9", "10", "12"],
-    c: 2
-  },
-  {
-    p: "¿Cuál es la primera equipación prevista?",
-    o: [
-      "Blanca",
-      "Roja",
-      "Azul",
-      "Amarilla"
-    ],
-    c: 2
-  },
-  {
-    p: "¿Quién lleva el dorsal 21?",
-    o: ["D. del Río", "Luis", "Isagi", "Álvaro"],
-    c: 0
-  },
-  {
-    p: "¿Cuál es el dorsal de Alex?",
-    o: ["10", "6", "7", "99"],
-    c: 0
-  }
+
+  // MUNDIALES
+
+  ["¿Qué país ganó el Mundial de 2010?",
+   "España","Alemania","Brasil","Holanda"],
+
+  ["¿Qué país ganó el Mundial de 2022?",
+   "Argentina","Francia","Croacia","Brasil"],
+
+  ["¿Qué país ganó el Mundial de 2018?",
+   "Francia","Croacia","Alemania","España"],
+
+  ["¿Qué país ganó el Mundial de 2014?",
+   "Alemania","Argentina","Brasil","Italia"],
+
+  ["¿Qué país ganó el Mundial de 2006?",
+   "Italia","Francia","Alemania","Brasil"],
+
+  ["¿Qué país ganó el Mundial de 2002?",
+   "Brasil","Alemania","Italia","Francia"],
+
+  ["¿Qué selección ganó el primer Mundial de fútbol?",
+   "Uruguay","Brasil","Argentina","Italia"],
+
+  ["¿En qué año se celebró el primer Mundial?",
+   "1930","1926","1934","1940"],
+
+  ["¿Quién marcó el gol de España en la final de 2010?",
+   "Iniesta","Villa","Torres","Xavi"],
+
+  ["¿Contra qué selección ganó España la final de 2010?",
+   "Países Bajos","Alemania","Portugal","Italia"],
+
+  ["¿En qué país se celebró el Mundial de 2010?",
+   "Sudáfrica","Brasil","Alemania","Rusia"],
+
+  ["¿Quién ganó el Balón de Oro del Mundial de 2014?",
+   "Lionel Messi","Thomas Müller","Neymar","Arjen Robben"],
+
+  ["¿Quién es conocido por la Mano de Dios?",
+   "Maradona","Pelé","Messi","Ronaldinho"],
+
+  ["¿Qué selección ganó el Mundial de 1998?",
+   "Francia","Brasil","Italia","Alemania"],
+
+  ["¿Qué país ha ganado cinco Mundiales masculinos?",
+   "Brasil","España","Francia","Argentina"],
+
+  ["¿Quién marcó un triplete en la final del Mundial de 2022?",
+   "Mbappé","Messi","Giroud","Griezmann"],
+
+  ["¿En qué país nació Diego Maradona?",
+   "Argentina","Uruguay","Brasil","España"],
+
+  ["¿Qué selección ganó el Mundial de 1966?",
+   "Inglaterra","Alemania","Brasil","Italia"],
+
+  ["¿Quién fue el capitán de España en la final del Mundial de 2010?",
+   "Iker Casillas","Sergio Ramos","Xavi","Carles Puyol"],
+
+  ["¿Qué selección ganó el Mundial de 1986?",
+   "Argentina","Alemania","Brasil","Francia"],
+
+  // CHAMPIONS LEAGUE
+
+  ["¿Qué club ganó la Champions de 2024?",
+   "Real Madrid","Manchester City","PSG","Bayern"],
+
+  ["¿Qué club ganó la Champions de 2023?",
+   "Manchester City","Inter","Real Madrid","Barcelona"],
+
+  ["¿Qué club ganó la Champions de 2020?",
+   "Bayern Múnich","PSG","Liverpool","Chelsea"],
+
+  ["¿Qué club ganó la Champions de 2019?",
+   "Liverpool","Tottenham","Real Madrid","Juventus"],
+
+  ["¿Qué equipo ganó la Champions de 2015?",
+   "Barcelona","Juventus","Bayern","Real Madrid"],
+
+  ["¿Quién marcó el gol decisivo de la final de Champions de 2014 en la prórroga que puso el 2-1?",
+   "Gareth Bale","Cristiano Ronaldo","Sergio Ramos","Benzema"],
+
+  ["¿Qué club es conocido como los Reds?",
+   "Liverpool","Arsenal","Chelsea","Manchester City"],
+
+  ["¿En qué ciudad juega el Bayern Múnich?",
+   "Múnich","Berlín","Hamburgo","Dortmund"],
+
+  ["¿Qué club ganó la Champions de 2012?",
+   "Chelsea","Bayern Múnich","Barcelona","Manchester United"],
+
+  ["¿Qué club ganó la Champions de 2005 tras remontar al Milan?",
+   "Liverpool","Arsenal","Chelsea","Manchester United"],
+
+  ["¿Qué equipo ganó la Champions de 1999?",
+   "Manchester United","Bayern Múnich","Juventus","Real Madrid"],
+
+  ["¿Qué club ganó la Champions de 2009?",
+   "Barcelona","Manchester United","Chelsea","Inter"],
+
+  ["¿Qué equipo ganó la Champions de 2013?",
+   "Bayern Múnich","Borussia Dortmund","Real Madrid","Chelsea"],
+
+  ["¿Qué equipo ganó la Champions de 2004?",
+   "Oporto","Mónaco","Milan","Arsenal"],
+
+  ["¿Quién entrenaba al Real Madrid cuando ganó tres Champions consecutivas entre 2016 y 2018?",
+   "Zinedine Zidane","Ancelotti","Mourinho","Rafa Benítez"],
+
+  // LALIGA
+
+  ["¿En qué estadio juega el Real Madrid?",
+   "Santiago Bernabéu","Metropolitano","Mestalla","San Mamés"],
+
+  ["¿En qué estadio juega el Atlético de Madrid?",
+   "Metropolitano","Bernabéu","Mestalla","Anoeta"],
+
+  ["¿Qué equipo juega en Mestalla?",
+   "Valencia","Villarreal","Sevilla","Betis"],
+
+  ["¿Qué equipo juega en San Mamés?",
+   "Athletic Club","Real Sociedad","Alavés","Osasuna"],
+
+  ["¿De qué ciudad es el Real Betis?",
+   "Sevilla","Valencia","Málaga","Granada"],
+
+  ["¿Cuál es el apodo tradicional del FC Barcelona?",
+   "Culés","Colchoneros","Leones","Che"],
+
+  ["¿Cuál es el apodo del Atlético de Madrid?",
+   "Colchoneros","Merengues","Culés","Pericos"],
+
+  ["¿Qué club español es conocido como el Submarino Amarillo?",
+   "Villarreal","Cádiz","Las Palmas","Getafe"],
+
+  ["¿De qué ciudad es el Celta?",
+   "Vigo","A Coruña","Lugo","Pontevedra"],
+
+  ["¿De qué ciudad es el Deportivo de La Coruña?",
+   "A Coruña","Vigo","Oviedo","Gijón"],
+
+  ["¿Qué club ganó LaLiga 2013/14?",
+   "Atlético de Madrid","Barcelona","Real Madrid","Valencia"],
+
+  ["¿Qué club ganó LaLiga 2023/24?",
+   "Real Madrid","Barcelona","Girona","Atlético de Madrid"],
+
+  ["¿Qué entrenador dirigió al Atlético en el título de Liga de 2014?",
+   "Diego Simeone","Luis Enrique","Mourinho","Valverde"],
+
+  ["¿Qué dos equipos disputan el derbi sevillano?",
+   "Sevilla y Betis","Sevilla y Granada","Betis y Cádiz","Sevilla y Málaga"],
+
+  ["¿Qué dos clubes disputan el derbi vasco más conocido?",
+   "Athletic Club y Real Sociedad","Athletic y Osasuna","Alavés y Eibar","Real Sociedad y Eibar"],
+
+  // JUGADORES
+
+  ["¿Qué jugador es conocido como CR7?",
+   "Cristiano Ronaldo","Ronaldo Nazário","Ronaldinho","Rivaldo"],
+
+  ["¿Qué jugador es conocido como La Pulga?",
+   "Lionel Messi","Neymar","Agüero","Di María"],
+
+  ["¿Qué jugador es conocido como El Fenómeno?",
+   "Ronaldo Nazário","Cristiano Ronaldo","Romário","Kaká"],
+
+  ["¿De qué país es Erling Haaland?",
+   "Noruega","Suecia","Dinamarca","Alemania"],
+
+  ["¿De qué país es Mohamed Salah?",
+   "Egipto","Marruecos","Argelia","Senegal"],
+
+  ["¿De qué país es Luka Modrić?",
+   "Croacia","Serbia","Eslovenia","Bosnia"],
+
+  ["¿De qué país es Robert Lewandowski?",
+   "Polonia","Alemania","Austria","República Checa"],
+
+  ["¿De qué país es Harry Kane?",
+   "Inglaterra","Escocia","Irlanda","Gales"],
+
+  ["¿De qué país es Antoine Griezmann?",
+   "Francia","Bélgica","España","Suiza"],
+
+  ["¿Quién ganó el Balón de Oro de 2018?",
+   "Luka Modrić","Cristiano Ronaldo","Messi","Griezmann"],
+
+  ["¿Quién ganó el Balón de Oro de 2007?",
+   "Kaká","Cristiano Ronaldo","Messi","Ronaldinho"],
+
+  ["¿Qué futbolista francés es conocido por su dorsal 10 en la selección campeona de 1998?",
+   "Zinedine Zidane","Thierry Henry","Patrick Vieira","David Trezeguet"],
+
+  ["¿Quién marcó el gol de volea del Real Madrid en la final de Champions de 2002?",
+   "Zinedine Zidane","Roberto Carlos","Raúl","Figo"],
+
+  ["¿Qué portero italiano ganó el Mundial de 2006?",
+   "Gianluigi Buffon","Donnarumma","Toldo","Peruzzi"],
+
+  ["¿Quién era conocido como El Niño en el fútbol español?",
+   "Fernando Torres","David Villa","Raúl","Morata"],
+
+  // REGLAS
+
+  ["¿Cuántos jugadores tiene un equipo de fútbol 11 en el campo?",
+   "11","10","12","9"],
+
+  ["¿Cuánto dura un partido de fútbol reglamentario sin añadido?",
+   "90 minutos","80 minutos","100 minutos","120 minutos"],
+
+  ["¿Cuánto dura cada parte de un partido de fútbol 11?",
+   "45 minutos","40 minutos","30 minutos","50 minutos"],
+
+  ["¿Cuántos puntos da una victoria en una liga convencional?",
+   "3","2","4","1"],
+
+  ["¿Cuánto mide de ancho una portería reglamentaria de fútbol 11?",
+   "7,32 metros","6 metros","8 metros","7 metros"],
+
+  ["¿A cuántos metros de la línea de gol está el punto de penalti en fútbol 11?",
+   "11 metros","9 metros","12 metros","10 metros"],
+
+  ["¿Qué tarjeta significa expulsión?",
+   "Roja","Amarilla","Azul","Verde"],
+
+  ["¿Qué parte del cuerpo no puede usar voluntariamente un jugador de campo para jugar el balón?",
+   "Mano o brazo","Cabeza","Pecho","Rodilla"],
+
+  ["¿Desde dónde se realiza un saque de esquina?",
+   "Desde la esquina del campo","Desde el centro","Desde el área","Desde la banda central"],
+
+  ["¿Qué significa VAR?",
+   "Árbitro asistente de vídeo","Valor arbitral real","Verificación automática de reglas","Vídeo de acción rápida"],
+
+  // FÚTBOL SALA
+
+  ["¿Cuántos jugadores tiene cada equipo en pista en fútbol sala, contando al portero?",
+   "5","6","7","4"],
+
+  ["¿Cuánto dura cada parte de un partido internacional de fútbol sala?",
+   "20 minutos","30 minutos","15 minutos","25 minutos"],
+
+  ["¿Cuántos cambios se pueden realizar en fútbol sala?",
+   "Ilimitados","3","5","7"],
+
+  ["¿Cómo se efectúa normalmente un saque de banda en fútbol sala?",
+   "Con el pie","Con las manos","Con la cabeza","Con un bote"],
+
+  ["¿Existe fuera de juego en el fútbol sala?",
+   "No","Sí, siempre","Solo en la segunda parte","Solo en los córners"],
+
+  ["¿Cuánto mide una portería reglamentaria de fútbol sala de ancho?",
+   "3 metros","5 metros","4 metros","2 metros"],
+
+  ["¿Cuántos metros hay desde la línea de gol al primer punto de penalti en fútbol sala?",
+   "6 metros","7 metros","9 metros","11 metros"],
+
+  ["¿Cuántas faltas acumuladas puede cometer un equipo en una parte antes de que la siguiente conlleve un tiro libre sin barrera?",
+   "5","3","4","6"],
+
+  ["¿Qué selección ganó el Mundial de fútbol sala de 2021?",
+   "Portugal","España","Brasil","Argentina"],
+
+  ["¿Qué selección ganó el Mundial de fútbol sala de 2016?",
+   "Argentina","Brasil","España","Portugal"],
+
+  ["¿Cuánto mide de ancho una pista internacional de fútbol sala reglamentaria?",
+   "20 metros","15 metros","25 metros","30 metros"],
+
+  // ESTADIOS Y COMPETICIONES
+
+  ["¿Qué estadio está asociado con el Liverpool?",
+   "Anfield","Old Trafford","Emirates","Stamford Bridge"],
+
+  ["¿Qué estadio está asociado con el Manchester United?",
+   "Old Trafford","Anfield","Etihad","Wembley"],
+
+  ["¿Qué club juega en Stamford Bridge?",
+   "Chelsea","Arsenal","Tottenham","Fulham"],
+
+  ["¿Qué club juega en el Emirates Stadium?",
+   "Arsenal","Chelsea","Tottenham","Liverpool"],
+
+  ["¿En qué ciudad está Wembley?",
+   "Londres","Manchester","Liverpool","Birmingham"],
+
+  ["¿Qué club juega en el Signal Iduna Park?",
+   "Borussia Dortmund","Bayern","Leverkusen","Schalke"],
+
+  ["¿Qué país organiza la Serie A?",
+   "Italia","Francia","Alemania","Portugal"],
+
+  ["¿Qué país organiza la Bundesliga?",
+   "Alemania","Austria","Suiza","Bélgica"],
+
+  ["¿Qué país organiza la Premier League?",
+   "Inglaterra","España","Italia","Alemania"],
+
+  ["¿Qué país organiza la Ligue 1?",
+   "Francia","Portugal","Bélgica","Países Bajos"]
+
 ];
 
-let preguntas = [...banco]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 10);
+/* =========================================
+   VARIABLES DEL JUEGO
+========================================= */
 
-let actual = 0;
-let puntos = 0;
-let segundos = 15;
-let respondido = false;
-let reloj = null;
+const DURACION = 30000;
+const PAUSA_RESPUESTA = 180;
 
-const mensaje = document.getElementById("mensaje");
-const siguiente = document.getElementById("siguiente");
+let preguntas = [];
+let indice = 0;
+let correctas = 0;
+let incorrectas = 0;
+let jugando = false;
+let bloqueado = false;
 
-function mostrarPregunta() {
-  if (actual >= preguntas.length) {
-    finalizar();
+let finTiempo = 0;
+let relojAnimacion = null;
+let siguienteTimeout = null;
+let partidaId = 0;
+
+const startScreen = document.getElementById("startScreen");
+const playScreen = document.getElementById("playScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const timeDisplay = document.getElementById("timeDisplay");
+const timerBar = document.getElementById("timerBar");
+const answers = document.getElementById("answers");
+const feedback = document.getElementById("feedback");
+
+/* MEZCLA ALEATORIA FISHER-YATES */
+
+function mezclar(array) {
+  const resultado = [...array];
+
+  for (let i = resultado.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [resultado[i], resultado[j]] =
+      [resultado[j], resultado[i]];
+  }
+
+  return resultado;
+}
+
+/* EMPEZAR UNA PARTIDA */
+
+function iniciarPartida() {
+  partidaId++;
+
+  clearTimeout(siguienteTimeout);
+  cancelAnimationFrame(relojAnimacion);
+
+  preguntas = mezclar(banco);
+  indice = 0;
+  correctas = 0;
+  incorrectas = 0;
+  jugando = true;
+  bloqueado = false;
+
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  playScreen.classList.remove("hidden");
+
+  document.getElementById("gameBox")
+    .classList.remove("urgent");
+
+  document.getElementById("correctDisplay")
+    .textContent = "0";
+
+  document.getElementById("wrongDisplay")
+    .textContent = "0";
+
+  finTiempo = performance.now() + DURACION;
+
+  mostrarPregunta();
+  actualizarTiempo();
+}
+
+/* RELOJ GLOBAL DE 30 SEGUNDOS */
+
+function actualizarTiempo() {
+  if (!jugando) return;
+
+  const restante = Math.max(
+    0,
+    finTiempo - performance.now()
+  );
+
+  timeDisplay.textContent =
+    (restante / 1000).toFixed(1);
+
+  timerBar.style.width =
+    (restante / DURACION * 100) + "%";
+
+  if (restante <= 5000) {
+    document.getElementById("gameBox")
+      .classList.add("urgent");
+  }
+
+  if (restante <= 0) {
+    finalizarPartida();
     return;
   }
 
-  respondido = false;
-  segundos = 15;
-  siguiente.disabled = true;
-  mensaje.textContent = "";
-
-  const q = preguntas[actual];
-
-  document.getElementById("numero").textContent =
-    (actual + 1) + "/10";
-
-  document.getElementById("pregunta").textContent = q.p;
-  document.getElementById("tiempo").textContent = segundos;
-
-  const contenedor = document.getElementById("opciones");
-  contenedor.innerHTML = "";
-
-  q.o.forEach((texto, i) => {
-    const btn = document.createElement("button");
-    btn.className = "choice";
-    btn.textContent = texto;
-
-    btn.onclick = () => responder(i);
-    contenedor.appendChild(btn);
-  });
-
-  clearInterval(reloj);
-
-  reloj = setInterval(() => {
-    if (respondido) return;
-
-    segundos--;
-    document.getElementById("tiempo").textContent = segundos;
-
-    if (segundos <= 0) {
-      responder(-1);
-    }
-  }, 1000);
+  relojAnimacion = requestAnimationFrame(actualizarTiempo);
 }
 
-function responder(indice) {
-  if (respondido) return;
+/* MOSTRAR PREGUNTA */
 
-  respondido = true;
-  clearInterval(reloj);
+function mostrarPregunta() {
+  if (!jugando) return;
 
-  const correcta = preguntas[actual].c;
-
-  if (indice === correcta) {
-    const ganados = 100 + segundos * 10;
-    puntos += ganados;
-    mensaje.textContent =
-      "✅ ¡Correcto! +" + ganados + " puntos.";
-  } else {
-    mensaje.textContent =
-      "❌ Respuesta correcta: " +
-      preguntas[actual].o[correcta];
+  if (performance.now() >= finTiempo) {
+    finalizarPartida();
+    return;
   }
 
-  document.getElementById("puntos").textContent = puntos;
+  // Si se agota el banco, volvemos a mezclarlo.
+  if (indice >= preguntas.length) {
+    preguntas = mezclar(banco);
+    indice = 0;
+  }
 
-  document.querySelectorAll(".choice").forEach((btn, i) => {
-    btn.disabled = true;
+  bloqueado = false;
+  feedback.textContent = "";
 
-    if (i === correcta) {
-      btn.style.background = "#126342";
-    } else if (i === indice) {
-      btn.style.background = "#902b42";
-    }
+  const pregunta = preguntas[indice];
+
+  document.getElementById("questionNumber")
+    .textContent = "PREGUNTA " +
+      (correctas + incorrectas + 1);
+
+  document.getElementById("questionText")
+    .textContent = pregunta[0];
+
+  answers.innerHTML = "";
+
+  const opciones = mezclar([
+    { texto: pregunta[1], correcta: true },
+    { texto: pregunta[2], correcta: false },
+    { texto: pregunta[3], correcta: false },
+    { texto: pregunta[4], correcta: false }
+  ]);
+
+  const letras = ["A", "B", "C", "D"];
+
+  opciones.forEach((opcion, i) => {
+    const boton = document.createElement("button");
+
+    boton.className = "answer-btn";
+
+    const letra = document.createElement("span");
+    letra.className = "letter";
+    letra.textContent = letras[i];
+
+    const texto = document.createElement("span");
+    texto.textContent = opcion.texto;
+
+    boton.append(letra, texto);
+
+    boton.addEventListener("click", () => {
+      responder(opcion.correcta, boton);
+    });
+
+    answers.appendChild(boton);
   });
-
-  siguiente.disabled = false;
 }
 
-siguiente.onclick = () => {
-  actual++;
-  mostrarPregunta();
-};
+/* RESPONDER */
 
-function finalizar() {
-  clearInterval(reloj);
-  document.getElementById("pregunta").textContent =
-    "🏆 ¡TRIVIAL TERMINADO!";
+function responder(esCorrecta, boton) {
+  if (!jugando || bloqueado) return;
 
-  document.getElementById("opciones").innerHTML = "";
-  mensaje.textContent = "Puntuación final: " + puntos;
-  siguiente.disabled = true;
+  if (performance.now() >= finTiempo) {
+    finalizarPartida();
+    return;
+  }
 
-  guardarResultado("Trivial", puntos);
+  bloqueado = true;
+
+  if (esCorrecta) {
+    correctas++;
+
+    boton.classList.add("correct");
+    feedback.textContent = "✅ ¡CORRECTO! +1";
+
+  } else {
+    incorrectas++;
+
+    boton.classList.add("wrong");
+    feedback.textContent = "❌ ¡FALLO!";
+
+    // Señalar también la respuesta correcta.
+    const correcta = preguntas[indice][1];
+
+    document.querySelectorAll(".answer-btn")
+      .forEach(b => {
+        const texto = b.querySelector("span:last-child");
+
+        if (texto && texto.textContent === correcta) {
+          b.classList.add("correct");
+        }
+      });
+  }
+
+  document.getElementById("correctDisplay")
+    .textContent = correctas;
+
+  document.getElementById("wrongDisplay")
+    .textContent = incorrectas;
+
+  document.querySelectorAll(".answer-btn")
+    .forEach(b => b.disabled = true);
+
+  indice++;
+
+  const idActual = partidaId;
+
+  siguienteTimeout = setTimeout(() => {
+    if (jugando && idActual === partidaId) {
+      mostrarPregunta();
+    }
+  }, PAUSA_RESPUESTA);
 }
 
-mostrarPregunta();
+/* FINALIZAR LA PARTIDA */
+
+function finalizarPartida() {
+  if (!jugando) return;
+
+  jugando = false;
+  partidaId++;
+
+  cancelAnimationFrame(relojAnimacion);
+  clearTimeout(siguienteTimeout);
+
+  playScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+
+  const total = correctas + incorrectas;
+
+  const precision = total
+    ? Math.round(correctas / total * 100)
+    : 0;
+
+  document.getElementById("finalScore")
+    .textContent = correctas;
+
+  document.getElementById("finalCorrect")
+    .textContent = correctas;
+
+  document.getElementById("finalWrong")
+    .textContent = incorrectas;
+
+  document.getElementById("finalAccuracy")
+    .textContent = precision + "%";
+
+  let mensajeFinal;
+
+  if (correctas >= 20) {
+    mensajeFinal = "👑 ¡LEYENDA ABSOLUTA DEL FÚTBOL!";
+  } else if (correctas >= 15) {
+    mensajeFinal = "🔥 ¡ERES UNA ENCICLOPEDIA!";
+  } else if (correctas >= 10) {
+    mensajeFinal = "⚡ ¡MUY BUEN NIVEL!";
+  } else if (correctas >= 5) {
+    mensajeFinal = "⚽ ¡NO ESTÁ NADA MAL!";
+  } else {
+    mensajeFinal = "💀 ¡TE TOCA ESTUDIAR FÚTBOL!";
+  }
+
+  document.getElementById("finalMessage")
+    .textContent = mensajeFinal;
+
+  // Guardar en el ranking que ya tenemos.
+  if (typeof guardarResultado === "function") {
+    guardarResultado("Trivial", correctas);
+  }
+}
+
+/* BOTONES */
+
+document.getElementById("startButton")
+  .addEventListener("click", iniciarPartida);
+
+document.getElementById("retryButton")
+  .addEventListener("click", iniciarPartida);
+
+/* TECLADO: 1, 2, 3, 4 */
+
+window.addEventListener("keydown", e => {
+  if (!jugando || bloqueado || e.repeat) return;
+
+  if (!["1", "2", "3", "4"].includes(e.key)) return;
+
+  const opcion = Number(e.key) - 1;
+  const botones = document.querySelectorAll(".answer-btn");
+
+  if (botones[opcion]) {
+    botones[opcion].click();
+  }
+});
+
 </script>
 
 </body>
