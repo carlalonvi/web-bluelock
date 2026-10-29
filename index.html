@@ -1,1886 +1,4274 @@
-
 <!DOCTYPE html>
+
 <html lang="es">
 
+
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <meta name="theme-color" content="#07111f">
+
+
 
 <title>Blue Lock FS | Web oficial</title>
 
+
+
 <style>
+
+
 
 /* COLORES GENERALES */
 
+
+
 :root {
+
   --bg: #050b16;
+
   --bg2: #0a1830;
+
   --panel: #0d1b31;
+
   --panel-strong: #0f2240;
+
   --line: #1d3d73;
+
   --text: #f2f7ff;
+
   --muted: #a8b8d6;
+
   --blue: #1b6fff;
+
   --blue2: #33b1ff;
+
   --blue3: #79d8ff;
+
   --gold: #f7c84c;
+
   --shadow: 0 20px 50px rgba(0,0,0,.35);
+
   --radius: 22px;
+
 }
+
+
 
 * {
+
   box-sizing: border-box;
+
 }
+
+
 
 html {
+
   scroll-behavior: smooth;
+
 }
+
+
 
 body {
+
   margin: 0;
+
   font-family: Inter, system-ui, Arial, sans-serif;
+
   color: var(--text);
 
+
+
   background:
+
     radial-gradient(
+
       circle at 15% 10%,
+
       rgba(51,177,255,.17),
+
       transparent 25%
+
     ),
+
     radial-gradient(
+
       circle at 85% 15%,
+
       rgba(27,111,255,.19),
+
       transparent 20%
+
     ),
+
     linear-gradient(
+
       180deg,
+
       #07101d,
+
       #050b16
+
     );
 
+
+
   min-height: 100vh;
+
 }
+
+
 
 button {
+
   font: inherit;
+
   cursor: pointer;
+
 }
+
+
 
 a {
+
   color: inherit;
+
   text-decoration: none;
+
 }
+
+
 
 img {
+
   max-width: 100%;
+
   display: block;
+
 }
 
+
+
 .wrap {
+
   max-width: 1200px;
+
   margin: auto;
+
   padding: 0 20px;
+
 }
+
+
 
 /* CABECERA */
 
+
+
 header {
+
   position: sticky;
+
   top: 0;
+
   z-index: 50;
+
+
 
   backdrop-filter: blur(14px);
 
+
+
   background: rgba(5,11,22,.9);
 
+
+
   border-bottom: 1px solid rgba(72,117,211,.2);
+
 }
+
+
 
 .nav {
+
   min-height: 78px;
 
+
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
+
+
   gap: 16px;
+
   flex-wrap: wrap;
+
 }
+
+
 
 .brand {
+
   display: flex;
+
   align-items: center;
+
   gap: 14px;
+
   font-weight: 900;
+
 }
 
+
+
 .brand-badge {
+
   width: 48px;
+
   height: 48px;
+
+
 
   border-radius: 14px;
 
+
+
   background: linear-gradient(
+
     135deg,
+
     #164bb2,
+
     #33b1ff
+
   );
 
+
+
   padding: 6px;
+
 }
+
+
 
 .brand-badge img {
+
   width: 100%;
+
   height: 100%;
+
   object-fit: contain;
+
 }
+
+
 
 .brand h1 {
+
   font-size: 1.1rem;
+
   margin: 0;
+
 }
+
+
 
 .brand span {
+
   display: block;
 
+
+
   font-size: .8rem;
+
   color: var(--blue3);
 
+
+
   letter-spacing: .14em;
+
   text-transform: uppercase;
+
 }
+
+
 
 /* MENÚ */
 
+
+
 nav {
+
   display: flex;
+
   align-items: center;
+
   gap: 8px;
+
   flex-wrap: wrap;
+
 }
 
+
+
 nav button,
+
 nav .nav-link {
+
   background: transparent;
+
   border: 1px solid transparent;
+
+
 
   color: var(--muted);
 
+
+
   padding: 11px 14px;
+
   border-radius: 12px;
 
+
+
   font-size: 1rem;
+
   font-weight: 400;
 
+
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
 
+
+
   transition: .2s;
+
 }
 
+
+
 nav button:hover,
+
 nav button[aria-current="page"],
+
 nav .nav-link:hover {
+
   color: white;
+
+
 
   background: rgba(27,111,255,.15);
 
+
+
   border-color: rgba(57,150,255,.35);
+
 }
+
+
 
 /* PÁGINAS */
 
+
+
 main {
+
   padding: 26px 0 80px;
+
 }
+
+
 
 .page {
+
   display: none;
+
 }
+
+
 
 .page.active {
+
   display: block;
+
 }
+
+
 
 .section-head {
+
   margin: 44px 0 20px;
+
 }
+
+
 
 .section-head h2 {
+
   font-size: clamp(2rem,4vw,3.1rem);
+
   margin: 10px 0;
+
   letter-spacing: -.04em;
+
 }
+
+
 
 .section-head p {
+
   max-width: 800px;
+
   color: var(--muted);
+
   line-height: 1.7;
+
 }
 
+
+
 .eyebrow {
+
   display: inline-block;
 
+
+
   padding: 7px 12px;
+
   border-radius: 999px;
+
+
 
   background: rgba(51,177,255,.12);
 
+
+
   color: var(--blue3);
 
+
+
   font-size: .78rem;
+
   font-weight: 800;
 
+
+
   letter-spacing: .14em;
+
   text-transform: uppercase;
 
+
+
   border: 1px solid rgba(80,188,255,.22);
+
 }
+
+
 
 /* PORTADA */
 
+
+
 .hero {
+
   display: grid;
+
   grid-template-columns: 1.2fr .8fr;
 
+
+
   gap: 28px;
+
   padding: 30px;
 
+
+
   border: 1px solid rgba(72,117,211,.25);
+
   border-radius: 30px;
 
+
+
   background: linear-gradient(
+
     140deg,
+
     #10223d,
+
     #060d1a
+
   );
 
+
+
   box-shadow: var(--shadow);
+
 }
+
+
 
 .hero h2 {
+
   font-size: clamp(2.7rem,7vw,5.2rem);
 
+
+
   line-height: 1;
+
   letter-spacing: -.05em;
 
+
+
   margin: 20px 0;
+
 }
+
+
 
 .hero h2 strong {
+
   color: var(--blue2);
+
 }
+
+
 
 .hero p {
+
   font-size: 1.08rem;
+
   line-height: 1.7;
+
   color: #d2dced;
+
 }
 
+
+
 .hero-actions {
+
   display: flex;
+
   gap: 12px;
+
   flex-wrap: wrap;
+
   margin-top: 22px;
+
 }
+
+
 
 /* BOTONES */
 
+
+
 .btn {
+
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
+
 
   border: 0;
 
+
+
   padding: 14px 18px;
+
   border-radius: 14px;
+
+
 
   font-weight: 900;
 
+
+
   color: white;
 
+
+
   background: linear-gradient(
+
     135deg,
+
     var(--blue),
+
     var(--blue2)
+
   );
 
+
+
   transition: .2s;
+
 }
+
+
 
 .btn:hover {
+
   filter: brightness(1.15);
+
   transform: translateY(-2px);
+
 }
+
+
 
 .btn.secondary {
+
   background: rgba(255,255,255,.05);
 
+
+
   border: 1px solid rgba(123,177,255,.25);
+
 }
 
+
+
 .btn.secondary:hover {
+
   background: rgba(27,111,255,.22);
+
   border-color: var(--blue2);
+
 }
+
+
 
 /* LOGO */
 
+
+
 .logo-card {
+
   background: rgba(13,27,49,.85);
 
+
+
   border: 1px solid var(--line);
+
   border-radius: 22px;
 
+
+
   padding: 22px;
+
   height: 100%;
 
+
+
   display: flex;
+
   flex-direction: column;
 
+
+
   align-items: center;
+
   justify-content: center;
+
 }
+
+
 
 .logo-card img {
+
   width: min(320px,100%);
 
+
+
   filter: drop-shadow(
+
     0 0 25px rgba(27,111,255,.25)
+
   );
+
 }
 
+
+
 .logo-card small {
+
   text-align: center;
+
+
 
   margin-top: 15px;
 
+
+
   color: var(--muted);
+
 }
+
+
 
 /* TARJETAS */
 
-.top-grid,
-.cards-grid,
-.stats-grid,
-.roster-grid {
-  display: grid;
-  gap: 18px;
-  margin-top: 20px;
-}
+
 
 .top-grid,
-.cards-grid {
-  grid-template-columns: repeat(3,minmax(0,1fr));
+
+.cards-grid,
+
+.stats-grid,
+
+.roster-grid {
+
+  display: grid;
+
+  gap: 18px;
+
+  margin-top: 20px;
+
 }
+
+
+
+.top-grid,
+
+.cards-grid {
+
+  grid-template-columns: repeat(3,minmax(0,1fr));
+
+}
+
+
 
 .stats-grid {
+
   grid-template-columns: 1.1fr .9fr;
+
 }
 
+
+
 .mini-card,
+
 .card,
+
 .section-shell,
+
 .ranking-table {
+
   background: rgba(13,27,49,.9);
 
+
+
   border: 1px solid rgba(72,117,211,.25);
+
   border-radius: var(--radius);
+
+
 
   padding: 22px;
 
+
+
   box-shadow: var(--shadow);
+
 }
+
+
 
 .mini-card h3,
+
 .card h3 {
+
   margin: 12px 0;
+
   font-size: 1.2rem;
+
 }
+
+
 
 .mini-card p,
+
 .card p,
+
 .section-shell p {
+
   color: var(--muted);
+
   line-height: 1.65;
+
 }
 
+
+
 .chip {
+
   display: inline-block;
+
+
 
   padding: 6px 10px;
 
+
+
   border-radius: 999px;
+
+
 
   background: rgba(51,177,255,.1);
 
+
+
   border: 1px solid rgba(123,177,255,.2);
+
+
 
   color: var(--blue3);
 
+
+
   font-size: .76rem;
+
   font-weight: 800;
 
+
+
   letter-spacing: .05em;
+
   text-transform: uppercase;
+
 }
 
+
+
 .warning-chip {
+
   background: rgba(247,200,76,.12);
+
+
 
   color: var(--gold);
 
+
+
   border-color: rgba(247,200,76,.25);
+
 }
+
+
 
 /* JUGADORES EN INICIO */
 
+
+
 .home-roster {
+
   display: flex;
+
   flex-direction: column;
 
+
+
   gap: 7px;
+
   margin-top: 18px;
+
 }
 
+
+
 .home-roster-row {
+
   display: flex;
+
   align-items: center;
 
+
+
   gap: 12px;
+
   padding: 9px 11px;
+
+
 
   border-radius: 10px;
 
+
+
   background: rgba(27,111,255,.08);
+
+
 
   border: 1px solid rgba(51,177,255,.15);
 
+
+
   transition: .2s;
+
 }
+
+
 
 .home-roster-row:hover {
+
   background: rgba(27,111,255,.2);
+
   transform: translateX(3px);
+
 }
 
+
+
 .home-number {
+
   color: var(--blue2);
+
+
 
   min-width: 42px;
 
+
+
   font-size: 1.1rem;
+
   font-weight: 900;
+
 }
+
+
 
 .home-roster-row strong {
+
   font-size: .9rem;
+
 }
 
+
+
 .roster-more {
+
   width: 100%;
+
   margin-top: 18px;
+
 }
+
+
 
 /* TARJETA ESPECIAL DE MINIJUEGOS */
 
+
+
 .games-home-card {
+
   background:
+
     radial-gradient(
+
       circle at top right,
+
       rgba(27,111,255,.28),
+
       transparent 60%
+
     ),
+
     #0d1b31;
+
+
 
   border: 1px solid rgba(51,177,255,.45);
 
+
+
   position: relative;
+
   overflow: hidden;
+
 }
+
+
 
 .games-home-card h3 {
+
   font-size: 1.5rem;
+
   color: white;
+
 }
+
+
 
 .games-home-card .games-icon {
+
   font-size: 3rem;
+
   margin: 12px 0;
+
 }
+
+
 
 .games-home-card .btn {
+
   width: 100%;
+
   margin-top: 16px;
+
 }
+
+
 
 .games-home-card:hover {
+
   border-color: var(--blue2);
 
+
+
   box-shadow: 0 0 30px rgba(27,111,255,.20);
+
 }
+
+
 
 /* PLANTILLA */
 
+
+
 .roster-grid {
+
   grid-template-columns: repeat(3,minmax(0,1fr));
+
   gap: 22px;
+
 }
 
+
+
 .roster-card {
+
   padding: 0;
+
   overflow: hidden;
+
+
 
   background: #081426;
 
+
+
   border: 1px solid #1b4b92;
+
   border-radius: 18px;
+
+
 
   box-shadow: var(--shadow);
 
+
+
   transition: transform .25s, box-shadow .25s;
+
 }
 
+
+
 .roster-card:hover {
+
   transform: translateY(-7px);
+
+
 
   border-color: var(--blue2);
 
+
+
   box-shadow: 0 0 28px rgba(27,111,255,.4);
+
 }
+
+
 
 .roster-photo {
+
   width: 100%;
+
   aspect-ratio: 2 / 3;
+
+
 
   object-fit: cover;
+
   object-position: top;
+
 }
+
+
 
 .roster-placeholder {
+
   width: 100%;
+
   aspect-ratio: 2 / 3;
 
+
+
   background: radial-gradient(
+
     circle,
+
     #164ca0,
+
     #081426 70%
+
   );
 
+
+
   display: flex;
+
   flex-direction: column;
 
+
+
   align-items: center;
+
   justify-content: center;
 
+
+
   gap: 12px;
+
 }
 
+
+
 .roster-placeholder span {
+
   font-size: clamp(4rem,8vw,7rem);
+
+
 
   color: var(--blue2);
 
+
+
   font-weight: 900;
+
 }
+
+
 
 .roster-placeholder small {
+
   color: var(--blue3);
+
   letter-spacing: 3px;
+
 }
+
+
 
 .roster-info {
+
   padding: 20px;
+
 }
 
+
+
 .roster-info h3 {
+
   color: white;
+
+
 
   font-size: 1.5rem;
 
+
+
   margin: 0 0 12px;
+
 }
+
+
 
 .roster-info .chip {
+
   margin: 0 5px 6px 0;
+
 }
+
+
 
 .roster-info p {
+
   color: var(--muted);
 
+
+
   font-size: .95rem;
+
   line-height: 1.7;
 
+
+
   margin: 12px 0 0;
+
 }
+
+
 
 .president-card {
+
   border-color: var(--blue2);
 
+
+
   box-shadow: 0 0 24px rgba(27,111,255,.2);
+
 }
+
+
 
 .president-card .roster-info {
+
   background: linear-gradient(
+
     135deg,
+
     #102b59,
+
     #081426
+
   );
+
 }
+
+
 
 .goalkeeper-card {
+
   border-color: #cba42b;
 
+
+
   box-shadow: 0 0 20px rgba(247,200,76,.12);
+
 }
+
+
 
 /* RANKING */
 
+
+
 .ranking-table {
+
   padding: 0;
+
   overflow-x: auto;
+
 }
 
+
+
 .ranking-header {
+
   padding: 20px 22px;
+
+
 
   border-bottom: 1px solid var(--line);
 
+
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
+
+
   gap: 12px;
+
 }
+
+
 
 table {
+
   border-collapse: collapse;
+
   width: 100%;
+
 }
 
+
+
 th,
+
 td {
+
   text-align: left;
+
+
 
   padding: 14px 18px;
 
+
+
   border-bottom: 1px solid rgba(72,117,211,.15);
+
 }
+
+
 
 th {
+
   color: #92bee8;
 
+
+
   font-size: .82rem;
+
   letter-spacing: .08em;
 
+
+
   text-transform: uppercase;
+
 }
 
+
+
 .pos {
+
   width: 34px;
+
   height: 34px;
+
+
 
   border-radius: 50%;
 
+
+
   display: grid;
+
   place-items: center;
+
+
 
   background: rgba(27,111,255,.16);
 
+
+
   color: var(--blue3);
+
   font-weight: 900;
+
 }
+
+
 
 .gold {
+
   color: #ffd875;
+
   background: rgba(247,200,76,.16);
+
 }
+
+
 
 .silver {
+
   color: #d8e4f8;
+
   background: rgba(196,210,231,.13);
+
 }
+
+
 
 .bronze {
+
   color: #eeb693;
+
   background: rgba(195,129,91,.15);
+
 }
+
+
 
 .ranking-note {
+
   padding: 16px 22px;
 
+
+
   color: var(--muted);
+
   font-size: .9rem;
+
 }
 
+
+
 .stat-pill {
+
   display: flex;
+
   justify-content: space-between;
 
+
+
   gap: 12px;
+
   padding: 14px;
+
+
 
   margin-top: 12px;
 
+
+
   border-radius: 14px;
+
+
 
   background: rgba(255,255,255,.03);
 
+
+
   border: 1px solid rgba(255,255,255,.05);
+
 }
 
+
+
 .stat-pill strong {
+
   color: var(--blue3);
+
 }
+
+
 
 /* PIE */
 
+
+
 .footer {
+
   border-top: 1px solid var(--line);
+
+
 
   padding: 30px;
 
+
+
   text-align: center;
 
+
+
   color: var(--muted);
+
 }
+
+
 
 /* RESPONSIVE */
 
+
+
 @media (max-width: 980px) {
 
+
+
   .hero,
+
   .stats-grid {
+
     grid-template-columns: 1fr;
+
   }
 
+
+
   .top-grid,
+
   .cards-grid,
+
   .roster-grid {
+
     grid-template-columns: repeat(2,minmax(0,1fr));
+
   }
+
+
+
+}
+
+
+
+@media (max-width: 680px) {
+
+
+
+  .nav {
+
+    justify-content: center;
+
+    padding: 12px 0;
+
+  }
+
+
+
+  nav {
+
+    justify-content: center;
+
+  }
+
+
+
+  nav button,
+
+  nav .nav-link {
+
+    padding: 9px;
+
+    font-size: .85rem;
+
+  }
+
+
+
+  .hero {
+
+    padding: 22px;
+
+  }
+
+
+
+  .hero h2 {
+
+    font-size: 2.6rem;
+
+  }
+
+
+
+  .top-grid,
+
+  .cards-grid,
+
+  .roster-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+  .roster-photo {
+
+    aspect-ratio: 3 / 4;
+
+  }
+
+
+
+}
+
+
+
+
+
+/* REDES SOCIALES EN LA CABECERA */
+
+.social-links {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+}
+
+.social-button {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: rgba(27,111,255,.10);
+
+  border: 1px solid rgba(51,177,255,.3);
+
+  border-radius: 12px;
+
+  color: white;
+
+  transition: background .2s, transform .2s;
+
+}
+
+.social-button svg { width: 22px; height: 22px; }
+
+.social-button:hover { transform: translateY(-3px); }
+
+.social-button.instagram:hover { background: #c13584; }
+
+.social-button.youtube:hover { background: #ff0033; }
+
+
+
+/* PARTIDO COMPLETO EN INICIO */
+
+.partidos-section { margin-top: 62px; }
+
+.partido-card {
+
+  margin-top: 20px;
+
+  padding: 24px;
+
+  background: linear-gradient(145deg, #10264b, #071425);
+
+  border: 1px solid #285399;
+
+  border-radius: 22px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,.25);
+
+}
+
+.partido-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+
+}
+
+.partido-header h3 { font-size: 1.5rem; margin: 12px 0; }
+
+.partido-header p { color: var(--muted); line-height: 1.6; }
+
+.video-container {
+
+  width: 100%;
+
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 15px;
+
+  background: #000;
+
+  border: 1px solid #1b6fff;
+
+}
+
+.video-container iframe {
+
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  border: 0;
 
 }
 
 @media (max-width: 680px) {
 
-  .nav {
-    justify-content: center;
-    padding: 12px 0;
-  }
+  .social-links { justify-content: center; width: 100%; }
 
-  nav {
-    justify-content: center;
-  }
+  .partido-card { padding: 12px; }
 
-  nav button,
-  nav .nav-link {
-    padding: 9px;
-    font-size: .85rem;
-  }
+  .partido-header { flex-direction: column; align-items: flex-start; }
 
-  .hero {
-    padding: 22px;
-  }
+  .partido-header .btn { width: 100%; text-align: center; }
 
-  .hero h2 {
-    font-size: 2.6rem;
-  }
+}
 
-  .top-grid,
-  .cards-grid,
-  .roster-grid {
-    grid-template-columns: 1fr;
-  }
 
-  .roster-photo {
-    aspect-ratio: 3 / 4;
-  }
 
+
+
+/* SECCIÓN DE LIGA · SENIOR TERCERA */
+
+.league-hero{margin:26px 0 22px;padding:24px 26px;border:1px solid #2a6fcd;border-radius:24px;background:radial-gradient(circle at 90% 0%,rgba(36,127,255,.25),transparent 48%),linear-gradient(120deg,#102b56,#08172d);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+
+.league-hero h2{font-size:clamp(1.6rem,4vw,2.7rem);margin:8px 0;letter-spacing:-.03em}
+
+.league-hero p{margin:6px 0;color:#bed0ec;line-height:1.6}
+
+.league-number{font-weight:900;font-size:3rem;color:#43bbff;line-height:1}
+
+.league-number small{display:block;color:#a8c3e6;font-size:.75rem;letter-spacing:.15em}
+
+.league-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.85fr);gap:20px}
+
+.league-card{background:#0c1b32;border:1px solid #244879;border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+
+.league-card-heading{padding:22px 22px 14px;border-bottom:1px solid #203d63}
+
+.league-card-heading h3{margin:9px 0;font-size:1.24rem}
+
+.league-card-heading p{font-size:.87rem;color:var(--muted);line-height:1.55}
+
+.league-table-wrap{overflow-x:auto}
+
+.league-table{min-width:620px;font-size:.86rem}
+
+.league-table th,.league-table td{white-space:nowrap;padding:12px 9px}
+
+.league-table th:first-child,.league-table td:first-child{padding-left:16px}
+
+.league-table th{font-size:.72rem;letter-spacing:.03em}
+
+.league-table td{font-variant-numeric:tabular-nums}
+
+.league-table .team-name{font-weight:700;min-width:155px}
+
+.league-table .our-team{background:rgba(25,113,255,.23);color:#fff;box-shadow:inset 4px 0 #35b7ff}
+
+.league-table .our-team td{border-color:#285da5}
+
+.league-table .our-team .team-name{color:#8de6ff}
+
+.league-key{font-size:.78rem;color:#91b6df;padding:14px 18px;line-height:1.5}
+
+.next-match{padding:22px;background:linear-gradient(145deg,#123363,#0b203e);border-bottom:1px solid #28518b}
+
+.next-match .match-versus{font-size:1.35rem;font-weight:900;line-height:1.45;margin:12px 0}
+
+.next-match .match-versus strong{color:#6bd4ff}
+
+.next-match .match-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+.match-meta span{font-size:.82rem;color:#dbedff;border:1px solid #39639c;border-radius:10px;padding:7px 9px;background:rgba(0,0,0,.13)}
+
+.jornada-list{display:grid;gap:10px;padding:14px}
+
+.jornada-item{display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:12px;padding:13px;border-radius:13px;background:#102440;border:1px solid #203f68}
+
+.jornada-item.completed{background:#101f35}
+
+.jornada-item.rest{background:#152039}
+
+.jornada-item.upcoming{border-color:#348ce6;background:#14315a}
+
+.jornada-num{border:1px solid #34649b;border-radius:10px;padding:9px 5px;text-align:center;color:#7dd8ff;font-size:.82rem;font-weight:900}
+
+.jornada-opponent{min-width:0;font-weight:800;line-height:1.5}
+
+.jornada-opponent small{display:block;font-size:.76rem;font-weight:400;color:#acc2e0}
+
+.jornada-state{font-size:.76rem;font-weight:800;color:#9edcff;text-align:right;white-space:nowrap}
+
+.jornada-state.result{color:#7df0c0}
+
+.jornada-state.rest{color:#e9c980}
+
+.jornada-notice{font-size:.82rem;color:#a8c0e2;line-height:1.5;padding:5px 14px 18px}
+
+.player-stats-collapse{margin-top:26px;border:1px solid #244879;border-radius:18px;background:#0b1a30;overflow:hidden}
+
+.player-stats-collapse summary{cursor:pointer;font-size:1.05rem;font-weight:800;color:#dceeff;padding:20px 22px}
+
+.player-stats-collapse[open] summary{border-bottom:1px solid #244879}
+
+.player-stats-inner{padding:20px;display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+
+.player-stats-inner .ranking-table,.player-stats-inner .section-shell{margin:0;min-width:0}
+
+.player-stats-inner table{min-width:420px}
+
+@media(max-width:980px){.league-layout,.player-stats-inner{grid-template-columns:1fr}}
+
+@media(max-width:600px){.league-hero{padding:18px}.jornada-item{grid-template-columns:42px minmax(0,1fr)}.jornada-state{grid-column:2;text-align:left}.league-number{font-size:2.1rem}}
+
+
+
+
+/* ESTADÍSTICAS DE JUGADORES: DOS COLUMNAS SIN SCROLL HORIZONTAL */
+.player-stats-collapse { width: 100%; }
+.player-stats-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: stretch;
+  width: 100%;
+  padding: 20px;
+}
+.player-stats-inner > .ranking-table,
+.player-stats-inner > .section-shell {
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+}
+.player-stats-inner > .ranking-table { overflow-x: hidden; }
+.player-stats-inner table {
+  min-width: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+.player-stats-inner th,
+.player-stats-inner td {
+  padding: 12px 7px;
+  font-size: .82rem;
+  overflow-wrap: anywhere;
+}
+.player-stats-inner th:nth-child(1),
+.player-stats-inner td:nth-child(1) { width: 15%; }
+.player-stats-inner th:nth-child(2),
+.player-stats-inner td:nth-child(2) { width: 34%; }
+.player-stats-inner th:nth-child(3),
+.player-stats-inner td:nth-child(3),
+.player-stats-inner th:nth-child(4),
+.player-stats-inner td:nth-child(4) { width: 16%; }
+.player-stats-inner th:nth-child(5),
+.player-stats-inner td:nth-child(5) { width: 19%; }
+.player-stats-inner .stat-pill { align-items: center; }
+.player-stats-inner .stat-pill span { min-width: 0; }
+.player-stats-inner .stat-pill strong { flex-shrink: 0; }
+@media (max-width: 850px) {
+  .player-stats-inner { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 530px) {
+  .player-stats-inner { padding: 10px; gap: 12px; }
+  .player-stats-inner th,
+  .player-stats-inner td { padding: 9px 4px; font-size: .67rem; }
+  .player-stats-inner .pos { width: 27px; height: 27px; }
+  .player-stats-inner .ranking-header { padding: 15px 12px; }
 }
 
 </style>
 
+
+
 </head>
+
+
 
 <body>
 
+
+
 <!-- CABECERA -->
+
+
 
 <header>
 
+
+
   <div class="wrap nav">
+
+
 
     <div class="brand">
 
+
+
       <div class="brand-badge">
+
         <img
+
           src="assets/logo-bluelock.png"
+
           alt="Escudo Blue Lock FS"
+
         >
+
       </div>
+
+
 
       <div>
+
         <span>Fútbol sala</span>
+
         <h1>BLUE LOCK FS</h1>
+
       </div>
 
+
+
     </div>
+
+
 
     <nav aria-label="Secciones">
 
+
+
       <button data-page="inicio" aria-current="page">
+
         Inicio
+
       </button>
+
+
 
       <button data-page="plantilla">
+
         Plantilla
+
       </button>
 
+
+
       <button data-page="ranking">
+
         Ranking
+
       </button>
+
+
 
       <!-- ENLACE AL NUEVO GAME CENTER -->
 
+
+
       <a href="juegos.html" class="nav-link">
+
         Minijuegos
+
       </a>
 
+
+
       <button data-page="vestuario">
+
         Vestuario
+
       </button>
+
+
 
     </nav>
 
+
+
+    <!-- REDES SOCIALES: sustituye la URL de Instagram por la oficial -->
+
+    <div class="social-links">
+
+      <a class="social-button instagram"
+
+         href="https\://www.instagram.com/bluelock_fs"
+
+         target="_blank" rel="noopener noreferrer"
+
+         aria-label="Instagram oficial de Blue Lock FS"
+
+         title="Instagram de Blue Lock FS">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+
+          <circle cx="12" cy="12" r="4"/>
+
+          <circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/>
+
+        </svg>
+
+      </a>
+
+      <a class="social-button youtube"
+
+         href="https\://www.youtube.com/@bluelock-d3g"
+
+         target="_blank" rel="noopener noreferrer"
+
+         aria-label="Canal de YouTube de Blue Lock FS"
+
+         title="Canal oficial de YouTube">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+
+          <rect x="2" y="5" width="20" height="14" rx="4"/>
+
+          <path d="M10 9 L16 12 L10 15 Z" fill="currentColor" stroke="none"/>
+
+        </svg>
+
+      </a>
+
+    </div>
+
+
+
   </div>
+
+
 
 </header>
 
+
+
 <main class="wrap">
 
+
+
 <!-- ======================= -->
+
 <!-- INICIO -->
+
 <!-- ======================= -->
+
+
 
 <section id="inicio" class="page active">
 
+
+
   <div class="hero">
+
+
 
     <div>
 
+
+
       <div class="eyebrow">
+
         Temporada 2026/27
+
       </div>
 
+
+
       <h2>
+
         La web oficial de
+
         <strong>Blue Lock FS</strong>.
+
       </h2>
 
+
+
       <p>
+
         Bienvenidos al club donde se discuten más
+
         los cambios que las tácticas.
+
         Una web para nuestra gente, nuestras pachangas
+
         y nuestras leyendas.
 
+
+
         Obligados a llamarnos "Noctra Torrejón B"
+
         debido a distintos altercados.
+
       </p>
+
+
 
       <div class="hero-actions">
 
+
+
         <button class="btn" data-go="ranking">
+
           Ver ranking
+
         </button>
+
+
 
         <!-- BOTÓN NUEVO -->
 
+
+
         <a href="juegos.html" class="btn secondary">
+
           🎮 Entrar a minijuegos
+
         </a>
+
+
 
       </div>
 
+
+
     </div>
+
+
 
     <div class="logo-card">
 
+
+
       <img
+
         src="assets/logo-bluelock.png"
+
         alt="Escudo del equipo Blue Lock FS"
+
       >
 
+
+
       <small>
+
         Para ser parte del equipo indispensable
+
         ser militar.
+
       </small>
+
+
 
     </div>
 
+
+
   </div>
+
+
 
   <!-- INFORMACIÓN PRINCIPAL -->
 
+
+
   <div class="top-grid">
 
+
+
     <article class="mini-card">
 
+
+
       <span class="chip">
+
         Estado del equipo
+
       </span>
 
+
+
       <h3>
+
         Mucho ego, poco cardio
+
       </h3>
 
+
+
       <p>
+
         Proyecto serio por fuera,
+
         grupo de amigos por dentro.
+
       </p>
+
+
 
     </article>
 
+
+
     <article class="mini-card">
+
+
 
       <span class="chip warning-chip">
+
         Incidencia logística
+
       </span>
 
+
+
       <h3>
+
         Las equipaciones aún no han llegado
+
       </h3>
 
+
+
       <p>
+
         Por retraso del presi buscando proveedor,
+
         la equipación oficial no se estrenará
+
         hasta al menos la jornada 3.
 
+
+
         De momento toca competir con camisetas
+
         prestadas, pero con dignidad dudosa.
+
       </p>
 
+
+
     </article>
+
+
 
     <article class="mini-card">
 
+
+
       <span class="chip">
+
         Próximo partido
+
       </span>
 
+
+
       <h3>
-        Vermeer vs Bluelock
-        📍Paraíso a las 15:00
+
+        J3 · Vermeer vs Blue Lock FS  ·
+
+        📍El Paraíso · 08/11/2026 · 15:00
+
       </h3>
 
+
+
       <p>
-        Temblad, vamos con todo,
-        con ganas y sed de reivindicar
-        la 1º Jornada.
+
+        Volvemos tras descansar en la J2.
+
+        A las 15:00, a ver si sería mucho pedir llegar a las 14:45.
+
+        Venimos de empatar 2-2 en la J1.
+
       </p>
+
+
 
     </article>
 
+
+
   </div>
+
+
 
   <!-- RESUMEN -->
 
+
+
   <div class="section-head">
+
+
 
     <h2>Resumen rápido</h2>
 
+
+
     <p>
+
       Todo lo que necesitas saber sobre Blue Lock FS.
+
     </p>
+
+
 
   </div>
 
+
+
   <div class="cards-grid">
+
+
 
     <!-- CUADRO DE PLANTILLA -->
 
+
+
     <article class="card">
 
+
+
       <span class="chip">
+
         Plantilla
+
       </span>
 
+
+
       <h3>
+
         Fichas de jugadores
+
       </h3>
 
+
+
       <p>
+
         Los 10 integrantes de Blue Lock FS.
+
         Mucho ego, poco cardio y un solo escudo.
+
       </p>
 
+
+
       <div
+
         class="home-roster"
+
         id="home-roster">
+
       </div>
 
+
+
       <button
+
         class="btn secondary roster-more"
+
         data-go="plantilla">
+
         Ver plantilla completa →
+
       </button>
 
+
+
     </article>
+
+
 
     <!-- CUADRO DE RANKING -->
 
+
+
     <article class="card">
 
+
+
       <span class="chip">
+
         Ranking
+
       </span>
 
+
+
       <h3>
+
         Clasificación interna
+
       </h3>
 
+
+
       <p>
-        Goleadores, asistentes,
-        MVP, portero y los peores highlights...
-        próximamente disponible.
+
+        Clasificación real de Senior Tercera,
+
+        nuestro calendario y resultados.
+
+        ¡Mira cómo vamos en la liga!
+
       </p>
 
+
+
       <button
+
         class="btn secondary"
+
         data-go="ranking">
-        Ver clasificación
+
+        Ver liga y calendario
+
       </button>
 
+
+
     </article>
+
+
 
     <!-- NUEVO CUADRO DE MINIJUEGOS -->
 
+
+
     <article class="card games-home-card">
 
+
+
       <span class="chip">
+
         🎮 BLUE LOCK GAME CENTER
+
       </span>
 
+
+
       <div class="games-icon">
+
         ⚡
+
       </div>
 
+
+
       <h3>
+
         Despierta tu ego
+
       </h3>
 
-      <p>
-        ¿Quién es el verdadero número uno
-        de Blue Lock?
-      </p>
+
 
       <p>
-        Compite contra tus compañeros
-        en nuestros videojuegos personalizados.
-        Consigue puntos, supera récords
-        y demuestra quién manda fuera del campo.
+
+        ¿Quién es el verdadero número uno
+
+        de Blue Lock?
+
       </p>
+
+
+
+      <p>
+
+        Compite contra tus compañeros
+
+        en nuestros videojuegos personalizados.
+
+        Consigue puntos, supera récords
+
+        y demuestra quién manda fuera del campo.
+
+      </p>
+
+
 
       <div style="margin-top:16px">
 
+
+
         <span class="chip">🥅 Penaltis</span>
+
         <span class="chip">🧠 Trivial</span>
+
         <span class="chip">⚽ Mini Football</span>
+
+
 
       </div>
 
+
+
       <a
+
         href="juegos.html"
+
         class="btn">
+
         🎮 ENTRAR AL GAME CENTER →
+
       </a>
+
+
 
     </article>
 
+
+
   </div>
+
+
+
+  <!-- BLUE LOCK TV: vídeo del partido en el Inicio -->
+
+  <div class="section-head partidos-section">
+
+    <span class="eyebrow">⚽ BLUE LOCK TV</span>
+
+    <h2>Revive nuestro último partido</h2>
+
+    <p>
+
+      ¿Quieres volver a ver los goles, las paradas y aquellos fallos que
+
+      todavía se comentan? Aquí tienes el partido completo.
+
+    </p>
+
+  </div>
+
+
+
+  <div class="partido-card">
+
+    <div class="partido-header">
+
+      <div>
+
+        <span class="chip">🎬 PARTIDO COMPLETO</span>
+
+        <h3>Taka Taka B — Blue Lock FS</h3>
+
+        <p>Todos los goles, las jugadas y los momentos que alguno preferiría olvidar.</p>
+
+      </div>
+
+      <a class="btn secondary"
+
+         href="https\://www.youtube.com/watch?v=F20PHcZKmz4"
+
+         target="_blank" rel="noopener noreferrer">Ver en YouTube</a>
+
+    </div>
+
+    <div class="video-container">
+
+      <iframe
+
+        src="https\://www.youtube.com/embed/F20PHcZKmz4?si=kxXPoYcjioXKy8BO"
+
+        title="Partido completo Blue Lock FS"
+
+        loading="lazy"
+
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+
+        referrerpolicy="strict-origin-when-cross-origin"
+
+        allowfullscreen></iframe>
+
+    </div>
+
+  </div>
+
+
 
 </section>
 
+
+
 <!-- ======================= -->
+
 <!-- PLANTILLA -->
+
 <!-- ======================= -->
+
+
 
 <section id="plantilla" class="page">
 
+
+
   <div class="section-head">
 
+
+
     <span class="eyebrow">
+
       BLUE LOCK FS · 2026/27
+
     </span>
 
+
+
     <h2>
+
       Los egoístas del equipo
+
     </h2>
 
+
+
     <p>
+
       Diez jugadores, un escudo
+
       y demasiada confianza.
 
+
+
       Aquí están los elegidos para conquistar
+
       la liga... o al menos llegar puntuales
+
       al partido.
+
     </p>
+
+
 
   </div>
 
+
+
   <div class="roster-grid">
+
+
 
     <!-- ALEX -->
 
+
+
     <article class="roster-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/chebchub.png"
+
         alt="Alex - Chebchub"
+
       >
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#10 · ALEX</h3>
 
-        <span class="chip">CHEBCHUB</span>
+
+
+        <span class="chip">ALEX</span>
+
         <span class="chip">Delantero</span>
 
+
+
         <p>
+
           Se considera el protagonista de todos
+
           los partidos.
 
+
+
           Si marca, es talento.
+
           Si falla, es culpa del pase.
 
+
+
           Su ego tiene más minutos
+
           que sus piernas, aunque encontrar proveedor para las
+
           camisetas haya sido su primera gran prueba.
+
         </p>
-        </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- CARMELO -->
 
+
+
     <article class="roster-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/carmelo.png"
+
         alt="Carmelo - Dorsal 7"
+
       >
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#7 · CARMELO</h3>
 
+
+
         <span class="chip">Delantero</span>
+
         <span class="chip">Egoísta profesional</span>
 
+
+
         <p>
-          
+
+
+
           El arquitecto del equipo.
 
+
+
           Diseña jugadas que ni sus compañeros
+
           comprenden.
 
+
+
           Según él, no pierde balones:
+
           crea nuevas situaciones tácticas
+
           para el rival.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- SERGIO -->
 
+
+
     <article class="roster-card">
 
-      <div class="roster-placeholder">
+      <img
 
-        <span>99</span>
-        <small>BLUE LOCK FS</small>
+        class="roster-photo"
 
-      </div>
+        src="assets/sergio.png"
+
+        alt="Sergio - Dorsal 99"
+
+      >
 
       <div class="roster-info">
+
+
 
         <h3>#99 · SERGIO</h3>
 
+
+
         <span class="chip">Jugador</span>
 
+
+
         <p>
+
           Lleva el 99 porque los números
+
           normales se le quedaban pequeños.
 
+
+
           En su cabeza juega la Champions;
+
           en la realidad, al pequeño dicaprio le pesan las piernas..
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- ANGELO -->
 
+
     <article class="roster-card">
 
-      <div class="roster-placeholder">
+      <img
 
-        <span>4</span>
-        <small>BLUE LOCK FS</small>
+        class="roster-photo"
 
-      </div>
+        src="assets/angelo.png"
+
+        alt="Angelo - Dorsal 4"
+
+      >
 
       <div class="roster-info">
+
+
 
         <h3>#4 · ANGELO</h3>
 
+
+
         <span class="chip">Jugador</span>
 
+
+
         <p>
+
           El nombre suena celestial,
+
           pero en el campo no promete milagros.
 
+
+
           Cada intervención suya puede acabar
+
           en jugadón o en meme del grupo.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- ALVARO -->
 
+
+
     <article class="roster-card">
 
-      <div class="roster-placeholder">
+      <img
 
-        <span>23</span>
-        <small>BLUE LOCK FS</small>
+        class="roster-photo"
 
-      </div>
+        src="assets/alvaro.png"
+
+        alt="Alvaro - Dorsal 23"
+
+      >
+
 
       <div class="roster-info">
+
+
 
         <h3>#23 · ALVARO</h3>
 
+
+
         <span class="chip">Jugador</span>
 
+
+
         <p>
+
           El 23 de Blue Lock.
 
+
+
           No sabemos si viene a revolucionar
+
           el fútbol sala o a revolucionar
+
           el grupo de WhatsApp.
 
+
+
           De momento promete ambas cosas.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- LEÓN -->
 
+
+
     <article class="roster-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/miguel.png"
+
         alt="León - Miguel - Dorsal 6"
+
       >
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#6 · LEÓN</h3>
 
+
+
         <span class="chip">MIGUEL</span>
+
         <span class="chip">Centrocampista</span>
 
+
+
         <p>
+
           Su ego entra al pabellón cinco minutos
+
           antes que él.
 
+
+
           No necesita suerte,
+
           solo un balón y alguien dispuesto
+
           a aguantar la celebración.
-          
+
+
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- ISAGI -->
 
+
+
     <article class="roster-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/hugo.png"
+
         alt="Isagi - Hugo - Dorsal 11"
+
       >
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#11 · ISAGI</h3>
 
+
+
         <span class="chip">HUGO</span>
+
         <span class="chip">Delantero</span>
 
+
+
         <p>
-          
+
+
+
           Tiene un pacto con el balón:
+
           si lo recibe, no lo devuelve.
 
+
+
           Ve la portería desde cualquier sitio,
+
           aunque a veces sea la de otro pabellón.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- D. DEL RIO -->
 
+
+
     <article class="roster-card">
 
-      <div class="roster-placeholder">
+      <img
 
-        <span>21</span>
-        <small>BLUE LOCK FS</small>
+        class="roster-photo"
 
-      </div>
+        src="assets/delrio.png"
+
+        alt="D. Del Río - Dorsal 21"
+
+      >
 
       <div class="roster-info">
+
+
 
         <h3>#21 · D. DEL RIO</h3>
 
+
+
         <span class="chip">Jugador</span>
 
+
+
         <p>
+
           Misterio absoluto.
 
+
+
           Nadie sabe qué jugada va a hacer,
+
           probablemente ni él. Tampoco se sabe cuando debutará, pero si necesitaís movida seguro que aparece.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- LUIS -->
 
+
+
     <article class="roster-card">
+
+
 
       <div class="roster-placeholder">
 
+
+
         <span>9</span>
+
         <small>BLUE LOCK FS</small>
+
+
 
       </div>
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#9 · LUIS</h3>
 
+
+
         <span class="chip">Jugador</span>
 
+
+
         <p>
+
           Nuestro Lamine Yamal, el dorsal 9 viene con expectativas.
+
           El protegido del equipo, con 16 años os hundirá.
+
           No le subestimeís irá con todo.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
+
+
 
     <!-- JOWI -->
 
+
+
     <article class="roster-card goalkeeper-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/jowi.png"
+
         alt="Jowi - Portero"
+
       >
 
+
+
       <div class="roster-info">
+
+
 
         <h3>#1 · JOWI</h3>
 
+
+
         <span class="chip">🧤 Portero</span>
+
         <span class="chip">El muro</span>
 
+
+
         <p>
+
           La última línea de defensa.
 
+
+
           Tiene la difícil misión de parar
+
           los disparos del rival y sobrevivir
+
           a los errores de sus compañeros.
 
+
+
           Merece un plus de peligrosidad.
+
         </p>
+
+
 
       </div>
 
+
+
     </article>
 
+
+
   </div>
+
+
 
   <!-- DIRECTIVA -->
 
+
+
   <div class="section-head">
 
+
+
     <span class="eyebrow">
+
       LA DIRECTIVA
+
     </span>
 
+
+
     <h2>
+
       La persona que manda de verdad
+
     </h2>
 
+
+
     <p>
+
       Mientras los jugadores discuten quién
+
       es el mejor, alguien tiene que hacer
+
       que el equipo exista legalmente.
+
     </p>
 
+
+
   </div>
+
+
 
   <div class="roster-grid">
 
+
+
     <article class="roster-card president-card">
 
+
+
       <img
+
         class="roster-photo"
+
         src="assets/clarita.png"
+
         alt="Clarita - Presidenta"
+
       >
+
+
 
       <div class="roster-info">
 
+
+
         <h3>👑 CLARITA</h3>
 
+
+
         <span class="chip">Presidenta</span>
+
         <span class="chip">Documentación</span>
+
         <span class="chip">Redes sociales</span>
 
+
+
         <p>
+
           La jefa del proyecto.
 
+
+
           Controla los papeles, las redes
+
           y el destino de diez egos desatados.
+
+
 
           Tiene poder absoluto sobre el club.
 
+        </p>
+
+
+
       </div>
+
+
 
     </article>
 
+
+
   </div>
+
+
 
 </section>
 
+
+
 <!-- ======================= -->
+
 <!-- RANKING -->
+
 <!-- ======================= -->
+
+
 
 <section id="ranking" class="page">
 
-  <div class="section-head">
+  <div class="league-hero">
 
-    <span class="eyebrow">
-      COMPETICIÓN INTERNA
-    </span>
+    <div>
 
-    <h2>
-      Ranking del equipo
-    </h2>
+      <span class="eyebrow">CAMPEÓN DE INVIERNO · TEMPORADA 2026/27</span>
 
-    <p>
-      Aquí aparecerán las estadísticas reales
-      de los jugadores durante la temporada.
-    </p>
+      <h2>Senior Tercera · Fútbol Sala</h2>
+
+      <p>Clasificación de la liga y calendario de Blue Lock FS (inscrito como Noctra Torrejón B).</p>
+
+    </div>
+
+    <div class="league-number">07.º<small>PUESTO ACTUAL</small></div>
 
   </div>
 
-  <div class="stats-grid">
+
+
+  <div class="league-layout">
+
+    <div class="league-card">
+
+      <div class="league-card-heading">
+
+        <span class="chip">🏆 CLASIFICACIÓN REAL</span>
+
+        <h3>Tabla de la liga</h3>
+
+        <p>Datos de la clasificación después de las dos primeras jornadas.</p>
+
+      </div>
+
+      <div class="league-table-wrap">
+
+        <table class="league-table">
+
+          <thead><tr><th>#</th><th>Equipo</th><th>J</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>Pts</th></tr></thead>
+
+          <tbody>
+
+            <tr><td>1</td><td class="team-name">Limoneta OG</td><td>2</td><td>2</td><td>0</td><td>0</td><td>7</td><td>1</td><td>+6</td><td><strong>6</strong></td></tr>
+
+            <tr><td>2</td><td class="team-name">Borussia Donuts</td><td>2</td><td>2</td><td>0</td><td>0</td><td>8</td><td>3</td><td>+5</td><td><strong>6</strong></td></tr>
+
+            <tr><td>3</td><td class="team-name">Fifita</td><td>2</td><td>1</td><td>1</td><td>0</td><td>5</td><td>3</td><td>+2</td><td><strong>4</strong></td></tr>
+
+            <tr><td>4</td><td class="team-name">Class Hair Salon</td><td>2</td><td>1</td><td>1</td><td>0</td><td>7</td><td>6</td><td>+1</td><td><strong>4</strong></td></tr>
+
+            <tr><td>5</td><td class="team-name">Águilas Team</td><td>2</td><td>1</td><td>0</td><td>1</td><td>5</td><td>5</td><td>+0</td><td><strong>3</strong></td></tr>
+
+            <tr><td>6</td><td class="team-name">ADN Futsal</td><td>2</td><td>1</td><td>0</td><td>1</td><td>2</td><td>5</td><td>-3</td><td><strong>3</strong></td></tr>
+
+            <tr class="our-team"><td>7</td><td class="team-name">Blue Lock FS</td><td>1</td><td>0</td><td>1</td><td>0</td><td>2</td><td>2</td><td>+0</td><td><strong>1</strong></td></tr>
+
+            <tr><td>8</td><td class="team-name">Taka Taka B</td><td>2</td><td>0</td><td>1</td><td>1</td><td>2</td><td>3</td><td>-1</td><td><strong>1</strong></td></tr>
+
+            <tr><td>9</td><td class="team-name">Torrejón Hortaleza</td><td>2</td><td>0</td><td>0</td><td>2</td><td>5</td><td>7</td><td>-2</td><td><strong>0</strong></td></tr>
+
+            <tr><td>10</td><td class="team-name">Real Fachadolid</td><td>2</td><td>0</td><td>0</td><td>2</td><td>2</td><td>6</td><td>-4</td><td><strong>0</strong></td></tr>
+
+            <tr><td>11</td><td class="team-name">Vermeer</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>4</td><td>-4</td><td><strong>0</strong></td></tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="league-key">J: jugados · G: ganados · E: empatados · P: perdidos · GF/GC: goles a favor/en contra · DG: diferencia</div>
+
+    </div>
+
+
+
+    <div class="league-card">
+
+      <div class="league-card-heading">
+
+        <span class="chip">📅 NUESTRO CALENDARIO</span>
+
+        <h3>Jornadas 1 a 11</h3>
+
+        <p>Partidos y descansos de Blue Lock FS. Cuando no hay hora ni campo confirmados, se indicarán como pendientes.</p>
+
+      </div>
+
+      <div class="next-match">
+
+        <span class="chip">PRÓXIMO PARTIDO · JORNADA 3</span>
+
+        <div class="match-versus">VERMEER <span style="color:#86addd">vs</span> <strong>BLUE LOCK FS</strong></div>
+
+        <div class="match-meta"><span>📅 08/11/2026</span><span>📍 El Paraíso</span><span>🕒 15:00</span></div>
+
+        <p style="color:#b8d5fa;font-size:.9rem;line-height:1.55">Tras el 2–2 contra Taka Taka B y el descanso de la J2, volvemos a la pista.</p>
+
+      </div>
+
+      <div class="jornada-list">
+
+        <article class="jornada-item completed"><div class="jornada-num">J1</div><div class="jornada-opponent">Blue Lock FS — Taka Taka B<small>18/10/2026 · 17:00 · El Paraíso</small></div><div class="jornada-state result">2–2</div></article>
+
+        <article class="jornada-item rest"><div class="jornada-num">J2</div><div class="jornada-opponent">Blue Lock FS · Descansa<small>24–25/10/2026</small></div><div class="jornada-state rest">Descanso</div></article>
+
+        <article class="jornada-item upcoming"><div class="jornada-num">J3</div><div class="jornada-opponent">Vermeer — Blue Lock FS<small>08/11/2026 · Hora pendiente · El Paraíso</small></div><div class="jornada-state ">Próximo</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J4</div><div class="jornada-opponent">Blue Lock FS — Limoneta OG<small>14–15/11/2026</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J5</div><div class="jornada-opponent">Blue Lock FS — ADN Futsal<small>21–22/11/2026</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J6</div><div class="jornada-opponent">Torrejón Hortaleza — Blue Lock FS<small>28–29/11/2026</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J7</div><div class="jornada-opponent">Blue Lock FS — Fifita<small>12–13/12/2026</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J8</div><div class="jornada-opponent">Águilas Team — Blue Lock FS<small>19–20/12/2026</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J9</div><div class="jornada-opponent">Blue Lock FS — Real Fachadolid<small>16–17/01/2027</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J10</div><div class="jornada-opponent">Borussia Donuts — Blue Lock FS<small>23–24/01/2027</small></div><div class="jornada-state ">Por jugar</div></article>
+
+        <article class="jornada-item "><div class="jornada-num">J11</div><div class="jornada-opponent">Blue Lock FS — Vermeer<small>30–31/01/2027</small></div><div class="jornada-state ">Por jugar</div></article>
+
+      </div>
+
+      </div>
+
+  </div>
+
+
+
+  <details class="player-stats-collapse">
+
+    <summary>⚽ Estadísticas de nuestros jugadores y premios de la jornada</summary>
+
+    <div class="player-stats-inner">
+
+  
+
+
 
     <div class="ranking-table">
 
+
+
       <div class="ranking-header">
+
+
 
         <div>
 
+
+
           <span class="chip">
-            Demostración
+
+            ESTADÍSTICAS DEL EQUIPO
+
           </span>
 
+
+
           <h3>
+
             Clasificación de jugadores
+
           </h3>
+
+
 
         </div>
 
-        <span class="chip">
-          Pendiente de datos reales
-        </span>
+
 
       </div>
+
+
 
       <table>
 
+
+
         <thead>
+
           <tr>
+
             <th>Puesto</th>
+
             <th>Jugador</th>
+
             <th>Goles</th>
+
             <th>Asist.</th>
-            <th>Puntos</th>
+
+            <th>Partidos</th>
+
           </tr>
+
         </thead>
+
+
 
         <tbody>
 
-          <tr>
-            <td><div class="pos gold">1</div></td>
-            <td>ALEX</td>
-            <td>6</td>
-            <td>4</td>
-            <td>10</td>
-          </tr>
+
 
           <tr>
-            <td><div class="pos silver">2</div></td>
-            <td>CARMELO</td>
-            <td>5</td>
-            <td>2</td>
-            <td>7</td>
-          </tr>
 
-          <tr>
-            <td><div class="pos bronze">3</div></td>
-            <td>ISAGI</td>
-            <td>3</td>
-            <td>3</td>
-            <td>6</td>
-          </tr>
+            <td><div class="pos">1</div></td>
 
-          <tr>
-            <td><div class="pos">4</div></td>
             <td>LEÓN</td>
+
             <td>1</td>
-            <td>4</td>
-            <td>5</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos">2</div></td>
+
+            <td>ÁLVARO</td>
+
+            <td>1</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos gold">3</div></td>
+
+            <td>ALEX</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos silver">4</div></td>
+
+            <td>JOWI</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos">5</div></td>
+
+            <td>LUIS</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos bronze">6</div></td>
+
+            <td>ISAGI</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>1</td>
+
+          </tr>
+
+
+
+
+
+          <tr>
+
+            <td><div class="pos silver">7</div></td>
+
+            <td>CARMELO</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+          </tr>
+
+
+
+          <tr>
+
+            <td><div class="pos silver">8</div></td>
+
+            <td>SERGIO</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
           </tr>
 
           <tr>
-            <td><div class="pos">5</div></td>
-            <td>LUIS</td>
-            <td>2</td>
-            <td>1</td>
-            <td>3</td>
+
+            <td><div class="pos silver">9</div></td>
+
+            <td>ANGELO</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
           </tr>
+
+          <tr>
+
+            <td><div class="pos silver">10</div></td>
+
+            <td>D. DEL RIO</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+            <td>0</td>
+
+          </tr>
+
+
 
         </tbody>
 
+
+
       </table>
 
-      <div class="ranking-note">
-        ⚠️ Datos ficticios para probar el diseño.
-        Próximamente incorporaremos
-        las estadísticas reales.
-      </div>
+
 
     </div>
+
+
 
     <div class="section-shell">
 
+
+
       <span class="chip">
+
         Premios especiales
+
       </span>
 
+
+
       <h3>
+
         Los premios que nadie pidió
+
       </h3>
 
-      <div class="stat-pill">
-        <span>🥇 MVP de la jornada</span>
-        <strong>Pendiente</strong>
-      </div>
+
 
       <div class="stat-pill">
+
+        <span>🥇 MVP de la 1ª jornada</span>
+
+        <strong>LEÓN</strong>
+
+      </div>
+
+
+
+      <div class="stat-pill">
+
         <span>⚽ Máximo goleador</span>
-        <strong>Pendiente</strong>
+
+        <strong>LEÓN</strong>
+
       </div>
 
+
+
       <div class="stat-pill">
+
         <span>🎯 Máximo asistente</span>
+
         <strong>Pendiente</strong>
+
       </div>
 
-      <div class="stat-pill">
-        <span>🧱 Muro del equipo</span>
-        <strong>Pendiente</strong>
-      </div>
+
 
       <div class="stat-pill">
+
         <span>🪵 Tronco de la jornada</span>
-        <strong>Se vota</strong>
+
+        <strong>ALEX</strong>
+
       </div>
 
-      <p>
-        Próximamente añadiremos estadísticas
-        reales, votaciones y rankings
-        de los minijuegos.
-      </p>
+
 
     </div>
-
-  </div>
+    </div>
+  </details>
 
 </section>
 
+
+
 <!-- ======================= -->
+
 <!-- VESTUARIO -->
+
 <!-- ======================= -->
+
+
 
 <section id="vestuario" class="page">
 
+
+
   <div class="section-head">
 
+
+
     <span class="eyebrow">
+
       ARCHIVO CONFIDENCIAL
+
     </span>
 
+
+
     <h2>
+
       El vestuario
+
     </h2>
 
+
+
     <p>
+
       Donde nacen las leyendas,
+
       las excusas y los memes.
+
     </p>
 
+
+
   </div>
+
+
 
   <div class="cards-grid">
 
+
+
     <article class="card">
 
+
+
       <span class="chip">
+
         Galería
+
       </span>
 
+
+
       <h3>
+
         📸 Fotos del equipo
+
       </h3>
 
+
+
       <p>
+
         Partidos, celebraciones y fotos
+
         que probablemente no deberían publicarse.
+
       </p>
+
+
 
     </article>
 
+
+
     <article class="card">
 
+
+
       <span class="chip">
+
         Frases históricas
+
       </span>
 
+
+
       <h3>
+
         🎤 Archivo del banquillo
+
       </h3>
 
+
+
       <p>
+
         Las mejores frases del equipo.
 
+
+
         Algunas merecen una sanción disciplinaria.
+
       </p>
 
+
+
     </article>
+
+
 
     <article class="card">
 
+
+
       <span class="chip">
+
         Memes
+
       </span>
 
+
+
       <h3>
+
         😂 Zona sensible
+
       </h3>
 
+
+
       <p>
+
         Fallos a puerta vacía,
+
         excusas y material
+
         para chantaje amistoso.
+
       </p>
 
+
+
     </article>
+
+
 
   </div>
 
+
+
 </section>
+
+
 
 </main>
 
+
+
 <!-- PIE DE PÁGINA -->
+
+
 
 <footer class="footer">
 
+
+
   Blue Lock FS · Temporada 2026/27 ·
+
   Más ego que fondo físico
+
+
 
 </footer>
 
+
+
 <!-- ======================= -->
+
 <!-- JAVASCRIPT -->
+
 <!-- ======================= -->
+
+
 
 <script>
 
+
+
 /* LISTA DE JUGADORES */
+
+
 
 const players = [
 
+
+
   { number: 10, name: "ALEX" },
+
   { number: 7, name: "CARMELO" },
+
   { number: 99, name: "SERGIO" },
+
   { number: 4, name: "ANGELO" },
+
   { number: 23, name: "ALVARO" },
+
   { number: 6, name: "LEÓN" },
+
   { number: 11, name: "ISAGI" },
+
   { number: 21, name: "D. DEL RIO" },
+
   { number: 9, name: "LUIS" },
+
   { number: 1, name: "JOWI 🧤" }
 
+
+
 ];
+
+
 
 /* GENERAR LISTADO DE INICIO */
 
+
+
 const homeRoster = document.getElementById(
+
   "home-roster"
+
 );
+
+
 
 players.forEach(player => {
 
+
+
   const row = document.createElement("div");
+
+
 
   row.className = "home-roster-row";
 
+
+
   const number = document.createElement("span");
+
+
 
   number.className = "home-number";
 
+
+
   number.textContent = "#" + player.number;
+
+
 
   const name = document.createElement("strong");
 
+
+
   name.textContent = player.name;
+
+
 
   row.append(number, name);
 
+
+
   homeRoster.appendChild(row);
 
+
+
 });
+
+
 
 /* NAVEGACIÓN ENTRE PÁGINAS DEL INDEX */
 
+
+
 const pages = [
+
   ...document.querySelectorAll(".page")
+
 ];
 
+
+
 const tabs = [
+
   ...document.querySelectorAll("[data-page]")
+
 ];
+
+
 
 function navigate(page) {
 
+
+
   pages.forEach(p => {
 
+
+
     p.classList.toggle(
+
       "active",
+
       p.id === page
+
     );
 
+
+
   });
+
+
 
   tabs.forEach(b => {
 
+
+
     if (b.dataset.page === page) {
 
+
+
       b.setAttribute(
+
         "aria-current",
+
         "page"
+
       );
+
+
 
     } else {
 
+
+
       b.removeAttribute(
+
         "aria-current"
+
       );
+
+
 
     }
 
+
+
   });
 
+
+
   window.scrollTo({
+
     top: 0,
+
     behavior: "smooth"
+
   });
+
+
 
 }
 
+
+
 /* BOTONES DEL MENÚ */
+
+
 
 tabs.forEach(b => {
 
+
+
   b.addEventListener("click", () => {
+
+
 
     navigate(b.dataset.page);
 
+
+
   });
 
+
+
 });
+
+
 
 /* BOTONES INTERIORES */
 
+
+
 document.querySelectorAll(
+
   "[data-go]"
+
 ).forEach(b => {
+
+
 
   b.addEventListener("click", () => {
 
+
+
     navigate(b.dataset.go);
+
+
 
   });
 
+
+
 });
 
+
+
 /*
+
   LOS MINIJUEGOS YA NO ESTÁN EN ESTE ARCHIVO.
+
+
 
   Ahora se abren mediante:
 
+
+
   juegos.html
 
+
+
   Por tanto, no necesitamos conservar aquí
+
   el JavaScript de penaltis ni del trivial.
+
 */
+
+
 
 </script>
 
+
+
 </body>
+
 </html>
