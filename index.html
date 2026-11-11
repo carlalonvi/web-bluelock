@@ -317,121 +317,152 @@ main {padding:26px 0 80px}
 }
 
 /* ========================================= */
-/* GALERÍA J3 - ESTILO INSTAGRAM SIN TEXTOS */
+/* GALERÍA J3 - VERTICAL Y MÁS GRANDE */
 /* ========================================= */
 
 .j3-gallery {
-  margin:28px 0 18px;
-  max-width:100%;
-  min-width:0;
-}
-.j3-gallery-head {
-  display:flex;
-  align-items:center;
-  margin-bottom:14px;
-}
-.j3-gallery-head h2 {
-  font-size:clamp(1.2rem,2.8vw,1.7rem);
-  margin:8px 0 0;
-}
-.j3-gallery-track {
-  display:flex;
-  width:100%;
-  max-width:760px;
-  margin:0 auto;
-  gap:0;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  scrollbar-width:none;
-  border-radius:18px;
-  border:1px solid #285399;
-  background:#050b16;
-  overscroll-behavior-x:contain;
-}
-.j3-gallery-track::-webkit-scrollbar {display:none}
-.j3-gallery-item {
-  flex:0 0 100%;
-  width:100%;
-  min-width:100%;
-  margin:0;
-  padding:0;
-  scroll-snap-align:start;
-  scroll-snap-stop:always;
-  border:0;
-  background:#050b16;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  overflow:hidden;
-}
-.j3-gallery-item img,
-.j3-gallery-item video {
-  display:block;
-  width:100%;
-  height:330px;
-  object-fit:contain;
-  background:#050b16;
+  margin: 28px 0 18px;
+  max-width: 100%;
+  min-width: 0;
 }
 
-/* PUNTITOS INFERIORES */
+.j3-gallery-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.j3-gallery-head h2 {
+  font-size: clamp(1.2rem, 2.8vw, 1.7rem);
+  margin: 8px 0 0;
+}
+
+/* CONTENEDOR VERTICAL */
+.j3-gallery-track {
+  display: flex;
+  width: 100%;
+  max-width: 430px;          /* más grande */
+  aspect-ratio: 9 / 16;      /* formato vertical */
+  margin: 0 auto;
+  gap: 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  border-radius: 22px;
+  border: 1px solid #285399;
+  background: #050b16;
+  overscroll-behavior-x: contain;
+}
+
+.j3-gallery-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* CADA ARCHIVO OCUPA TODA LA “PÁGINA” */
+.j3-gallery-item {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  margin: 0;
+  padding: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border: 0;
+  background: #050b16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* FOTO / VÍDEO */
+.j3-gallery-item img,
+.j3-gallery-item video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #050b16;
+}
+
+/* PUNTITOS */
 .j3-gallery-dots {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin:13px auto 0;
-  max-width:760px;
-  flex-wrap:wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin: 13px auto 0;
+  max-width: 430px;
+  flex-wrap: wrap;
 }
+
 .j3-gallery-dot {
-  width:7px;
-  height:7px;
-  padding:0;
-  border:0;
-  border-radius:50%;
-  background:#466181;
-  cursor:pointer;
-  transition:background .2s,transform .2s;
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #466181;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
 }
+
 .j3-gallery-dot.active {
-  background:#33b1ff;
-  transform:scale(1.45);
+  background: #33b1ff;
+  transform: scale(1.45);
 }
+
 .j3-gallery-dot:focus-visible {
-  outline:2px solid white;
-  outline-offset:4px;
+  outline: 2px solid white;
+  outline-offset: 4px;
 }
 
 /* VISOR AMPLIADO */
 .j3-gallery-lightbox {
-  position:fixed;
-  inset:0;
-  z-index:200;
-  background:rgba(0,0,0,.94);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:55px 15px 20px;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,.94);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 55px 15px 20px;
 }
-.j3-gallery-lightbox.active {display:flex}
+
+.j3-gallery-lightbox.active {
+  display: flex;
+}
+
 .j3-gallery-lightbox img,
 .j3-gallery-lightbox video {
-  max-width:95vw;
-  max-height:85vh;
-  object-fit:contain;
+  max-width: 95vw;
+  max-height: 85vh;
+  object-fit: contain;
 }
+
 .j3-gallery-close {
-  position:absolute;
-  top:15px;
-  right:25px;
-  background:#18365e;
-  color:white;
-  border:1px solid #3174c9;
-  border-radius:10px;
-  padding:9px 15px;
-  font-size:19px;
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  background: #18365e;
+  color: white;
+  border: 1px solid #3174c9;
+  border-radius: 10px;
+  padding: 9px 15px;
+  font-size: 19px;
+}
+
+/* MÓVIL */
+@media (max-width: 680px) {
+  .j3-gallery-track {
+    max-width: 340px;
+  }
+
+  .j3-gallery-dots {
+    max-width: 340px;
+  }
 }
 
 /* PARTIDO COMPLETO */
