@@ -869,6 +869,36 @@ th {
     padding:15px 12px;
   }
 }
+
+/* GALERÍA ADAPTADA A MÓVILES */
+@media (max-width: 768px) {
+
+  /* Contenedor de la galería */
+  .galeria,
+  .gallery,
+  .media-gallery {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px;
+  }
+
+  /* Fotografías y vídeos */
+  .galeria img,
+  .galeria video,
+  .gallery img,
+  .gallery video,
+  .media-gallery img,
+  .media-gallery video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 80dvh;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+}
+
 </style>
 </head>
 
